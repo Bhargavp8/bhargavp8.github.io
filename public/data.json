@@ -25,7 +25,19 @@
     "ctaPrimary": "Read the Blog",
     "ctaSecondary": "See My Apps"
   },
-  "blogPosts": [],
+  "blogPosts": [
+    {
+      "id": 1776800423657,
+      "title": "New Draft",
+      "category": "",
+      "date": "",
+      "readtime": "",
+      "emoji": "📝",
+      "color": "th-green",
+      "excerpt": "",
+      "body": ""
+    }
+  ],
   "appCards": [],
   "about": {
     "headline": "Built by one CS student.\nFor $10 a year.",
