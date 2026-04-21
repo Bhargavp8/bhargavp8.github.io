@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bharcode — Building Passive Income From Code</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f7f2;
+    --text: #0a0a0a;
+    --text2: #3d3d3a;
+    --text3: #7a7a75;
+    --accent2: #2d5a27;
+    --border: rgba(0,0,0,0.08);
+    --card-bg: #ffffff;
+    --card-border: rgba(0,0,0,0.07);
+    --tag-bg: rgba(0,0,0,0.05);
+    --tag-text: #3d3d3a;
+    --nav-bg: rgba(247,247,242,0.93);
+    --transition: 0.5s cubic-bezier(0.16,1,0.3,1);
+  }
+  [data-theme="dark"] {
+    --bg: #0c0c0b;
+    --text: #f0f0eb;
+    --text2: #c4c4be;
+    --text3: #7a7a72;
+    --accent2: #5cad54;
+    --border: rgba(255,255,255,0.07);
+    --card-bg: #161615;
+    --card-border: rgba(255,255,255,0.07);
+    --tag-bg: rgba(255,255,255,0.06);
+    --tag-text: #c4c4be;
+    --nav-bg: rgba(12,12,11,0.93);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); transition: background var(--transition), color var(--transition); overflow-x: hidden; line-height: 1.6; cursor: crosshair; }
+
+  .cursor-plus { position: fixed; pointer-events: none; z-index: 9999; font-size: 22px; font-weight: 300; color: var(--accent2); opacity: 0; transform: translate(-50%,-50%) scale(0.4); transition: opacity 0.15s, transform 0.15s; user-select: none; line-height: 1; }
+  .cursor-plus.show { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--nav-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); transition: background var(--transition), border-color var(--transition); }
+  .nav-inner { max-width: 1100px; margin: 0 auto; padding: 0 2rem; height: 58px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-family: 'DM Serif Display', serif; font-size: 1.3rem; color: var(--text); text-decoration: none; letter-spacing: -0.02em; cursor: pointer; }
+  .logo span { color: var(--accent2); }
+  .nav-links { display: flex; align-items: center; gap: 0.15rem; list-style: none; }
+  .nav-links button { background: none; border: none; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 400; color: var(--text3); cursor: pointer; padding: 0.4rem 0.9rem; border-radius: 100px; transition: color 0.2s, background 0.2s; }
+  .nav-links button:hover { color: var(--text); background: var(--tag-bg); }
+  .nav-links button.active { color: var(--text); background: var(--tag-bg); font-weight: 500; }
+  .toggle-wrap { display: flex; align-items: center; gap: 8px; }
+  .toggle-label { font-size: 0.72rem; color: var(--text3); letter-spacing: 0.04em; text-transform: uppercase; user-select: none; }
+  .toggle { position: relative; width: 40px; height: 22px; cursor: pointer; }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .toggle-track { position: absolute; inset: 0; background: var(--border); border: 1px solid var(--border); border-radius: 100px; transition: background 0.3s; }
+  .toggle input:checked + .toggle-track { background: var(--accent2); border-color: var(--accent2); }
+  .toggle-thumb { position: absolute; top: 3px; left: 3px; width: 14px; height: 14px; border-radius: 50%; background: #fff; transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1); box-shadow: 0 1px 4px rgba(0,0,0,0.2); }
+  [data-theme="dark"] .toggle-thumb { background: #0c0c0b; }
+  .toggle input:checked ~ .toggle-thumb { transform: translateX(18px); }
+
+  .page { display: none; min-height: 100vh; padding-top: 58px; }
+  .page.active { display: block; }
+
+  .section { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem; }
+  .section-label { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent2); font-weight: 500; margin-bottom: 0.5rem; }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 4.5vw, 3.2rem); line-height: 1.1; letter-spacing: -0.025em; color: var(--text); margin-bottom: 0.8rem; }
+  .section-sub { font-size: 1rem; font-weight: 300; color: var(--text3); max-width: 520px; margin-bottom: 2.5rem; line-height: 1.7; }
+
+  /* HOME HERO */
+  .hero { max-width: 1100px; margin: 0 auto; padding: 5rem 2rem 3rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; min-height: calc(100vh - 58px); }
+  .hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent2); margin-bottom: 1.4rem; }
+  .hero-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent2); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.7)} }
+  .hero h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2.8rem, 5.5vw, 4.8rem); line-height: 1.0; letter-spacing: -0.03em; color: var(--text); margin-bottom: 1.4rem; }
+  .hero h1 em { font-style: italic; color: var(--accent2); }
+  .hero-sub { font-size: 1.05rem; font-weight: 300; color: var(--text3); line-height: 1.75; margin-bottom: 2rem; max-width: 420px; }
+  .hero-actions { display: flex; align-items: center; gap: 0.9rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+  .btn-primary { padding: 0.7rem 1.6rem; background: var(--text); color: var(--bg); font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 500; border: none; border-radius: 100px; cursor: pointer; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; display: inline-block; }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+  .btn-outline { padding: 0.7rem 1.6rem; background: none; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 400; border: 1px solid var(--border); border-radius: 100px; cursor: pointer; text-decoration: none; transition: border-color 0.2s, background 0.2s; display: inline-block; }
+  .btn-outline:hover { border-color: var(--accent2); background: var(--tag-bg); }
+  .hero-stats { display: flex; gap: 2.5rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+  .stat-num { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--text); line-height: 1; }
+  .stat-label { font-size: 0.72rem; color: var(--text3); margin-top: 4px; letter-spacing: 0.04em; text-transform: uppercase; }
+
+  /* PIN PREVIEW */
+  .pin-preview-stack { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .pin-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; text-decoration: none; display: block; }
+  .pin-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(0,0,0,0.1); }
+  [data-theme="dark"] .pin-card:hover { box-shadow: 0 12px 36px rgba(0,0,0,0.4); }
+  .pin-thumb { height: 86px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; }
+  .th-green { background: linear-gradient(135deg,#2d5a27,#4a9442); }
+  .th-teal { background: linear-gradient(135deg,#1a5f5c,#2d9b96); }
+  .th-navy { background: linear-gradient(135deg,#1e3a5f,#2d6aad); }
+  .th-olive { background: linear-gradient(135deg,#4a5a1e,#7a9a30); }
+  .th-purple { background: linear-gradient(135deg,#3b1f5a,#6a35ad); }
+  [data-theme="dark"] .th-green { background: linear-gradient(135deg,#1e3d1b,#3a7534); }
+  [data-theme="dark"] .th-teal { background: linear-gradient(135deg,#0f3836,#206b67); }
+  [data-theme="dark"] .th-navy { background: linear-gradient(135deg,#0f2038,#1a4a7a); }
+  [data-theme="dark"] .th-olive { background: linear-gradient(135deg,#2e3b10,#506820); }
+  [data-theme="dark"] .th-purple { background: linear-gradient(135deg,#25103a,#4a2080); }
+  .pin-info { padding: 11px; }
+  .pin-title { font-size: 0.77rem; font-weight: 500; color: var(--text); line-height: 1.35; margin-bottom: 3px; }
+  .pin-meta { font-size: 0.67rem; color: var(--text3); }
+  .pin-card.wide { grid-column: span 2; }
+  .pin-card.wide .pin-thumb { height: 62px; }
+  .pin-card.wide .pin-content { display: flex; align-items: center; }
+  .pin-card.wide .pin-content .pin-thumb { min-width: 68px; width: 68px; border-radius: 0; }
+  .pin-card.wide .pin-content .pin-info { flex: 1; }
+
+  /* PROJECT CARDS */
+  .project-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 1.8rem; transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), box-shadow 0.3s, border-color 0.3s; cursor: pointer; position: relative; overflow: hidden; }
+  .project-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent2), transparent); transform: scaleX(0); transform-origin: left; transition: transform 0.4s cubic-bezier(0.16,1,0.3,1); }
+  .project-card:hover { transform: translateY(-4px); box-shadow: 0 14px 40px rgba(0,0,0,0.08); border-color: rgba(45,90,39,0.25); }
+  .project-card:hover::before { transform: scaleX(1); }
+  [data-theme="dark"] .project-card:hover { box-shadow: 0 14px 40px rgba(0,0,0,0.4); }
+
+  .card-status { display: inline-flex; align-items: center; gap: 5px; font-size: 0.67rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 100px; margin-bottom: 0.9rem; }
+  .status-live { background: rgba(45,90,39,0.1); color: var(--accent2); }
+  .status-building { background: rgba(200,140,60,0.1); color: #c88c3c; }
+  .status-soon { background: var(--tag-bg); color: var(--text3); }
+  [data-theme="dark"] .status-live { background: rgba(92,173,84,0.12); color: #5cad54; }
+  .status-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+  .status-live .status-dot { animation: pulse 2s infinite; }
+  .card-title { font-family: 'DM Serif Display', serif; font-size: 1.18rem; color: var(--text); letter-spacing: -0.02em; margin-bottom: 0.5rem; line-height: 1.25; }
+  .card-desc { font-size: 0.84rem; color: var(--text3); line-height: 1.65; margin-bottom: 1.2rem; }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .tag { font-size: 0.67rem; padding: 3px 9px; border-radius: 100px; background: var(--tag-bg); color: var(--tag-text); }
+  .card-arrow { position: absolute; bottom: 1.5rem; right: 1.5rem; font-size: 1rem; color: var(--text3); transition: transform 0.3s, color 0.3s; }
+  .project-card:hover .card-arrow { transform: translate(3px,-3px); color: var(--accent2); }
+
+  /* BLOG */
+  .blog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.2rem; }
+  .blog-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; overflow: hidden; text-decoration: none; display: block; transition: transform 0.3s, box-shadow 0.3s; }
+  .blog-card:hover { transform: translateY(-4px); box-shadow: 0 14px 40px rgba(0,0,0,0.08); }
+  [data-theme="dark"] .blog-card:hover { box-shadow: 0 14px 40px rgba(0,0,0,0.4); }
+  .blog-thumb { height: 160px; display: flex; align-items: center; justify-content: center; font-size: 2.4rem; }
+  .blog-body { padding: 1.3rem; }
+  .blog-tag { display: inline-block; font-size: 0.67rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent2); margin-bottom: 0.6rem; }
+  .blog-title { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: var(--text); line-height: 1.25; letter-spacing: -0.02em; margin-bottom: 0.45rem; }
+  .blog-excerpt { font-size: 0.82rem; color: var(--text3); line-height: 1.6; margin-bottom: 0.9rem; }
+  .blog-meta { display: flex; align-items: center; gap: 7px; font-size: 0.7rem; color: var(--text3); }
+  .blog-meta-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--text3); }
+
+  /* FEATURED */
+  .featured-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; overflow: hidden; margin-bottom: 1.2rem; transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), box-shadow 0.35s; cursor: pointer; }
+  .featured-card:hover { transform: translateY(-4px); box-shadow: 0 18px 52px rgba(0,0,0,0.09); }
+  [data-theme="dark"] .featured-card:hover { box-shadow: 0 18px 52px rgba(0,0,0,0.45); }
+  .featured-inner { display: grid; grid-template-columns: 1fr 1fr; min-height: 280px; }
+  .featured-content { padding: 2.4rem; display: flex; flex-direction: column; justify-content: space-between; }
+  .featured-visual { background: var(--tag-bg); display: flex; align-items: center; justify-content: center; }
+  .featured-link { font-size: 0.82rem; color: var(--accent2); font-weight: 500; text-decoration: none; margin-top: 1.4rem; display: inline-flex; align-items: center; gap: 4px; }
+
+  /* BOT PREVIEW */
+  .vis-bot { width: 200px; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 32px rgba(0,0,0,0.12); border: 1px solid var(--border); animation: floatBot 4s ease-in-out infinite; }
+  @keyframes floatBot { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+  .vis-bot-bar { background: var(--text); color: var(--bg); padding: 9px 12px; display: flex; align-items: center; gap: 7px; font-size: 0.69rem; font-weight: 500; }
+  .vis-bot-body { background: var(--card-bg); padding: 10px; display: flex; flex-direction: column; gap: 7px; }
+  .vis-msg { padding: 7px 10px; border-radius: 8px; font-size: 0.69rem; line-height: 1.5; max-width: 88%; }
+  .vis-msg.user { background: var(--accent2); color: #fff; align-self: flex-end; }
+  .vis-msg.bot { background: var(--tag-bg); color: var(--text); }
+
+  /* ABOUT */
+  .about-layout { display: grid; grid-template-columns: 1fr 1.2fr; gap: 5rem; align-items: start; }
+  .about-text h2 { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 4vw, 2.8rem); letter-spacing: -0.025em; line-height: 1.1; color: var(--text); margin-bottom: 1.2rem; }
+  .about-text p { font-size: 0.94rem; color: var(--text3); line-height: 1.8; margin-bottom: 1rem; font-weight: 300; }
+  .about-text p strong { color: var(--text2); font-weight: 500; }
+  .about-stack { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 1.5rem; margin-bottom: 1.8rem; }
+  .stack-item { font-size: 0.79rem; color: var(--text3); background: var(--tag-bg); padding: 5px 11px; border-radius: 100px; }
+  .cost-list { display: flex; flex-direction: column; gap: 9px; }
+  .cost-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 0.9rem 1.2rem; display: flex; align-items: center; justify-content: space-between; }
+  .cost-name { font-size: 0.84rem; color: var(--text2); }
+  .cost-val { font-size: 0.84rem; font-weight: 500; }
+  .cost-val.free { color: var(--accent2); }
+  .cost-total { border-color: var(--accent2); background: rgba(45,90,39,0.04); }
+  [data-theme="dark"] .cost-total { background: rgba(92,173,84,0.05); }
+
+  /* PAGE HEADER */
+  .page-header { padding: 3.5rem 2rem 0; max-width: 1100px; margin: 0 auto; }
+  .page-header h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2.2rem, 5vw, 3.6rem); letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 0.8rem; }
+  .page-header p { font-size: 1rem; color: var(--text3); font-weight: 300; max-width: 500px; line-height: 1.7; }
+
+  /* REVEAL */
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.08s; }
+  .reveal-delay-2 { transition-delay: 0.16s; }
+  .reveal-delay-3 { transition-delay: 0.24s; }
+  .reveal-delay-4 { transition-delay: 0.32s; }
+
+  footer { border-top: 1px solid var(--border); margin-top: 1rem; }
+  .footer-inner { max-width: 1100px; margin: 0 auto; padding: 1.4rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+  .footer-left { font-size: 0.77rem; color: var(--text3); }
+  .footer-left strong { color: var(--text2); font-weight: 500; }
+  .footer-right { display: flex; gap: 1.4rem; }
+  .footer-right a { font-size: 0.75rem; color: var(--text3); text-decoration: none; transition: color 0.2s; }
+  .footer-right a:hover { color: var(--text); }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; gap: 2.5rem; min-height: auto; padding: 3rem 1.5rem 2.5rem; }
+    .featured-inner { grid-template-columns: 1fr; }
+    .featured-visual { min-height: 180px; }
+    .about-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+    .home-two-col { grid-template-columns: 1fr !important; }
+  }
+  @media (max-width: 600px) {
+    .nav-links button { padding: 0.4rem 0.5rem; font-size: 0.76rem; }
+    .section { padding: 2.5rem 1.5rem; }
+    .page-header { padding: 2.5rem 1.5rem 0; }
+    .hero-stats { gap: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor-plus" id="cursor-plus">+</div>
+
+<nav>
+  <div class="nav-inner">
+    <span class="logo" onclick="showPage('home')">Bhar<span>code</span></span>
+    <ul class="nav-links">
+      <li><button onclick="showPage('home')" id="nav-home" class="active">Home</button></li>
+      <li><button onclick="showPage('blog')" id="nav-blog">Blog</button></li>
+      <li><button onclick="showPage('apps')" id="nav-apps">Apps</button></li>
+      <li><button onclick="showPage('about')" id="nav-about">About</button></li>
+    </ul>
+    <div class="toggle-wrap">
+      <span class="toggle-label" id="theme-label">Light</span>
+      <label class="toggle">
+        <input type="checkbox" id="theme-toggle">
+        <div class="toggle-track"></div>
+        <div class="toggle-thumb"></div>
+      </label>
+    </div>
+  </div>
+</nav>
+
+<!-- ── HOME ── -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div>
+      <div class="hero-eyebrow"><div class="hero-dot"></div>Singapore · CS Student · Building in Public</div>
+      <h1>Code that builds<br><em>passive income.</em></h1>
+      <p class="hero-sub">Zero overhead. Real results. I document how I'm building affiliate income, bots, and automation tools — for the cost of a domain name.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="showPage('blog')">Read the Blog</button>
+        <button class="btn-outline" onclick="showPage('apps')">See My Apps</button>
+      </div>
+      <div class="hero-stats">
+        <div><div class="stat-num">$10</div><div class="stat-label">Annual cost</div></div>
+        <div><div class="stat-num">5+</div><div class="stat-label">Projects live</div></div>
+        <div><div class="stat-num">Day 1</div><div class="stat-label">Building in public</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="pin-preview-stack">
+        <a href="https://bharcode.com/posts/how-to-make-money-online-no-experience/" target="_blank" class="pin-card reveal">
+          <div class="pin-thumb th-green">🚀</div>
+          <div class="pin-info"><div class="pin-title">How to Start a Blog for Under $50</div><div class="pin-meta">bharcode.com</div></div>
+        </a>
+        <a href="https://bharcode.com/posts/how-to-make-money-online-no-experience/" target="_blank" class="pin-card reveal reveal-delay-1">
+          <div class="pin-thumb th-teal">💰</div>
+          <div class="pin-info"><div class="pin-title">10 Websites That Pay From Home</div><div class="pin-meta">bharcode.com</div></div>
+        </a>
+        <a href="https://bharcode.com/posts/how-to-make-money-online-no-experience/" target="_blank" class="pin-card reveal reveal-delay-2">
+          <div class="pin-thumb th-navy">🛠️</div>
+          <div class="pin-info"><div class="pin-title">Best Free Tools for Making Money Online</div><div class="pin-meta">bharcode.com</div></div>
+        </a>
+        <a href="https://bharcode.com/posts/how-to-make-money-online-no-experience/" target="_blank" class="pin-card reveal reveal-delay-3">
+          <div class="pin-thumb th-olive">📌</div>
+          <div class="pin-info"><div class="pin-title">Passive Income Streams That Work</div><div class="pin-meta">bharcode.com</div></div>
+        </a>
+        <a href="https://bharcode.com/posts/how-to-make-money-online-no-experience/" target="_blank" class="pin-card wide reveal reveal-delay-4">
+          <div class="pin-content">
+            <div class="pin-thumb th-purple" style="min-width:68px;width:68px;border-radius:0;height:62px;">💸</div>
+            <div class="pin-info"><div class="pin-title">How I Made My First $100 Online</div><div class="pin-meta">bharcode.com · Latest post</div></div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div style="border-top:1px solid var(--border);"></div>
+
+  <div class="section" style="padding-top:3rem;padding-bottom:2.5rem;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;" class="home-two-col">
+      <div class="featured-card reveal" onclick="showPage('blog')">
+        <div class="featured-inner">
+          <div class="featured-content">
+            <div>
+              <div class="card-status status-live"><div class="status-dot"></div>Live</div>
+              <div class="card-title" style="font-family:'DM Serif Display',serif;font-size:1.55rem;line-height:1.1;margin-bottom:0.6rem;">Affiliate Blog</div>
+              <p class="card-desc" style="font-size:0.87rem;">Strategy posts on passive income, tools, and making money online — fuelled by Pinterest traffic.</p>
+            </div>
+            <span class="featured-link">Read latest posts →</span>
+          </div>
+          <div class="featured-visual" style="font-size:3.5rem;">📝</div>
+        </div>
+      </div>
+      <div class="featured-card reveal reveal-delay-1" onclick="showPage('apps')">
+        <div class="featured-inner">
+          <div class="featured-content">
+            <div>
+              <div class="card-status status-building"><div class="status-dot"></div>Building</div>
+              <div class="card-title" style="font-family:'DM Serif Display',serif;font-size:1.55rem;line-height:1.1;margin-bottom:0.6rem;">Income Bots</div>
+              <p class="card-desc" style="font-size:0.87rem;">Telegram bots and automation tools that track earnings, schedule pins, and generate content.</p>
+            </div>
+            <span class="featured-link">See all apps →</span>
+          </div>
+          <div class="featured-visual">
+            <div class="vis-bot">
+              <div class="vis-bot-bar">🤖 Income Bot</div>
+              <div class="vis-bot-body">
+                <div class="vis-msg bot">Today's total 📊</div>
+                <div class="vis-msg user">Show summary</div>
+                <div class="vis-msg bot">💰 Total: <strong>$51.60</strong></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer><div class="footer-inner"><div class="footer-left">© 2025 <strong>Bharcode</strong> · Singapore · Built for $10</div><div class="footer-right"><a href="https://github.com" target="_blank">GitHub</a><a href="https://pinterest.com" target="_blank">Pinterest</a><a href="https://beehiiv.com" target="_blank">Newsletter</a></div></div></footer>
+</div>
+
+<!-- ── BLOG ── -->
+<div class="page" id="page-blog">
+  <div class="page-header">
+    <div class="section-label">All Posts</div>
+    <h1>The Blog</h1>
+    <p>Honest documentation of building passive income from code — strategy, tutorials, and what's actually working.</p>
+  </div>
+  <div class="section" style="padding-top:2rem;">
+    <div class="blog-grid">
+      <a href="https://bharcode.com/posts/how-to-make-money-online-no-experience/" target="_blank" class="blog-card reveal">
+        <div class="blog-thumb th-green">🚀</div>
+        <div class="blog-body"><div class="blog-tag">Getting Started</div><div class="blog-title">How to Start a Blog for Under $50</div><div class="blog-excerpt">The exact blueprint I used to launch Bharcode for $10.35 — domain, hosting, and theme all included.</div><div class="blog-meta"><span>Jun 2025</span><span class="blog-meta-dot"></span><span>8 min read</span></div></div>
+      </a>
+      <a href="https://bharcode.com/posts/how-to-make-money-online-no-experience/" target="_blank" class="blog-card reveal reveal-delay-1">
+        <div class="blog-thumb th-teal">💰</div>
+        <div class="blog-body"><div class="blog-tag">Side Hustle</div><div class="blog-title">10 Websites That Pay You From Home</div><div class="blog-excerpt">Vetted platforms for immediate digital income with zero overhead or startup cost required.</div><div class="blog-meta"><span>Jun 2025</span><span class="blog-meta-dot"></span><span>6 min read</span></div></div>
+      </a>
+      <a href="https://bharcode.com/posts/how-to-make-money-online-no-experience/" target="_blank" class="blog-card reveal reveal-delay-2">
+        <div class="blog-thumb th-navy">🛠️</div>
+        <div class="blog-body"><div class="blog-tag">Tools</div><div class="blog-title">Best Tools for Making Money Online (All Free)</div><div class="blog-excerpt">A curated list of free-tier APIs and software I use daily to run the entire Bharcode operation.</div><div class="blog-meta"><span>Jun 2025</span><span class="blog-meta-dot"></span><span>5 min read</span></div></div>
+      </a>
+      <a href="https://bharcode.com/posts/how-to-make-money-online-no-experience/" target="_blank" class="blog-card reveal reveal-delay-1">
+        <div class="blog-thumb th-olive">💸</div>
+        <div class="blog-body"><div class="blog-tag">Income Report</div><div class="blog-title">How I Made My First $100 Online</div><div class="blog-excerpt">A transparent breakdown of my first affiliate commission — what I did, what worked, and what flopped.</div><div class="blog-meta"><span>Jul 2025</span><span class="blog-meta-dot"></span><span>7 min read</span></div></div>
+      </a>
+      <a href="https://bharcode.com/posts/how-to-make-money-online-no-experience/" target="_blank" class="blog-card reveal reveal-delay-2">
+        <div class="blog-thumb th-purple">📈</div>
+        <div class="blog-body"><div class="blog-tag">Strategy</div><div class="blog-title">Passive Income Streams That Actually Work</div><div class="blog-excerpt">Cutting through the hype — the specific income streams that generated real results in month one.</div><div class="blog-meta"><span>Jul 2025</span><span class="blog-meta-dot"></span><span>9 min read</span></div></div>
+      </a>
+      <div class="blog-card reveal reveal-delay-3" style="border-style:dashed;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:260px;text-align:center;cursor:default;">
+        <div style="font-size:1.4rem;margin-bottom:0.7rem;">✍️</div>
+        <div style="font-size:0.84rem;color:var(--text3);font-weight:300;line-height:1.6;">More posts coming weekly.<br>Subscribe to stay updated.</div>
+        <a href="https://beehiiv.com" target="_blank" class="btn-primary" style="margin-top:1.1rem;font-size:0.79rem;padding:0.55rem 1.2rem;">Subscribe →</a>
+      </div>
+    </div>
+  </div>
+  <footer><div class="footer-inner"><div class="footer-left">© 2025 <strong>Bharcode</strong> · Singapore · Built for $10</div><div class="footer-right"><a href="https://github.com" target="_blank">GitHub</a><a href="https://pinterest.com" target="_blank">Pinterest</a><a href="https://beehiiv.com" target="_blank">Newsletter</a></div></div></footer>
+</div>
+
+<!-- ── APPS ── -->
+<div class="page" id="page-apps">
+  <div class="page-header">
+    <div class="section-label">Tools &amp; Bots</div>
+    <h1>Apps I'm Building</h1>
+    <p>Automation systems, Telegram bots, and productivity tools — all built to run while I sleep.</p>
+  </div>
+  <div class="section" style="padding-top:2rem;">
+    <div class="featured-card reveal" style="margin-bottom:1.5rem;">
+      <div class="featured-inner">
+        <div class="featured-content">
+          <div>
+            <div class="card-status status-live"><div class="status-dot"></div>Online</div>
+            <div class="card-title" style="font-family:'DM Serif Display',serif;font-size:1.55rem;line-height:1.1;margin-bottom:0.6rem;">Income Tracker Bot v1.0</div>
+            <p class="card-desc">Aggregates Amazon Associates and Pinterest analytics into a single Telegram feed. One message a day with your total passive income.</p>
+            <div class="card-tags"><span class="tag">Python</span><span class="tag">Telegram API</span><span class="tag">Amazon Associates</span><span class="tag">Cron Jobs</span></div>
+          </div>
+          <a href="#" class="btn-primary" style="margin-top:1.4rem;font-size:0.81rem;display:inline-block;" target="_blank">Open in Telegram →</a>
+        </div>
+        <div class="featured-visual">
+          <div class="vis-bot">
+            <div class="vis-bot-bar">🤖 Income Bot <span style="margin-left:auto;opacity:0.5;font-size:0.6rem;">● Live</span></div>
+            <div class="vis-bot-body">
+              <div class="vis-msg bot">Today's earnings 📊</div>
+              <div class="vis-msg user">Show me summary</div>
+              <div class="vis-msg bot">💰 Amazon: $12.40<br>📌 Pinterest: $8.20<br>🔗 Partners: $31.00<br><strong>Total: $51.60</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem;">
+      <div class="project-card reveal reveal-delay-1">
+        <div class="card-status status-building"><div class="status-dot"></div>Building</div>
+        <div class="card-title">Pinterest Analytics Tracker</div>
+        <p class="card-desc">Scrapes Pinterest analytics daily. Visualizes which pins drive the most affiliate clicks and impressions.</p>
+        <div class="card-tags"><span class="tag">Python</span><span class="tag">Selenium</span><span class="tag">Chart.js</span></div>
+        <div class="card-arrow">↗</div>
+      </div>
+      <div class="project-card reveal reveal-delay-2">
+        <div class="card-status status-building"><div class="status-dot"></div>Building</div>
+        <div class="card-title">Blog Post Generator</div>
+        <p class="card-desc">Auto-generates affiliate blog post drafts from a keyword. Outputs Hugo-ready markdown with frontmatter and embedded links.</p>
+        <div class="card-tags"><span class="tag">Claude API</span><span class="tag">Python</span><span class="tag">Markdown</span></div>
+        <div class="card-arrow">↗</div>
+      </div>
+      <div class="project-card reveal reveal-delay-3">
+        <div class="card-status status-soon"><div class="status-dot"></div>Coming Soon</div>
+        <div class="card-title">Pin-Auto Pilot</div>
+        <p class="card-desc">AI-powered Pinterest pin generator and scheduler. Canva export → auto-schedule → analytics feedback loop.</p>
+        <div class="card-tags"><span class="tag">Pinterest API</span><span class="tag">Node.js</span><span class="tag">AI</span></div>
+        <div class="card-arrow">↗</div>
+      </div>
+      <div class="project-card reveal reveal-delay-1">
+        <div class="card-status status-soon"><div class="status-dot"></div>Coming Soon</div>
+        <div class="card-title">Niche Research Bot</div>
+        <p class="card-desc">Telegram bot that returns affiliate commission rates, search volume, and top competing posts for any keyword.</p>
+        <div class="card-tags"><span class="tag">Telegram API</span><span class="tag">Python</span><span class="tag">Scraping</span></div>
+        <div class="card-arrow">↗</div>
+      </div>
+      <div class="project-card reveal reveal-delay-2">
+        <div class="card-status status-soon"><div class="status-dot"></div>Coming Soon</div>
+        <div class="card-title">Newsletter Autopilot</div>
+        <p class="card-desc">Curates weekly content from blog posts, formats it, and pushes a ready draft to Beehiiv automatically.</p>
+        <div class="card-tags"><span class="tag">Beehiiv API</span><span class="tag">Python</span><span class="tag">RSS</span></div>
+        <div class="card-arrow">↗</div>
+      </div>
+      <div class="project-card reveal reveal-delay-3">
+        <div class="card-status status-soon"><div class="status-dot"></div>Coming Soon</div>
+        <div class="card-title">Monthly Income Reporter</div>
+        <p class="card-desc">Pulls earnings from all affiliate dashboards and produces a publish-ready income report blog post.</p>
+        <div class="card-tags"><span class="tag">Python</span><span class="tag">Hugo</span><span class="tag">APIs</span></div>
+        <div class="card-arrow">↗</div>
+      </div>
+    </div>
+  </div>
+  <footer><div class="footer-inner"><div class="footer-left">© 2025 <strong>Bharcode</strong> · Singapore · Built for $10</div><div class="footer-right"><a href="https://github.com" target="_blank">GitHub</a><a href="https://pinterest.com" target="_blank">Pinterest</a><a href="https://beehiiv.com" target="_blank">Newsletter</a></div></div></footer>
+</div>
+
+<!-- ── ABOUT ── -->
+<div class="page" id="page-about">
+  <div class="section" style="padding-top:3.5rem;">
+    <div class="about-layout">
+      <div class="about-text reveal">
+        <div class="section-label">About</div>
+        <h2>Built by one CS student.<br>For $10 a year.</h2>
+        <p>I'm a computer science student in Singapore who got tired of waiting for the right moment to build something. Bharcode is my public experiment — can you build meaningful passive income with nothing but a domain name and free tools?</p>
+        <p><strong>The answer so far: yes, but it takes compounding.</strong> This blog documents every step transparently — the wins, the flops, and the slow grind of small efforts adding up.</p>
+        <p>I started by launching a Hugo blog on GitHub Pages. Total cost: $10.35 for the domain. Everything else — hosting, email, analytics, design — runs on free tiers. From there, I'm building a network of affiliate posts, Pinterest pins, and automation bots that work while I study.</p>
+        <p><strong>Why public?</strong> Accountability is free leverage. When you document everything, you ship more, cut corners less, and produce content as a natural side effect of working.</p>
+        <div class="about-stack">
+          <span class="stack-item">⚡ GitHub Pages</span>
+          <span class="stack-item">🦎 Hugo</span>
+          <span class="stack-item">🎨 Canva Free</span>
+          <span class="stack-item">🐍 Python</span>
+          <span class="stack-item">📌 Pinterest</span>
+          <span class="stack-item">📧 Beehiiv</span>
+          <span class="stack-item">🤖 Claude API</span>
+        </div>
+        <div style="display:flex;gap:0.8rem;flex-wrap:wrap;">
+          <a href="https://beehiiv.com" target="_blank" class="btn-primary">Subscribe to Updates</a>
+          <a href="https://github.com" target="_blank" class="btn-outline">Follow on GitHub</a>
+        </div>
+      </div>
+
+      <div class="reveal reveal-delay-2">
+        <p style="font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent2);font-weight:500;margin-bottom:1rem;">Annual Cost Breakdown</p>
+        <div class="cost-list">
+          <div class="cost-card"><span class="cost-name">GitHub Pages</span><span class="cost-val free">Free</span></div>
+          <div class="cost-card"><span class="cost-name">Hugo (static site)</span><span class="cost-val free">Free</span></div>
+          <div class="cost-card"><span class="cost-name">Canva (free tier)</span><span class="cost-val free">Free</span></div>
+          <div class="cost-card"><span class="cost-name">Pinterest scheduling</span><span class="cost-val free">Free</span></div>
+          <div class="cost-card"><span class="cost-name">Beehiiv newsletter</span><span class="cost-val free">Free</span></div>
+          <div class="cost-card"><span class="cost-name">Google Analytics</span><span class="cost-val free">Free</span></div>
+          <div class="cost-card cost-total"><span class="cost-name" style="font-weight:500;color:var(--accent2);">Domain (bharcode.com)</span><span class="cost-val" style="color:var(--text);">$10.35/year</span></div>
+        </div>
+        <div style="margin-top:1.5rem;background:var(--card-bg);border:1px solid var(--card-border);border-radius:16px;padding:1.4rem;">
+          <p style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent2);font-weight:500;margin-bottom:0.9rem;">The Roadmap</p>
+          <div style="display:flex;flex-direction:column;gap:11px;">
+            <div style="display:flex;justify-content:space-between;font-size:0.84rem;"><span style="color:var(--text3);">Month 3 target</span><span style="font-weight:500;">First commissions</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:0.84rem;"><span style="color:var(--text3);">Month 6 target</span><span style="font-weight:500;">$300–500/month</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:0.84rem;"><span style="color:var(--text3);">Month 12 target</span><span style="font-weight:500;color:var(--accent2);">$1,000+/month</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer><div class="footer-inner"><div class="footer-left">© 2025 <strong>Bharcode</strong> · Singapore · Built for $10</div><div class="footer-right"><a href="https://github.com" target="_blank">GitHub</a><a href="https://pinterest.com" target="_blank">Pinterest</a><a href="https://beehiiv.com" target="_blank">Newsletter</a></div></div></footer>
+</div>
+
+<script>
+  function showPage(name) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+    document.getElementById('nav-' + name).classList.add('active');
+    window.scrollTo(0, 0);
+    setTimeout(initReveal, 30);
+  }
+
+  const cursorPlus = document.getElementById('cursor-plus');
+  document.addEventListener('click', function(e) {
+    cursorPlus.style.left = e.clientX + 'px';
+    cursorPlus.style.top = e.clientY + 'px';
+    cursorPlus.classList.add('show');
+    clearTimeout(cursorPlus._t);
+    cursorPlus._t = setTimeout(() => cursorPlus.classList.remove('show'), 380);
+  });
+
+  const toggle = document.getElementById('theme-toggle');
+  const label = document.getElementById('theme-label');
+  const html = document.documentElement;
+  const saved = localStorage.getItem('bharcode-theme');
+  if (saved === 'dark') { html.setAttribute('data-theme','dark'); toggle.checked = true; label.textContent = 'Dark'; }
+  toggle.addEventListener('change', () => {
+    if (toggle.checked) { html.setAttribute('data-theme','dark'); label.textContent='Dark'; localStorage.setItem('bharcode-theme','dark'); }
+    else { html.setAttribute('data-theme','light'); label.textContent='Light'; localStorage.setItem('bharcode-theme','light'); }
+  });
+
+  let obs;
+  function initReveal() {
+    if (obs) obs.disconnect();
+    obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
+    document.querySelectorAll('.page.active .reveal').forEach(el => obs.observe(el));
+  }
+  initReveal();
+
+  document.querySelectorAll('.project-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transform = `translateY(-4px) rotateX(${-y*4}deg) rotateY(${x*4}deg)`;
+      card.style.transition = 'box-shadow 0.2s,border-color 0.2s';
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+      card.style.transition = 'transform 0.5s cubic-bezier(0.16,1,0.3,1),box-shadow 0.5s,border-color 0.5s';
+    });
+  });
+
+  document.addEventListener('touchstart', () => cursorPlus.style.display = 'none');
+</script>
+</body>
+</html>
