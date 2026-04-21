@@ -35,7 +35,7 @@
       "emoji": "📝",
       "color": "th-green",
       "excerpt": "Welcome to Bharcode everyone!",
-      "body": "<p>Hey guys! Welcome to my first website!/p>"
+      "body": "<p>Hey guys! Welcome to my first website!/p>\n<img src=\"/assets/uploads/img-1776802099523-logo.png\" style=\"max-width:100%;border-radius:8px;border:1.5px solid var(--border);box-shadow:4px 4px 0 var(--accent-light);margin:1.5rem 0;\" alt=\"logo.png\">\n"
     }
   ],
   "appCards": [],
