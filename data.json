@@ -1,0 +1,120 @@
+{
+  "general": {
+    "sitename": "Bharcode",
+    "footerTagline": "Singapore · Built for $10",
+    "footerYear": "2026",
+    "feat1Title": "Affiliate Blog",
+    "feat1Desc": "Strategy posts on passive income, tools, and making money online — fuelled by Pinterest traffic.",
+    "feat1Link": "Read latest posts →",
+    "feat1Emoji": "📝",
+    "feat2Title": "Income Bots",
+    "feat2Desc": "Telegram bots and automation tools that track earnings, schedule pins, and generate content.",
+    "feat2Link": "See all apps →",
+    "stat1Num": "$10",
+    "stat1Label": "Annual cost",
+    "stat2Num": "5+",
+    "stat2Label": "Projects live",
+    "stat3Num": "Day 1",
+    "stat3Label": "Building in public"
+  },
+  "hero": {
+    "eyebrow": "Singapore · CS Student · Building in Public",
+    "headline": "Code that builds",
+    "headlineEm": "passive income.",
+    "sub": "Zero overhead. Real results. I document how I'm building affiliate income, bots, and automation tools — for the cost of a domain name.",
+    "ctaPrimary": "Read the Blog",
+    "ctaSecondary": "See My Apps"
+  },
+  "pinCards": [
+    {
+      "id": 1,
+      "title": "How to Start a Blog for Under $50",
+      "emoji": "🚀",
+      "color": "th-green",
+      "link": "#"
+    },
+    {
+      "id": 2,
+      "title": "10 Websites That Pay From Home",
+      "emoji": "💰",
+      "color": "th-teal",
+      "link": "#"
+    },
+    {
+      "id": 5,
+      "title": "How I Made My First $100 Online",
+      "emoji": "💸",
+      "color": "th-purple",
+      "link": "#",
+      "wide": true
+    }
+  ],
+  "blogPosts": [
+    {
+      "id": 1,
+      "title": "Welcome to Bharcode",
+      "category": "Update",
+      "date": "April 2026",
+      "readtime": "1 min read",
+      "emoji": "🎉",
+      "color": "th-green",
+      "excerpt": "The site is live via GitHub API.",
+      "body": "<p>You are now pulling content directly from GitHub using a Serverless SPA architecture.</p>"
+    }
+  ],
+  "appCards": [
+    {
+      "id": 1,
+      "title": "Pinterest Analytics Tracker",
+      "desc": "Scrapes Pinterest analytics daily. Visualizes which pins drive the most affiliate clicks and impressions.",
+      "status": "building",
+      "tags": "Python, Selenium, Chart.js",
+      "link": ""
+    }
+  ],
+  "about": {
+    "headline": "Built by one CS student.\nFor $10 a year.",
+    "p1": "I'm a computer science student in Singapore...",
+    "p2": "<strong>The answer so far: yes.</strong>",
+    "p3": "I started by launching a blog on GitHub Pages.",
+    "p4": "<strong>Why public?</strong> Accountability is free leverage.",
+    "stack": "⚡ GitHub Pages, 🎨 Canva Free, 🐍 Python",
+    "cta1Text": "Subscribe",
+    "cta2Text": "GitHub"
+  },
+  "costItems": [
+    {
+      "id": 1,
+      "name": "GitHub Pages",
+      "value": "Free",
+      "isFree": true
+    },
+    {
+      "id": 7,
+      "name": "Domain (bharcode.com)",
+      "value": "$10.35/year",
+      "isFree": false,
+      "isTotal": true
+    }
+  ],
+  "roadmapItems": [
+    {
+      "id": 1,
+      "label": "Month 3 target",
+      "value": "First commissions"
+    }
+  ],
+  "links": {
+    "github": "https://github.com",
+    "pinterest": "https://pinterest.com",
+    "newsletter": "https://beehiiv.com",
+    "cta1": "https://beehiiv.com",
+    "cta2": "https://github.com"
+  },
+  "appsFeature": {
+    "title": "Income Tracker Bot v1.0",
+    "desc": "Aggregates Amazon Associates and Pinterest analytics into a single Telegram feed.",
+    "link": "#",
+    "tags": "Python, Telegram API"
+  }
+}
