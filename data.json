@@ -27,26 +27,11 @@
   },
   "pinCards": [
     {
-      "id": 1,
-      "title": "How to Start a Blog for Under $50",
-      "emoji": "🚀",
-      "color": "th-green",
-      "link": "#"
-    },
-    {
       "id": 2,
       "title": "10 Websites That Pay From Home",
       "emoji": "💰",
       "color": "th-teal",
       "link": "#"
-    },
-    {
-      "id": 5,
-      "title": "How I Made My First $100 Online",
-      "emoji": "💸",
-      "color": "th-purple",
-      "link": "#",
-      "wide": true
     }
   ],
   "blogPosts": [
