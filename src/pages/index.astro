@@ -1,0 +1,135 @@
+
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import data from '../../public/data.json';
+const { general, hero, blogPosts, appCards } = data;
+
+// Only show posts that have real body content in the pin stack
+const livePosts = (blogPosts || [])
+  .filter(p => p.title && p.excerpt && p.body?.trim().length > 10)
+  .slice(0, 3);
+---
+<BaseLayout title="Bharcode — Building Passive Income From Code">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div>
+      <div class="hero-eyebrow">
+        <div class="hero-dot"></div>
+        <span>{hero?.eyebrow || 'Singapore · CS Student · Building in Public'}</span>
+      </div>
+      <h1>
+        {hero?.headline || 'Code that builds'}<br>
+        <em>{hero?.headlineEm || 'passive income.'}</em>
+      </h1>
+      <p class="hero-sub">
+        {hero?.sub || "Zero overhead. Real results. I document how I'm building affiliate income, bots, and automation tools — for the cost of a domain name."}
+      </p>
+      <div class="hero-actions">
+        <a href="/blog" class="btn-primary">{hero?.ctaPrimary || 'Read the Blog'}</a>
+        <a href="/apps" class="btn-outline">{hero?.ctaSecondary || 'See My Apps'}</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-num">{general?.stat1Num || '$10'}</div>
+          <div class="stat-label">{general?.stat1Label || 'Annual cost'}</div>
+        </div>
+        <div>
+          <div class="stat-num">{general?.stat2Num || '5+'}</div>
+          <div class="stat-label">{general?.stat2Label || 'Projects live'}</div>
+        </div>
+        <div>
+          <div class="stat-num">{general?.stat3Num || 'Day 1'}</div>
+          <div class="stat-label">{general?.stat3Label || 'Building in public'}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PIN STACK — shows 3 most recent live posts -->
+    <div>
+      <div class="pin-preview-stack">
+        {livePosts.length === 0 ? (
+          <div style="font-size:0.8rem;color:var(--text3);border:1.5px dashed var(--border);padding:2rem;border-radius:8px;text-align:center;grid-column:span 2;">
+            No published posts yet.<br/>Create your first blog post.
+          </div>
+        ) : livePosts.map((post, i) => {
+          const isWide = livePosts.length % 2 !== 0 && i === livePosts.length - 1;
+          return isWide ? (
+            <a href={`/blog/${post.id}`} class={`pin-card wide reveal reveal-delay-${Math.min(i, 4)}`}>
+              <div class={`pin-thumb ${post.color || 'th-green'}`}>{post.emoji || '📝'}</div>
+              <div class="pin-info">
+                <div class="pin-title">{post.title}</div>
+                <div class="pin-meta">bharcode.com · Latest post</div>
+              </div>
+            </a>
+          ) : (
+            <a href={`/blog/${post.id}`} class={`pin-card reveal reveal-delay-${Math.min(i, 4)}`}>
+              <div class={`pin-thumb ${post.color || 'th-green'}`}>{post.emoji || '📝'}</div>
+              <div class="pin-info">
+                <div class="pin-title">{post.title}</div>
+                <div class="pin-meta">bharcode.com</div>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </div>
+
+  <div style="border-top:1px solid var(--border);"></div>
+
+  <!-- FEATURED CARDS -->
+  <div class="section" style="padding-top:3rem;padding-bottom:2.5rem;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;" class="home-two-col">
+
+      <a href="/blog" class="featured-card reveal" style="text-decoration:none;">
+        <div class="featured-inner">
+          <div class="featured-content">
+            <div>
+              <div class="card-status status-live"><div class="status-dot"></div>Live</div>
+              <div class="card-title" style="font-family:'DM Serif Display',serif;font-size:1.55rem;line-height:1.1;margin-bottom:0.6rem;">
+                {general?.feat1Title || 'Affiliate Blog'}
+              </div>
+              <p class="card-desc" style="font-size:0.87rem;">
+                {general?.feat1Desc || 'Strategy posts on passive income, tools, and making money online.'}
+              </p>
+            </div>
+            <span class="featured-link">{general?.feat1Link || 'Read latest posts →'}</span>
+          </div>
+          <div class="featured-visual" style="font-size:3.5rem;">
+            {general?.feat1Emoji || '📝'}
+          </div>
+        </div>
+      </a>
+
+      <a href="/apps" class="featured-card reveal reveal-delay-1" style="text-decoration:none;">
+        <div class="featured-inner">
+          <div class="featured-content">
+            <div>
+              <div class="card-status status-building"><div class="status-dot"></div>Building</div>
+              <div class="card-title" style="font-family:'DM Serif Display',serif;font-size:1.55rem;line-height:1.1;margin-bottom:0.6rem;">
+                {general?.feat2Title || 'Income Bots'}
+              </div>
+              <p class="card-desc" style="font-size:0.87rem;">
+                {general?.feat2Desc || 'Telegram bots and automation tools that track earnings, schedule pins, and generate content.'}
+              </p>
+            </div>
+            <span class="featured-link">{general?.feat2Link || 'See all apps →'}</span>
+          </div>
+          <div class="featured-visual">
+            <div class="vis-bot">
+              <div class="vis-bot-bar">🤖 {appCards?.[0]?.title || 'Income Bot'}</div>
+              <div class="vis-bot-body">
+                <div class="vis-msg bot">📊 Latest update</div>
+                <div class="vis-msg user">Show {appCards?.[0]?.title || 'stats'}</div>
+                <div class="vis-msg bot" set:html={appCards?.[0]?.desc || '💰 Total: <strong>$51.60</strong>'}></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+</BaseLayout>
