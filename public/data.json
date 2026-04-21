@@ -1,6 +1,6 @@
 {
   "general": {
-    "sitename": "Bharcode",
+    "sitename": "BharCode",
     "footerTagline": "Singapore · Built for $10",
     "footerYear": "2026",
     "feat1Title": "Affiliate Blog",
@@ -12,8 +12,8 @@
     "feat2Link": "See all apps →",
     "stat1Num": "$10",
     "stat1Label": "Annual cost",
-    "stat2Num": "1",
-    "stat2Label": "Current Live Project",
+    "stat2Num": "5+",
+    "stat2Label": "Projects live",
     "stat3Num": "Day 1",
     "stat3Label": "Building in public"
   },
