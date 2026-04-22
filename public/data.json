@@ -1,7 +1,7 @@
 {
   "general": {
     "sitename": "BharCode",
-    "footerTagline": "Singapore · Built for $10",
+    "footerTagline": "Singapore · Est. 2026",
     "footerYear": "2026",
     "featuredAppSelection": "featured",
     "feat1Title": "Blogs!",
@@ -11,10 +11,10 @@
     "feat2Title": "Apps and Bots!",
     "feat2Desc": "Telegram bots and automation tools that can help you do your day to day things but quicker and possibly better!",
     "feat2Link": "See all apps →",
-    "stat1Num": "$10",
-    "stat1Label": "Annual cost",
-    "stat2Num": "5+",
-    "stat2Label": "Projects live",
+    "stat1Num": "2026",
+    "stat1Label": "Est.",
+    "stat2Num": "AI",
+    "stat2Label": "Integrated",
     "stat3Num": "Day 1",
     "stat3Label": "Building in public"
   },
