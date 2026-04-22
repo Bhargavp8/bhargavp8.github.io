@@ -1,0 +1,26 @@
+{
+  "name": "bharcode",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "astro dev",
+    "build": "astro build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bhargavp8/bhargavp8.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/bhargavp8/bhargavp8.github.io/issues"
+  },
+  "homepage": "https://github.com/bhargavp8/bhargavp8.github.io#readme",
+  "dependencies": {
+    "astro": "^6.1.8"
+  }
+}

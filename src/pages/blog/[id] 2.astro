@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import data from '../../../public/data.json';
+
+export function getStaticPaths() {
+  const livePosts = (data.blogPosts || []).filter(p => p.body?.trim().length > 10);
+  return livePosts.map(post => ({
+    params: { id: String(post.id) },
+    props: { post }
+  }));
+}
+
+const { post } = Astro.props;
+---
+<BaseLayout title={`${post.title} — Bharcode`}>
+  <div class="section">
+    <a href="/blog" class="blogpost-back">← Back to Blog</a>
+    <div class="blogpost-header">
+      <div class="blogpost-category">{post.category}</div>
+      <h1 class="blogpost-title">{post.title}</h1>
+      <div class="blogpost-meta">
+        <span>{post.date}</span>
+        <span class="blog-meta-dot"></span>
+        <span>{post.readtime}</span>
+      </div>
+    </div>
+    <div class={`blogpost-hero ${post.color || 'th-green'}`}>{post.emoji || '📝'}</div>
+    <div class="blogpost-body" set:html={post.body}></div>
+  </div>
+</BaseLayout>

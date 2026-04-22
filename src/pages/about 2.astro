@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import data from '../../public/data.json';
+const { about, costItems, roadmapItems, links } = data;
+---
+<BaseLayout title="About — Bharcode">
+  <div class="section" style="padding-top:3.5rem;">
+    <div class="about-layout">
+      <div class="about-text reveal">
+        <div class="section-label">About</div>
+        <h2 set:html={(about?.headline || 'Built by one CS student.\nFor $10 a year.').replace(/\n/g, '<br>')} />
+        <p set:html={about?.p1 || 'I\'m a computer science student in Singapore who got tired of waiting for the right moment to build something.'} />
+        <p set:html={about?.p2 || '<strong>The answer so far: yes, but it takes compounding.</strong>'} />
+        <p set:html={about?.p3 || 'I started by launching a blog on GitHub Pages. Total cost: $10.35 for the domain.'} />
+        <p set:html={about?.p4 || '<strong>Why public?</strong> Accountability is free leverage.'} />
+        <div class="about-stack">
+          {(about?.stack || '⚡ GitHub Pages, 🎨 Canva Free, 🐍 Python').split(',').map(s => <span class="stack-item">{s.trim()}</span>)}
+        </div>
+        <div style="display:flex;gap:0.8rem;flex-wrap:wrap;">
+          <a href={links?.cta1 || '#'} target="_blank" class="btn-primary">{about?.cta1Text || 'Subscribe'}</a>
+          <a href={links?.cta2 || '#'} target="_blank" class="btn-outline">{about?.cta2Text || 'GitHub'}</a>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <p style="font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:1rem;">Annual Cost Breakdown</p>
+        <div class="cost-list">
+          {(costItems || []).map(item => (
+            <div class={`cost-card ${item.isTotal ? 'cost-total' : ''}`}>
+              <span class="cost-name" style={item.isTotal ? 'color:var(--accent);' : ''}>{item.name}</span>
+              <span class={`cost-val ${item.isFree ? 'free' : ''}`}>{item.value}</span>
+            </div>
+          ))}
+        </div>
+        <div style="margin-top:1.5rem;background:var(--card-bg);border:1px solid var(--card-border);border-radius:16px;padding:1.4rem;">
+          <p style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);font-weight:500;margin-bottom:0.9rem;">The Roadmap</p>
+          <div style="display:flex;flex-direction:column;gap:11px;">
+            {(roadmapItems || []).map(item => (
+              <div style="display:flex;justify-content:space-between;font-size:0.84rem;">
+                <span style="color:var(--text3);">{item.label}</span>
+                <span style={`font-weight:600;${item.accent ? 'color:var(--accent);' : ''}`}>{item.value}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
