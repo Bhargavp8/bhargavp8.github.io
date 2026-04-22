@@ -3,20 +3,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import data from '../../public/data.json';
 const { general, hero, blogPosts, appCards, appsFeature } = data;
 
-// Determine which app to feature
-let featuredApp;
+// Determine which app to show in the homepage bot widget
 const selection = general?.featuredAppSelection || 'featured';
-
+let featuredApp: any;
 if (selection === 'featured') {
   featuredApp = appsFeature;
 } else if (selection.startsWith('app-')) {
-  const index = parseInt(selection.replace('app-', ''));
-  featuredApp = appCards?.[index] || appsFeature;
+  const index = parseInt(selection.replace('app-', ''), 10);
+  featuredApp = appCards?.[index] ?? appsFeature;
 } else {
   featuredApp = appsFeature;
 }
+
+// Only show posts that have real body content
 const livePosts = (blogPosts || [])
-  .filter(p => p.title && p.excerpt && p.body?.trim().length > 10)
+  .filter((p: any) => p.title && p.excerpt && p.body?.trim().length > 10)
   .slice(0, 3);
 ---
 <BaseLayout title="Bharcode — Building Passive Income From Code">
@@ -55,17 +56,18 @@ const livePosts = (blogPosts || [])
       </div>
     </div>
 
-    <!-- PIN STACK — shows 3 most recent live posts -->
+    <!-- PIN STACK — 3 most recent live posts -->
     <div>
       <div class="pin-preview-stack">
         {livePosts.length === 0 ? (
           <div style="font-size:0.8rem;color:var(--text3);border:1.5px dashed var(--border);padding:2rem;border-radius:8px;text-align:center;grid-column:span 2;">
             No published posts yet.<br/>Create your first blog post.
           </div>
-        ) : livePosts.map((post, i) => {
+        ) : livePosts.map((post: any, i: number) => {
+          // If an odd number of posts, make the last one span the full row
           const isWide = livePosts.length % 2 !== 0 && i === livePosts.length - 1;
           return isWide ? (
-            <a href={`/blog/${post.id}`} class={`pin-card wide reveal reveal-delay-${Math.min(i, 4)}`}>
+            <a href={`/blog/${post.id}`} class={`pin-card wide reveal reveal-delay-${Math.min(i + 1, 4)}`}>
               <div class={`pin-thumb ${post.color || 'th-green'}`}>{post.emoji || '📝'}</div>
               <div class="pin-info">
                 <div class="pin-title">{post.title}</div>
@@ -73,7 +75,7 @@ const livePosts = (blogPosts || [])
               </div>
             </a>
           ) : (
-            <a href={`/blog/${post.id}`} class={`pin-card reveal reveal-delay-${Math.min(i, 4)}`}>
+            <a href={`/blog/${post.id}`} class={`pin-card reveal reveal-delay-${Math.min(i + 1, 4)}`}>
               <div class={`pin-thumb ${post.color || 'th-green'}`}>{post.emoji || '📝'}</div>
               <div class="pin-info">
                 <div class="pin-title">{post.title}</div>
@@ -85,25 +87,38 @@ const livePosts = (blogPosts || [])
       </div>
     </div>
   </div>
-<!-- EMAIL CAPTURE -->
-<div style="border-top:1.5px solid var(--border);border-bottom:1.5px solid var(--border);background:var(--bg-alt);">
-  <div style="max-width:1100px;margin:0 auto;padding:3rem 2rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;">
-    <div>
-      <div class="section-label">Free Newsletter</div>
-      <h2 style="font-family:'DM Serif Display',serif;font-size:clamp(1.4rem,3vw,2rem);letter-spacing:-0.02em;color:var(--text);margin-bottom:0.4rem;">Building in public, weekly.</h2>
-      <p style="font-size:0.88rem;color:var(--text2);max-width:380px;line-height:1.7;">No fluff. Real numbers, real mistakes, real progress — straight to your inbox. Free forever.</p>
-    </div>
-    <div style="background:var(--card-bg);border:1.5px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:5px 5px 0 var(--accent-light);">
-      <iframe src="https://bharcode08.substack.com/embed" width="100%" height="150" style="display:block;border:none;background:transparent;" frameborder="0" scrolling="no"></iframe>
+
+  <!-- EMAIL CAPTURE -->
+  <div style="border-top:1.5px solid var(--border);border-bottom:1.5px solid var(--border);background:var(--bg-alt);">
+    <div style="max-width:1100px;margin:0 auto;padding:3rem 2rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;">
+      <div>
+        <div class="section-label">Free Newsletter</div>
+        <h2 style="font-family:'DM Serif Display',serif;font-size:clamp(1.4rem,3vw,2rem);letter-spacing:-0.02em;color:var(--text);margin-bottom:0.4rem;">
+          Building in public, weekly.
+        </h2>
+        <p style="font-size:0.88rem;color:var(--text2);max-width:380px;line-height:1.7;">
+          No fluff. Real numbers, real mistakes, real progress — straight to your inbox. Free forever.
+        </p>
+      </div>
+      <div style="background:var(--card-bg);border:1.5px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:5px 5px 0 var(--accent-light);">
+        <iframe
+          src="https://bharcode08.substack.com/embed"
+          width="100%"
+          height="150"
+          style="display:block;border:none;background:transparent;"
+          frameborder="0"
+          scrolling="no"
+          title="Newsletter signup"
+        ></iframe>
+      </div>
     </div>
   </div>
-</div>
-  <div style="border-top:1px solid var(--border);"></div>
 
   <!-- FEATURED CARDS -->
   <div class="section" style="padding-top:3rem;padding-bottom:2.5rem;">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;" class="home-two-col">
 
+      <!-- Card 1 — Blog -->
       <a href="/blog" class="featured-card reveal" style="text-decoration:none;">
         <div class="featured-inner">
           <div class="featured-content">
@@ -124,11 +139,16 @@ const livePosts = (blogPosts || [])
         </div>
       </a>
 
+      <!-- Card 2 — Apps / Bot preview -->
       <a href="/apps" class="featured-card reveal reveal-delay-1" style="text-decoration:none;">
         <div class="featured-inner">
           <div class="featured-content">
             <div>
-              <div class="card-status status-building"><div class="status-dot"></div>Building</div>
+              <!-- FIX: status badge now reflects the actual featuredApp status -->
+              <div class={`card-status ${featuredApp?.status === 'live' ? 'status-live' : featuredApp?.status === 'building' ? 'status-building' : 'status-soon'}`}>
+                <div class="status-dot"></div>
+                {featuredApp?.status === 'live' ? 'Live' : featuredApp?.status === 'building' ? 'Building' : 'Coming Soon'}
+              </div>
               <div class="card-title" style="font-family:'DM Serif Display',serif;font-size:1.55rem;line-height:1.1;margin-bottom:0.6rem;">
                 {general?.feat2Title || 'Income Bots'}
               </div>
@@ -140,11 +160,17 @@ const livePosts = (blogPosts || [])
           </div>
           <div class="featured-visual">
             <div class="vis-bot">
-              <div class="vis-bot-bar">🤖 {featuredApp?.title || 'Income Bot'} <span style="margin-left:auto;opacity:0.5;font-size:0.6rem;">● {featuredApp?.status === 'live' ? 'Live' : featuredApp?.status === 'building' ? 'Building' : 'Active'}</span></div>
+              <div class="vis-bot-bar">
+                🤖 {featuredApp?.title || 'Income Bot'}
+                <span style="margin-left:auto;opacity:0.5;font-size:0.6rem;">
+                  ● {featuredApp?.status === 'live' ? 'Live' : featuredApp?.status === 'building' ? 'Building' : 'Soon'}
+                </span>
+              </div>
               <div class="vis-bot-body">
                 <div class="vis-msg bot">📊 {featuredApp?.title?.split(' ')[0] || 'Bot'} update</div>
                 <div class="vis-msg user">Show {featuredApp?.title?.split(' ')[0]?.toLowerCase() || 'stats'}</div>
-                <div class="vis-msg bot" set:html={featuredApp?.desc || '💰 Total: <strong>$51.60</strong>'}></div>
+                <!-- FIX: use a safe excerpt instead of full desc to keep the widget compact -->
+                <div class="vis-msg bot">{featuredApp?.desc ? featuredApp.desc.slice(0, 80) + '…' : '💰 Total: $51.60'}</div>
               </div>
             </div>
           </div>

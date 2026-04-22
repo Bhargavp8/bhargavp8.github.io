@@ -3,71 +3,126 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import data from '../../public/data.json';
 const { appsFeature, appCards } = data;
 
-const statusMap = { live: 'status-live', building: 'status-building', soon: 'status-soon' };
-const statusLabel = { live: 'Live', building: 'Building', soon: 'Coming Soon' };
+// Map status keys to CSS classes and display labels
+const statusClass: Record<string, string> = {
+  live:     'status-live',
+  building: 'status-building',
+  soon:     'status-soon'
+};
+const statusLabel: Record<string, string> = {
+  live:     'Live',
+  building: 'Building',
+  soon:     'Coming Soon'
+};
 ---
 <BaseLayout title="Apps — Bharcode">
+
   <div class="page-header">
     <div class="section-label">Tools &amp; Bots</div>
     <h1>Apps I'm Building</h1>
     <p>Automation systems, Telegram bots, and productivity tools — all built to run while I sleep.</p>
   </div>
+
   <div class="section" style="padding-top:2rem;">
-    <div class="featured-card reveal" style="margin-bottom:1.5rem;">
+
+    <!-- FEATURED BOT CARD -->
+    <a
+      href={appsFeature?.link || '#'}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="featured-card reveal"
+      style="display:block;text-decoration:none;margin-bottom:1.5rem;"
+    >
       <div class="featured-inner">
         <div class="featured-content">
           <div>
-            <div class="card-status status-live"><div class="status-dot"></div>Online</div>
-            <div class="card-title" style="font-family:'DM Serif Display',serif;font-size:1.55rem;line-height:1.1;margin-bottom:0.6rem;">{appsFeature?.title || 'Income Tracker Bot v1.0'}</div>
-            <p class="card-desc">{appsFeature?.desc || 'Aggregates Amazon Associates and Pinterest analytics into a single Telegram feed.'}</p>
+            <!-- FIX: status badge driven by data, not hardcoded "Online" -->
+            <div class={`card-status ${statusClass[appsFeature?.status] || 'status-live'}`}>
+              <div class="status-dot"></div>
+              {statusLabel[appsFeature?.status] || 'Live'}
+            </div>
+            <div class="card-title" style="font-family:'DM Serif Display',serif;font-size:1.55rem;line-height:1.1;margin-bottom:0.6rem;">
+              {appsFeature?.title || 'Income Tracker Bot v1.0'}
+            </div>
+            <p class="card-desc">
+              {appsFeature?.desc || 'Aggregates Amazon Associates and Pinterest analytics into a single Telegram feed.'}
+            </p>
             <div class="card-tags">
-              {(appsFeature?.tags || 'Python, Telegram API').split(',').map(t => <span class="tag">{t.trim()}</span>)}
+              {(appsFeature?.tags || 'Python, Telegram API').split(',').map((t: string) => (
+                <span class="tag">{t.trim()}</span>
+              ))}
             </div>
           </div>
-          <a href={appsFeature?.link || '#'} class="btn-primary" style="margin-top:1.4rem;font-size:0.81rem;display:inline-block;" target="_blank">Open in Telegram →</a>
+          <!-- FIX: link is on the parent <a>, so this is just a visual button — use a <span> not nested <a> -->
+          <span class="btn-primary" style="margin-top:1.4rem;font-size:0.81rem;display:inline-block;">
+            Open in Telegram →
+          </span>
         </div>
+
         <div class="featured-visual">
           <div class="vis-bot">
-            <div class="vis-bot-bar">🤖 {appsFeature?.title || 'Income Bot'} <span style="margin-left:auto;opacity:0.5;font-size:0.6rem;">● {appsFeature?.status === 'live' ? 'Live' : appsFeature?.status === 'building' ? 'Building' : appsFeature?.status === 'soon' ? 'Coming Soon' : 'Active'}</span></div>
+            <div class="vis-bot-bar">
+              🤖 {appsFeature?.title || 'Income Bot'}
+              <span style="margin-left:auto;opacity:0.5;font-size:0.6rem;">
+                ● {statusLabel[appsFeature?.status] || 'Live'}
+              </span>
+            </div>
             <div class="vis-bot-body">
               <div class="vis-msg bot">📊 {appsFeature?.title?.split(' ')[0] || 'Bot'} update</div>
               <div class="vis-msg user">Show {appsFeature?.title?.split(' ')[0]?.toLowerCase() || 'stats'}</div>
-              <div class="vis-msg bot" set:html={appsFeature?.desc || '💰 Amazon: $12.40<br>📌 Pinterest: $8.20<br>🔗 Partners: $31.00<br><strong>Total: $51.60</strong>'}></div>
+              <!-- FIX: safe short preview instead of injecting full desc HTML -->
+              <div class="vis-msg bot">
+                {appsFeature?.desc ? appsFeature.desc.slice(0, 80) + '…' : '💰 Total: $51.60'}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </a>
+
+    <!-- PROJECT CARDS GRID -->
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem;">
-      {(appCards || []).map((card, i) => (
-        <a href={card.link || '#'} target="_blank" class={`project-card reveal ${i % 3 > 0 ? `reveal-delay-${i % 3}` : ''}`} style="text-decoration:none;color:inherit;">
-          <div class={`card-status ${statusMap[card.status] || 'status-soon'}`}><div class="status-dot"></div>{statusLabel[card.status] || 'Coming Soon'}</div>
+      {(appCards || []).map((card: any, i: number) => (
+        <a
+          href={card.link || '#'}
+          target={card.link ? '_blank' : undefined}
+          rel={card.link ? 'noopener noreferrer' : undefined}
+          class={`project-card reveal${i % 3 > 0 ? ` reveal-delay-${i % 3}` : ''}`}
+          style="text-decoration:none;color:inherit;"
+        >
+          <div class={`card-status ${statusClass[card.status] || 'status-soon'}`}>
+            <div class="status-dot"></div>
+            {statusLabel[card.status] || 'Coming Soon'}
+          </div>
           <div class="card-title">{card.title}</div>
           <p class="card-desc">{card.desc}</p>
           <div class="card-tags">
-            {(card.tags || '').split(',').map(t => t.trim() ? <span class="tag">{t.trim()}</span> : null)}
+            {(card.tags || '').split(',').map((t: string) =>
+              t.trim() ? <span class="tag">{t.trim()}</span> : null
+            )}
           </div>
-          <div class="card-arrow">↗</div>
+          {card.link && <div class="card-arrow">↗</div>}
         </a>
       ))}
     </div>
+
   </div>
 </BaseLayout>
 
 <script>
-  // Tilt effect for project cards
+  // Subtle tilt effect on project cards (desktop only)
   document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.project-card').forEach(card => {
-      card.addEventListener('mousemove', e => {
+    document.querySelectorAll<HTMLElement>('.project-card').forEach(card => {
+      card.addEventListener('mousemove', (e: MouseEvent) => {
         const r = card.getBoundingClientRect();
-        const x = (e.clientX - r.left) / r.width - 0.5;
-        const y = (e.clientY - r.top) / r.height - 0.5;
-        card.style.transform = `translateY(-4px) rotateX(${-y * 4}deg) rotateY(${x * 4}deg)`;
-        card.style.transition = 'box-shadow 0.2s,border-color 0.2s';
+        const x = (e.clientX - r.left) / r.width  - 0.5;
+        const y = (e.clientY - r.top)  / r.height - 0.5;
+        card.style.transform  = `translateY(-4px) rotateX(${-y * 4}deg) rotateY(${x * 4}deg)`;
+        card.style.transition = 'box-shadow 0.2s, border-color 0.2s';
       });
       card.addEventListener('mouseleave', () => {
-        card.style.transform = '';
-        card.style.transition = 'transform 0.5s cubic-bezier(0.16,1,0.3,1),box-shadow 0.5s,border-color 0.5s';
+        card.style.transform  = '';
+        card.style.transition = 'transform 0.5s cubic-bezier(0.16,1,0.3,1), box-shadow 0.5s, border-color 0.5s';
       });
     });
   });
