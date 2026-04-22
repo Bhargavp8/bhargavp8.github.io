@@ -3,7 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import data from '../../public/data.json';
 const { appsFeature, appCards } = data;
 
-// Map status keys to CSS classes and display labels
 const statusClass: Record<string, string> = {
   live:     'status-live',
   building: 'status-building',
@@ -17,62 +16,67 @@ const statusLabel: Record<string, string> = {
 ---
 <BaseLayout title="Apps — Bharcode">
 
-  <div class="page-header">
+  <!-- PAGE HEADER -->
+  <div style="max-width:1100px;margin:0 auto;padding:4rem 2rem 0;">
     <div class="section-label">Tools &amp; Bots</div>
-    <h1>Apps I'm Building</h1>
-    <p>Automation systems, Telegram bots, and productivity tools — all built to run while I sleep.</p>
+    <h1 style="font-family:'DM Serif Display',serif;font-size:clamp(2.8rem,6vw,4.2rem);letter-spacing:-0.04em;line-height:1.0;margin-bottom:1rem;color:var(--text);">
+      Apps I'm Building
+    </h1>
+    <p style="font-size:1rem;color:var(--text2);max-width:520px;line-height:1.75;">
+      Automation systems, Telegram bots, and productivity tools — all built to run while I sleep.
+    </p>
+    <div style="display:flex;align-items:center;gap:1rem;margin-top:2rem;">
+      <div style="flex:1;height:1.5px;background:var(--border);"></div>
+      <span style="font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);font-weight:600;white-space:nowrap;">
+        {(appCards || []).length + 1} projects total
+      </span>
+      <div style="flex:1;height:1.5px;background:var(--border);"></div>
+    </div>
   </div>
 
-  <div class="section" style="padding-top:2rem;">
+  <div class="section" style="padding-top:2.5rem;">
 
-    <!-- FEATURED BOT CARD -->
+    <!-- FEATURED BOT HERO CARD -->
     <a
       href={appsFeature?.link || '#'}
-      target="_blank"
-      rel="noopener noreferrer"
-      class="featured-card reveal"
-      style="display:block;text-decoration:none;margin-bottom:1.5rem;"
+      target={appsFeature?.link ? '_blank' : undefined}
+      rel={appsFeature?.link ? 'noopener noreferrer' : undefined}
+      class="apps-hero-card reveal"
+      style="text-decoration:none;display:block;margin-bottom:2.5rem;"
     >
-      <div class="featured-inner">
-        <div class="featured-content">
-          <div>
-            <!-- FIX: status badge driven by data, not hardcoded "Online" -->
-            <div class={`card-status ${statusClass[appsFeature?.status] || 'status-live'}`}>
-              <div class="status-dot"></div>
-              {statusLabel[appsFeature?.status] || 'Live'}
-            </div>
-            <div class="card-title" style="font-family:'DM Serif Display',serif;font-size:1.55rem;line-height:1.1;margin-bottom:0.6rem;">
-              {appsFeature?.title || 'Income Tracker Bot v1.0'}
-            </div>
-            <p class="card-desc">
-              {appsFeature?.desc || 'Aggregates Amazon Associates and Pinterest analytics into a single Telegram feed.'}
+      <div class="apps-hero-wrap">
+        <div class="apps-hero-top-band">
+          <span style="font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.7);font-weight:700;">Featured Project</span>
+          <span style="font-size:0.7rem;color:rgba(255,255,255,0.9);font-weight:600;display:flex;align-items:center;gap:5px;">
+            <span style="width:6px;height:6px;border-radius:50%;background:#4ade80;display:inline-block;animation:pulse 2s infinite;"></span>
+            {statusLabel[appsFeature?.status] || 'Live'}
+          </span>
+        </div>
+        <div class="apps-hero-inner">
+          <div class="apps-hero-content">
+            <h2 style="font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,3vw,2.4rem);color:var(--text);letter-spacing:-0.025em;line-height:1.1;margin-bottom:0.8rem;">
+              {appsFeature?.title || 'Income Tracker Bot'}
+            </h2>
+            <p style="font-size:0.92rem;color:var(--text2);line-height:1.75;max-width:580px;margin-bottom:1.5rem;">
+              {appsFeature?.desc || 'Aggregates analytics into a single Telegram feed.'}
             </p>
-            <div class="card-tags">
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.8rem;">
               {(appsFeature?.tags || 'Python, Telegram API').split(',').map((t: string) => (
                 <span class="tag">{t.trim()}</span>
               ))}
             </div>
+            <span class="btn-primary" style="font-size:0.82rem;">Open in Telegram →</span>
           </div>
-          <!-- FIX: link is on the parent <a>, so this is just a visual button — use a <span> not nested <a> -->
-          <span class="btn-primary" style="margin-top:1.4rem;font-size:0.81rem;display:inline-block;">
-            Open in Telegram →
-          </span>
-        </div>
-
-        <div class="featured-visual">
-          <div class="vis-bot">
-            <div class="vis-bot-bar">
-              🤖 {appsFeature?.title || 'Income Bot'}
-              <span style="margin-left:auto;opacity:0.5;font-size:0.6rem;">
-                ● {statusLabel[appsFeature?.status] || 'Live'}
-              </span>
-            </div>
-            <div class="vis-bot-body">
-              <div class="vis-msg bot">📊 {appsFeature?.title?.split(' ')[0] || 'Bot'} update</div>
-              <div class="vis-msg user">Show {appsFeature?.title?.split(' ')[0]?.toLowerCase() || 'stats'}</div>
-              <!-- FIX: safe short preview instead of injecting full desc HTML -->
-              <div class="vis-msg bot">
-                {appsFeature?.desc ? appsFeature.desc.slice(0, 80) + '…' : '💰 Total: $51.60'}
+          <div class="apps-hero-widget">
+            <div class="vis-bot">
+              <div class="vis-bot-bar">
+                🤖 {appsFeature?.title?.split(' ')[0] || 'Bot'}
+                <span style="margin-left:auto;opacity:0.6;font-size:0.58rem;">● {statusLabel[appsFeature?.status] || 'Live'}</span>
+              </div>
+              <div class="vis-bot-body">
+                <div class="vis-msg bot">👋 How can I help?</div>
+                <div class="vis-msg user">Show balance</div>
+                <div class="vis-msg bot">💰 All clear. Up to date.</div>
               </div>
             </div>
           </div>
@@ -81,36 +85,93 @@ const statusLabel: Record<string, string> = {
     </a>
 
     <!-- PROJECT CARDS GRID -->
-    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem;">
-      {(appCards || []).map((card: any, i: number) => (
-        <a
-          href={card.link || '#'}
-          target={card.link ? '_blank' : undefined}
-          rel={card.link ? 'noopener noreferrer' : undefined}
-          class={`project-card reveal${i % 3 > 0 ? ` reveal-delay-${i % 3}` : ''}`}
-          style="text-decoration:none;color:inherit;"
-        >
-          <div class={`card-status ${statusClass[card.status] || 'status-soon'}`}>
-            <div class="status-dot"></div>
-            {statusLabel[card.status] || 'Coming Soon'}
+    {(appCards || []).length > 0 && (
+      <div>
+        <p style="font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:1.2rem;">All Projects</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.2rem;">
+          {(appCards || []).map((card: any, i: number) => (
+            <a
+              href={card.link || '#'}
+              target={card.link ? '_blank' : undefined}
+              rel={card.link ? 'noopener noreferrer' : undefined}
+              class={`project-card reveal${i % 3 > 0 ? ` reveal-delay-${i % 3}` : ''}`}
+              style="text-decoration:none;color:inherit;"
+            >
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.9rem;">
+                <div class={`card-status ${statusClass[card.status] || 'status-soon'}`}>
+                  <div class="status-dot"></div>
+                  {statusLabel[card.status] || 'Coming Soon'}
+                </div>
+                <span style="font-size:0.75rem;color:var(--text3);font-weight:700;font-family:'DM Serif Display',serif;">
+                  #{String(i + 1).padStart(2, '0')}
+                </span>
+              </div>
+              <div class="card-title">{card.title}</div>
+              <p class="card-desc">{card.desc}</p>
+              <div class="card-tags">
+                {(card.tags || '').split(',').map((t: string) =>
+                  t.trim() ? <span class="tag">{t.trim()}</span> : null
+                )}
+              </div>
+              {card.link && <div class="card-arrow">↗</div>}
+            </a>
+          ))}
+          <!-- Placeholder -->
+          <div class="project-card reveal" style="border-style:dashed;box-shadow:none;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:200px;text-align:center;cursor:default;background:var(--bg-alt);">
+            <div style="font-size:1.5rem;margin-bottom:0.7rem;">🔧</div>
+            <p style="font-size:0.84rem;color:var(--text3);line-height:1.6;">Next project in progress.<br/>Building in public.</p>
           </div>
-          <div class="card-title">{card.title}</div>
-          <p class="card-desc">{card.desc}</p>
-          <div class="card-tags">
-            {(card.tags || '').split(',').map((t: string) =>
-              t.trim() ? <span class="tag">{t.trim()}</span> : null
-            )}
-          </div>
-          {card.link && <div class="card-arrow">↗</div>}
-        </a>
-      ))}
-    </div>
+        </div>
+      </div>
+    )}
 
   </div>
 </BaseLayout>
 
+<style>
+  .apps-hero-wrap {
+    background: var(--card-bg);
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 6px 6px 0 var(--accent-light);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .apps-hero-card:hover .apps-hero-wrap {
+    transform: translate(-3px, -3px);
+    box-shadow: 9px 9px 0 var(--accent);
+  }
+  .apps-hero-top-band {
+    background: var(--accent);
+    padding: 0.7rem 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .apps-hero-inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: stretch;
+  }
+  .apps-hero-content {
+    padding: 2.2rem;
+  }
+  .apps-hero-widget {
+    background: var(--bg-alt);
+    border-left: 1.5px solid var(--border);
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 220px;
+  }
+  @media (max-width: 700px) {
+    .apps-hero-inner { grid-template-columns: 1fr !important; }
+    .apps-hero-widget { border-left: none; border-top: 1.5px solid var(--border); min-width: unset; }
+  }
+</style>
+
 <script>
-  // Subtle tilt effect on project cards (desktop only)
   document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll<HTMLElement>('.project-card').forEach(card => {
       card.addEventListener('mousemove', (e: MouseEvent) => {

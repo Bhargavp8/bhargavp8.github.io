@@ -3,33 +3,138 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import data from '../../../public/data.json';
 
 export function getStaticPaths() {
-  const livePosts = (data.blogPosts || []).filter(p => p.body?.trim().length > 10);
-  return livePosts.map(post => ({
+  const livePosts = (data.blogPosts || []).filter((p: any) => p.body?.trim().length > 10);
+  return livePosts.map((post: any) => ({
     params: { id: String(post.id) },
-    props: { post }
+    props:  { post }
   }));
 }
 
 const { post } = Astro.props;
+
+// Get next/prev posts for navigation
+const livePosts = (data.blogPosts || []).filter((p: any) => p.body?.trim().length > 10);
+const currentIndex = livePosts.findIndex((p: any) => String(p.id) === String(post.id));
+const prevPost = currentIndex > 0 ? livePosts[currentIndex - 1] : null;
+const nextPost = currentIndex < livePosts.length - 1 ? livePosts[currentIndex + 1] : null;
 ---
-<BaseLayout 
+<BaseLayout
   title={`${post.title} — Bharcode`}
   description={post.excerpt}
   ogImage="https://bharcode.com/assets/logo.png"
   ogUrl={`https://bharcode.com/blog/${post.id}`}
 >
-  <div class="section">
+  <div style="max-width:1100px;margin:0 auto;padding:3rem 2rem 5rem;">
+
+    <!-- BACK LINK -->
     <a href="/blog" class="blogpost-back">← Back to Blog</a>
-    <div class="blogpost-header">
-      <div class="blogpost-category">{post.category}</div>
-      <h1 class="blogpost-title">{post.title}</h1>
-      <div class="blogpost-meta">
-        <span>{post.date}</span>
-        <span class="blog-meta-dot"></span>
-        <span>{post.readtime}</span>
-      </div>
+
+    <!-- HERO BAND -->
+    <div class={`blogpost-hero-band ${post.color || 'th-green'}`}>
+      <span style="font-size:5rem;filter:drop-shadow(0 4px 12px rgba(0,0,0,0.25));">{post.emoji || '📝'}</span>
     </div>
-    <div class={`blogpost-hero ${post.color || 'th-green'}`}>{post.emoji || '📝'}</div>
-    <div class="blogpost-body" set:html={post.body}></div>
+
+    <!-- HEADER -->
+    <div class="blogpost-header">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:1rem;">
+        <span class="blogpost-category">{post.category}</span>
+        {post.date && <span style="font-size:0.75rem;color:var(--text3);font-weight:600;">{post.date}</span>}
+        {post.date && post.readtime && <span style="width:3px;height:3px;border-radius:50%;background:var(--text3);display:inline-block;"></span>}
+        {post.readtime && <span style="font-size:0.75rem;color:var(--text3);font-weight:600;">{post.readtime}</span>}
+      </div>
+      <h1 class="blogpost-title">{post.title}</h1>
+      {post.excerpt && (
+        <p style="font-size:1.05rem;color:var(--text2);line-height:1.75;max-width:640px;font-style:italic;border-left:3px solid var(--accent);padding-left:1rem;margin-top:0.5rem;">
+          {post.excerpt}
+        </p>
+      )}
+    </div>
+
+    <!-- BODY -->
+    <div style="display:grid;grid-template-columns:1fr 260px;gap:4rem;align-items:start;" class="post-layout">
+      <div class="blogpost-body" set:html={post.body}></div>
+
+      <!-- SIDEBAR -->
+      <aside class="post-sidebar">
+        <div style="position:sticky;top:78px;display:flex;flex-direction:column;gap:1rem;">
+          <!-- About the author -->
+          <div style="background:var(--card-bg);border:1.5px solid var(--border);border-radius:12px;padding:1.2rem;box-shadow:4px 4px 0 var(--accent-light);">
+            <p style="font-size:0.67rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:0.7rem;">About</p>
+            <p style="font-size:0.82rem;color:var(--text2);line-height:1.65;">
+              CS student in Singapore building passive income through code. Writing about what actually works.
+            </p>
+          </div>
+          <!-- Tags -->
+          {post.category && (
+            <div style="background:var(--bg-alt);border:1.5px solid var(--border);border-radius:12px;padding:1.2rem;">
+              <p style="font-size:0.67rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:0.7rem;">Category</p>
+              <span class="tag" style="font-size:0.75rem;">{post.category}</span>
+            </div>
+          )}
+          <!-- Share nudge -->
+          <div style="background:var(--accent);border:1.5px solid var(--border);border-radius:12px;padding:1.2rem;box-shadow:4px 4px 0 var(--border);">
+            <p style="font-size:0.82rem;color:#fff;font-weight:600;line-height:1.5;margin-bottom:0.8rem;">
+              Found this useful? Share it.
+            </p>
+            <a
+              href={`https://twitter.com/intent/tweet?url=https://bharcode.com/blog/${post.id}&text=${encodeURIComponent(post.title)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style="display:block;text-align:center;background:#fff;color:var(--accent);font-size:0.78rem;font-weight:700;padding:0.5rem;border-radius:6px;text-decoration:none;border:1.5px solid rgba(255,255,255,0.4);"
+            >
+              Share on X →
+            </a>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- POST NAVIGATION -->
+    {(prevPost || nextPost) && (
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:4rem;padding-top:2rem;border-top:1.5px solid var(--border);" class="post-nav-grid">
+        {prevPost ? (
+          <a href={`/blog/${prevPost.id}`} style="text-decoration:none;background:var(--card-bg);border:1.5px solid var(--border);border-radius:12px;padding:1.2rem;box-shadow:4px 4px 0 var(--accent-light);transition:transform 0.2s,box-shadow 0.2s;" class="post-nav-link">
+            <p style="font-size:0.67rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);font-weight:600;margin-bottom:0.4rem;">← Previous</p>
+            <p style="font-size:0.88rem;font-weight:600;color:var(--text);line-height:1.3;">{prevPost.title}</p>
+          </a>
+        ) : <div></div>}
+        {nextPost ? (
+          <a href={`/blog/${nextPost.id}`} style="text-decoration:none;background:var(--card-bg);border:1.5px solid var(--border);border-radius:12px;padding:1.2rem;box-shadow:4px 4px 0 var(--accent-light);transition:transform 0.2s,box-shadow 0.2s;text-align:right;" class="post-nav-link">
+            <p style="font-size:0.67rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);font-weight:600;margin-bottom:0.4rem;">Next →</p>
+            <p style="font-size:0.88rem;font-weight:600;color:var(--text);line-height:1.3;">{nextPost.title}</p>
+          </a>
+        ) : <div></div>}
+      </div>
+    )}
+
   </div>
 </BaseLayout>
+
+<style>
+  .blogpost-hero-band {
+    width: 100%;
+    height: 320px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+    border: 1.5px solid var(--border);
+    box-shadow: 6px 6px 0 var(--accent-light);
+  }
+  .post-nav-link:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--accent) !important;
+  }
+  @media (max-width: 900px) {
+    .post-layout {
+      grid-template-columns: 1fr !important;
+    }
+    .post-sidebar {
+      display: none;
+    }
+    .post-nav-grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>
