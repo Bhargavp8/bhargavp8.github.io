@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/bhargavp8/bhargavp8.github.io#readme",
   "dependencies": {
+    "@astrojs/sitemap": "^3.7.2",
     "astro": "^6.1.8"
   }
 }
