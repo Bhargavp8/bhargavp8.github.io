@@ -12,7 +12,12 @@ export function getStaticPaths() {
 
 const { post } = Astro.props;
 ---
-<BaseLayout title={`${post.title} — Bharcode`}>
+<BaseLayout 
+  title={`${post.title} — Bharcode`}
+  description={post.excerpt}
+  ogImage="https://bharcode.com/assets/logo.png"
+  ogUrl={`https://bharcode.com/blog/${post.id}`}
+>
   <div class="section">
     <a href="/blog" class="blogpost-back">← Back to Blog</a>
     <div class="blogpost-header">

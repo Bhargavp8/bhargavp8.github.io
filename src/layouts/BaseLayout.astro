@@ -3,7 +3,12 @@
 import AdminPanel from '../components/AdminPanel.astro';
 import data from '../../public/data.json';
 const { general, links } = data;
-const { title = "Bharcode — Building Passive Income From Code" } = Astro.props;
+const { 
+  title = "Bharcode — Building Passive Income From Code",
+  description = "Built by one CS student. Documenting how I build affiliate income, bots, and tools for the cost of a domain name.",
+  ogImage = "https://bharcode.com/assets/logo.png",
+  ogUrl = "https://bharcode.com/"
+} = Astro.props;
 ---
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
@@ -16,18 +21,18 @@ const { title = "Bharcode — Building Passive Income From Code" } = Astro.props
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="512x512" href="/assets/logo.png">
 <link rel="apple-touch-icon" href="/assets/logo.png">
-<meta name="description" content="Built by one CS student. Documenting how I build affiliate income, bots, and tools for the cost of a domain name.">
+<meta name="description" content={description}>
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://bharcode.com/">
-<meta property="og:title" content="Bharcode — Building Passive Income From Code">
-<meta property="og:description" content="Built by one CS student. Documenting how I build affiliate income, bots, and tools for the cost of a domain name.">
-<meta property="og:image" content="https://bharcode.com/assets/logo.png">
-<meta property="og:image:width" content="2048">
-<meta property="og:image:height" content="2048">
+<meta property="og:url" content={ogUrl}>
+<meta property="og:title" content={title}>
+<meta property="og:description" content={description}>
+<meta property="og:image" content={ogImage}>
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Bharcode — Building Passive Income From Code">
-<meta name="twitter:description" content="Built by one CS student. Documenting how I build affiliate income, bots, and tools for the cost of a domain name.">
-<meta name="twitter:image" content="https://bharcode.com/assets/logo.png">
+<meta name="twitter:title" content={title}>
+<meta name="twitter:description" content={description}>
+<meta name="twitter:image" content={ogImage}>
 
 <script is:inline>
   const savedTheme = localStorage.getItem('bharcode-theme');
