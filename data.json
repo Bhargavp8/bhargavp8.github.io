@@ -1,0 +1,119 @@
+{
+  "general": {
+    "sitename": "BharCode",
+    "footerTagline": "Singapore · Built for $10",
+    "footerYear": "2026",
+    "featuredAppSelection": "featured",
+    "feat1Title": "Blogs!",
+    "feat1Desc": "Strategy posts on passive income, tools, and making money online!",
+    "feat1Link": "Read latest posts →",
+    "feat1Emoji": "📝",
+    "feat2Title": "Apps and Bots!",
+    "feat2Desc": "Telegram bots and automation tools that can help you do your day to day things but quicker and possibly better!",
+    "feat2Link": "See all apps →",
+    "stat1Num": "$10",
+    "stat1Label": "Annual cost",
+    "stat2Num": "5+",
+    "stat2Label": "Projects live",
+    "stat3Num": "Day 1",
+    "stat3Label": "Building in public"
+  },
+  "hero": {
+    "eyebrow": "Singapore · CS Student · Building in Public",
+    "headline": "Code that builds",
+    "headlineEm": "passive income.",
+    "sub": "Zero overhead. Real results. I document how I'm building affiliate income, bots, and automation tools — for the cost of a domain name.",
+    "ctaPrimary": "Read the Blog",
+    "ctaSecondary": "See My Apps"
+  },
+  "blogPosts": [
+    {
+      "id": 1776800692404,
+      "title": "Welcome to BharCode!",
+      "category": "Welcome!",
+      "date": "",
+      "readtime": "",
+      "emoji": "📝",
+      "color": "th-green",
+      "excerpt": "Welcome to Bharcode everyone!",
+      "body": "<p>Hey guys! Welcome to my first website!/p>\n<img src=\"/assets/uploads/img-1776802099523-logo.png\" style=\"max-width:100%;border-radius:8px;border:1.5px solid var(--border);box-shadow:4px 4px 0 var(--accent-light);margin:1.5rem 0;\" alt=\"logo.png\">\n"
+    }
+  ],
+  "appCards": [
+    {
+      "id": 1776824961624,
+      "title": "Sliqe",
+      "desc": "A hyper-local, two-sided marketplace designed to eliminate urban food waste through dynamic pricing. To solve the notorious friction of F&B tech adoption, the platform features a streamlined 30 second vendor inventory portal. On the consumer side, a time decay algorithm systematically drops surplus food prices as closing time approaches, driving impulse conversions via location-based push notifications.",
+      "status": "building",
+      "tags": "Product Strategy, UI/UX Design, Two-Sided Marketplace, Dynamic Pricing, MVP, Figma",
+      "link": ""
+    }
+  ],
+  "about": {
+    "headline": "Built by one CS student.\nFor $10 a year.",
+    "p1": "I'm a computer science student in Singapore who got tired of waiting for the right moment to build something.",
+    "p2": "<strong>The answer so far: yes, but it takes compounding.</strong>",
+    "p3": "I started by launching a blog on GitHub Pages. Total cost: $10.35 for the domain.",
+    "p4": "<strong>Why public?</strong> Accountability is free leverage.",
+    "stack": "⚡ GitHub Pages, 🎨 Canva Free, 🐍 Python",
+    "cta1Text": "Subscribe",
+    "cta2Text": "GitHub"
+  },
+  "costItems": [
+    {
+      "id": 1,
+      "name": "GitHub Pages",
+      "value": "Free",
+      "isFree": true,
+      "isTotal": false
+    },
+    {
+      "id": 2,
+      "name": "Domain (bharcode.com)",
+      "value": "$10.35/yr",
+      "isFree": false,
+      "isTotal": false
+    },
+    {
+      "id": 3,
+      "name": "Total",
+      "value": "~$10/year",
+      "isFree": false,
+      "isTotal": true
+    }
+  ],
+  "roadmapItems": [
+    {
+      "id": 1,
+      "label": "Month 3 target",
+      "value": "First commissions",
+      "accent": false
+    },
+    {
+      "id": 2,
+      "label": "Month 6 target",
+      "value": "$300–500/month",
+      "accent": false
+    },
+    {
+      "id": 3,
+      "label": "Month 12 goal",
+      "value": "$1,000+/month",
+      "accent": true
+    }
+  ],
+  "links": {
+    "github": "https://github.com/bhargavp8",
+    "pinterest": "https://pinterest.com",
+    "newsletter": "https://beehiiv.com",
+    "cta1": "https://beehiiv.com",
+    "cta2": "https://github.com/bhargavp8"
+  },
+  "appsFeature": {
+    "title": "Knot Bot (Telegram)",
+    "desc": "The shared assistant for groups and couples. Track expenses, manage collaborative tasks, and settle balances instantly with PayNow integration. Designed to live in your group chat and keep everyone on the same page.",
+    "link": "https://t.me/NawtBot",
+    "tags": "Python, Telegram API, GitHub, Railway",
+     "status": "live"
+  }
+}
