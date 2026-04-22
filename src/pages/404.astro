@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="404 — Page Not Found | Bharcode">
+  <div class="section" style="min-height:80vh;display:flex;align-items:center;justify-content:center;text-align:center;">
+    <div>
+      <div style="font-size:4rem;margin-bottom:1rem;">404</div>
+      <h1 style="font-family:'DM Serif Display',serif;font-size:clamp(2rem,5vw,3rem);letter-spacing:-0.03em;margin-bottom:1rem;">Page not found.</h1>
+      <p style="color:var(--text2);font-size:1rem;margin-bottom:2rem;max-width:400px;margin-left:auto;margin-right:auto;">Looks like this page doesn't exist. It may have been moved or deleted.</p>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+        <a href="/" class="btn-primary">Go Home</a>
+        <a href="/blog" class="btn-outline">Read the Blog</a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
