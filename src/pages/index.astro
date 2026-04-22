@@ -1,10 +1,9 @@
-
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import data from '../../public/data.json';
 const { general, hero, blogPosts, appCards } = data;
 
-// Only show posts that have real body content in the pin stack
+const featuredApp = appCards?.[general?.featuredAppIndex || 0] || appCards?.[0];
 const livePosts = (blogPosts || [])
   .filter(p => p.title && p.excerpt && p.body?.trim().length > 10)
   .slice(0, 3);
@@ -118,11 +117,11 @@ const livePosts = (blogPosts || [])
           </div>
           <div class="featured-visual">
             <div class="vis-bot">
-              <div class="vis-bot-bar">🤖 {appCards?.[0]?.title || 'Income Bot'}</div>
+              <div class="vis-bot-bar">🤖 {featuredApp?.title || 'Income Bot'} <span style="margin-left:auto;opacity:0.5;font-size:0.6rem;">● {featuredApp?.status === 'live' ? 'Live' : featuredApp?.status === 'building' ? 'Building' : 'Active'}</span></div>
               <div class="vis-bot-body">
-                <div class="vis-msg bot">📊 Latest update</div>
-                <div class="vis-msg user">Show {appCards?.[0]?.title || 'stats'}</div>
-                <div class="vis-msg bot" set:html={appCards?.[0]?.desc || '💰 Total: <strong>$51.60</strong>'}></div>
+                <div class="vis-msg bot">📊 {featuredApp?.title?.split(' ')[0] || 'Bot'} update</div>
+                <div class="vis-msg user">Show {featuredApp?.title?.split(' ')[0]?.toLowerCase() || 'stats'}</div>
+                <div class="vis-msg bot" set:html={featuredApp?.desc || '💰 Total: <strong>$51.60</strong>'}></div>
               </div>
             </div>
           </div>

@@ -59,6 +59,12 @@
         <div class="admin-row"><div><input class="admin-input" id="g-stat2-num" placeholder="Value"></div><div><input class="admin-input" id="g-stat2-label" placeholder="Label"></div></div>
         <div class="admin-label">Stats — Stat 3</div>
         <div class="admin-row"><div><input class="admin-input" id="g-stat3-num" placeholder="Value"></div><div><input class="admin-input" id="g-stat3-label" placeholder="Label"></div></div>
+        <div class="admin-label">Featured App for Homepage</div>
+        <select class="admin-select" id="g-featured-app">
+            <option value="0">First App</option>
+            <option value="1">Second App</option>
+            <option value="2">Third App</option>
+        </select>
       </div>
       <!-- HERO TAB -->
       <div class="admin-section" id="admin-hero">
@@ -116,6 +122,12 @@
         <div class="admin-label">Featured Bot — Description</div><textarea class="admin-textarea" id="af-desc" style="min-height:65px;"></textarea>
         <div class="admin-label">Featured Bot — Link</div><input class="admin-input" id="af-link">
         <div class="admin-label">Featured Bot — Tags (comma-separated)</div><input class="admin-input" id="af-tags">
+        <div class="admin-label">Featured Bot — Status</div>
+        <select class="admin-select" id="af-status">
+        <option value="live">Live</option>
+        <option value="building">Building</option>
+        <option value="soon">Coming Soon</option>
+        </select>
         <hr class="admin-divider">
         <div class="admin-label">Project Cards</div>
         <div class="admin-card-list" id="apps-card-list"></div>
@@ -243,12 +255,14 @@
     setVal('ab-headline', ab.headline); setVal('ab-p1', ab.p1); setVal('ab-p2', ab.p2); setVal('ab-p3', ab.p3); setVal('ab-p4', ab.p4);
     setVal('ab-stack', ab.stack); setVal('ab-cta1-text', ab.cta1Text); setVal('ab-cta2-text', ab.cta2Text);
     setVal('af-title', af.title); setVal('af-desc', af.desc); setVal('af-link', af.link); setVal('af-tags', af.tags);
-    setVal('l-github', lk.github); setVal('l-pinterest', lk.pinterest); setVal('l-newsletter', lk.newsletter);
+    const afStatusEl = document.getElementById('af-status');
+    if (afStatusEl) afStatusEl.value = af.status || 'live';    setVal('l-github', lk.github); setVal('l-pinterest', lk.pinterest); setVal('l-newsletter', lk.newsletter);
     setVal('l-cta1', lk.cta1); setVal('l-cta2', lk.cta2);
     renderAdminBlogList();
     renderAdminAppCards();
     renderAdminCostItems();
     renderAdminRoadmapItems();
+    renderFeaturedAppDropdown();
   }
 
   // ── GITHUB AUTH ───────────────────────────────────────────────
@@ -337,6 +351,7 @@
     const btn = document.getElementById('btn-save-github')!;
     btn.textContent = '⏳ Pushing...';
     (btn as HTMLButtonElement).disabled = true;
+    DATA.general.featuredAppIndex = parseInt(getVal('g-featured-app') || '0');
     DATA.general.sitename = getVal('g-sitename');
     DATA.general.footerTagline = getVal('g-footer-tagline');
     DATA.general.footerYear = getVal('g-footer-year');
@@ -357,7 +372,7 @@
     DATA.about.p3 = getVal('ab-p3'); DATA.about.p4 = getVal('ab-p4');
     DATA.about.stack = getVal('ab-stack'); DATA.about.cta1Text = getVal('ab-cta1-text'); DATA.about.cta2Text = getVal('ab-cta2-text');
     DATA.appsFeature.title = getVal('af-title'); DATA.appsFeature.desc = getVal('af-desc');
-    DATA.appsFeature.link = getVal('af-link'); DATA.appsFeature.tags = getVal('af-tags');
+    DATA.appsFeature.link = getVal('af-link'); DATA.appsFeature.tags = getVal('af-tags');DATA.appsFeature.status = document.getElementById('af-status')?.value || 'live';
     DATA.links.github = getVal('l-github'); DATA.links.pinterest = getVal('l-pinterest');
     DATA.links.newsletter = getVal('l-newsletter'); DATA.links.cta1 = getVal('l-cta1'); DATA.links.cta2 = getVal('l-cta2');
     try {
@@ -399,7 +414,18 @@
       list.innerHTML += `<div class="admin-item"><div class="admin-item-info"><div class="admin-item-title">${post.emoji || '📝'} ${escHtml(post.title)}</div><div class="admin-item-sub">${escHtml(post.category || '')} · ${hasBody ? '✅' : '⚠️ hidden — no content'}</div></div><div class="admin-item-actions"><button class="admin-icon-btn" data-edit-post="${i}">Edit</button><button class="admin-icon-btn del" data-delete-post="${i}">Del</button></div></div>`;
     });
   }
-
+  function renderFeaturedAppDropdown() {
+  const select = document.getElementById('g-featured-app');
+  if (!select) return;
+  select.innerHTML = '';
+  (DATA.appCards || []).forEach((card, i) => {
+    const option = document.createElement('option');
+    option.value = i;
+    option.textContent = card.title || `App ${i + 1}`;
+    select.appendChild(option);
+  });
+  select.value = DATA.general?.featuredAppIndex || 0;
+}
   function addBlogPost() {
     if (!DATA.blogPosts) DATA.blogPosts = [];
     DATA.blogPosts.push({ id: Date.now(), title: 'New Draft', category: '', date: '', readtime: '', emoji: '📝', color: 'th-green', excerpt: '', body: '' });
