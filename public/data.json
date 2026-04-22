@@ -4,10 +4,10 @@
     "footerTagline": "Singapore · Built for $10",
     "footerYear": "2026",
     "feat1Title": "Blogs!",
-    "feat1Desc": "Strategy posts on passive income, tools, and making money online — fuelled by Pinterest traffic.",
+    "feat1Desc": "Strategy posts on passive income, tools, and making money online!",
     "feat1Link": "Read latest posts →",
     "feat1Emoji": "📝",
-    "feat2Title": "Apps and Bots",
+    "feat2Title": "Apps and Bots!",
     "feat2Desc": "Telegram bots and automation tools that can help you do your day to day things but quicker and possibly better!",
     "feat2Link": "See all apps →",
     "stat1Num": "$10",
@@ -100,9 +100,9 @@
     "cta2": "https://github.com/bhargavp8"
   },
   "appsFeature": {
-    "title": "Knot Bot (Telegram)",
-    "desc": "The shared assistant for groups and couples. Track expenses, manage collaborative tasks, and settle balances instantly with PayNow integration. Designed to live in your group chat and keep everyone on the same page.",
-    "link": "#https://t.me/NawtBot",
+    "title": "Income Tracker Bot v1.0",
+    "desc": "Aggregates Amazon Associates and Pinterest analytics into a single Telegram feed. One message a day with your total passive income.",
+    "link": "#",
     "tags": "Python, Telegram API"
   }
 }
