@@ -1,9 +1,20 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import data from '../../public/data.json';
-const { general, hero, blogPosts, appCards } = data;
+const { general, hero, blogPosts, appCards, appsFeature } = data;
 
-const featuredApp = appCards?.[general?.featuredAppIndex || 0] || appCards?.[0];
+// Determine which app to feature
+let featuredApp;
+const selection = general?.featuredAppSelection || 'featured';
+
+if (selection === 'featured') {
+  featuredApp = appsFeature;
+} else if (selection.startsWith('app-')) {
+  const index = parseInt(selection.replace('app-', ''));
+  featuredApp = appCards?.[index] || appsFeature;
+} else {
+  featuredApp = appsFeature;
+}
 const livePosts = (blogPosts || [])
   .filter(p => p.title && p.excerpt && p.body?.trim().length > 10)
   .slice(0, 3);

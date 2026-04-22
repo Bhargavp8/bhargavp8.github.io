@@ -351,7 +351,7 @@
     const btn = document.getElementById('btn-save-github')!;
     btn.textContent = '⏳ Pushing...';
     (btn as HTMLButtonElement).disabled = true;
-    DATA.general.featuredAppIndex = parseInt(getVal('g-featured-app') || '0');
+    DATA.general.featuredAppSelection = getVal('g-featured-app') || 'featured';
     DATA.general.sitename = getVal('g-sitename');
     DATA.general.footerTagline = getVal('g-footer-tagline');
     DATA.general.footerYear = getVal('g-footer-year');
@@ -415,17 +415,30 @@
     });
   }
   function renderFeaturedAppDropdown() {
-  const select = document.getElementById('g-featured-app');
-  if (!select) return;
-  select.innerHTML = '';
-  (DATA.appCards || []).forEach((card, i) => {
-    const option = document.createElement('option');
-    option.value = i;
-    option.textContent = card.title || `App ${i + 1}`;
-    select.appendChild(option);
-  });
-  select.value = DATA.general?.featuredAppIndex || 0;
-}
+    const select = document.getElementById('g-featured-app');
+    if (!select) return;
+    select.innerHTML = '';
+    
+    // Add Featured Bot as first option (value = "featured")
+    if (DATA.appsFeature?.title) {
+        const featuredOption = document.createElement('option');
+        featuredOption.value = 'featured';
+        featuredOption.textContent = `⭐ ${DATA.appsFeature.title} (Featured)`;
+        select.appendChild(featuredOption);
+    }
+    
+    // Add all project cards
+    (DATA.appCards || []).forEach((card, i) => {
+        const option = document.createElement('option');
+        option.value = `app-${i}`;
+        option.textContent = card.title || `App ${i + 1}`;
+        select.appendChild(option);
+    });
+    
+    // Set selected value
+    const saved = DATA.general?.featuredAppSelection || 'featured';
+    select.value = saved;
+    }
   function addBlogPost() {
     if (!DATA.blogPosts) DATA.blogPosts = [];
     DATA.blogPosts.push({ id: Date.now(), title: 'New Draft', category: '', date: '', readtime: '', emoji: '📝', color: 'th-green', excerpt: '', body: '' });
