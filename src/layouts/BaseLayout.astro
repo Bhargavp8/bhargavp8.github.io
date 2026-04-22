@@ -83,7 +83,7 @@ const {
   }
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
-  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);transition:background 0.5s var(--ease),color 0.5s var(--ease);overflow-x:hidden;line-height:1.6;cursor:crosshair}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);transition:background 0.5s var(--ease),color 0.5s var(--ease);overflow-x:hidden;width:100%;line-height:1.6;cursor:crosshair}
   .cursor-plus{position:fixed;pointer-events:none;z-index:9999;font-size:22px;font-weight:300;color:var(--accent);opacity:0;transform:translate(-50%,-50%) scale(0.4);transition:opacity 0.15s,transform 0.15s;user-select:none;line-height:1}
   .cursor-plus.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
   .cursor-plus.hovering {
@@ -346,13 +346,124 @@ const {
     .home-two-col{grid-template-columns:1fr !important}
     .admin-row{grid-template-columns:1fr}
   }
-  @media(max-width:600px){
-    .nav-links a{padding:0.4rem 0.5rem;font-size:0.76rem}
-    .section{padding:2.5rem 1.5rem}
-    .page-header{padding:2.5rem 1.5rem 0}
-    .hero-stats{gap:1.5rem}
-    #admin-panel{max-height:95vh;border-radius:12px 12px 0 0;margin:auto auto 0;box-shadow:0 -8px 24px rgba(0,0,0,0.2)}
+@media(max-width:600px){
+  .nav-links a{padding:0.4rem 0.5rem;font-size:0.76rem}
+  .section{padding:2.5rem 1.5rem}
+  .page-header{padding:2.5rem 1.5rem 0}
+  .hero-stats{gap:1.5rem}
+  #admin-panel{max-height:95vh;border-radius:12px 12px 0 0;margin:auto auto 0;box-shadow:0 -8px 24px rgba(0,0,0,0.2)}
+  
+  /* Touch-friendly tap targets */
+  .nav-links a,
+  .btn-primary,
+  .btn-outline,
+  .admin-tab,
+  .admin-icon-btn {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
+  
+  .toggle {
+    width: 50px;
+    height: 28px;
+  }
+  
+  .toggle-thumb {
+    width: 20px;
+    height: 20px;
+  }
+  
+  input, select, textarea {
+    font-size: 16px;
+  }
+  
+  #admin-panel {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    max-height: 85vh;
+  }
+  
+  .admin-body {
+    padding: 1rem;
+  }
+  
+  .admin-tabs {
+    flex-wrap: wrap;
+    padding: 0.5rem;
+  }
+  
+  .admin-tab {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.6rem;
+  }
+  
+  .admin-row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  
+  #admin-trigger {
+    bottom: 1rem;
+    right: 1rem;
+    width: 56px;
+    height: 56px;
+  }
+  
+  .project-card {
+    padding: 1.2rem;
+  }
+  
+  .card-arrow {
+    bottom: 1rem;
+    right: 1rem;
+  }
+  
+  .vis-bot {
+    width: 160px;
+  }
+  
+  .vis-msg {
+    font-size: 0.6rem;
+    padding: 5px 8px;
+  }
+  
+  .featured-content {
+    padding: 1.5rem;
+  }
+  
+  .footer-inner {
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: center;
+  }
+}
+
+/* Hide custom cursor on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  body {
+    cursor: default;
+  }
+  
+  .cursor-plus {
+    display: none !important;
+  }
+}
+
+/* iPhone notch safe area */
+@supports (padding: max(0px)) {
+  nav {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+  
+  body {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
 </style>
 </head>
 <body>
@@ -362,7 +473,10 @@ const {
   <div class="nav-inner">
     <a href="/" class="logo">
         <span class="logo-icon">
-            <img src="/assets/logo.png" alt="Bharcode Logo">
+            <picture>
+                <source srcset="/assets/logo.webp" type="image/webp">
+                <img src="/assets/logo.png" alt="Bharcode Logo">
+            </picture>
         </span>
         <span><span class="logo-accent">Bhar</span>code</span>
     </a>
