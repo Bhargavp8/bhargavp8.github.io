@@ -28,7 +28,7 @@ const statusLabel = { live: 'Live', building: 'Building', soon: 'Coming Soon' };
         </div>
         <div class="featured-visual">
           <div class="vis-bot">
-            <div class="vis-bot-bar">🤖 {appsFeature?.title || 'Income Bot'} <span style="margin-left:auto;opacity:0.5;font-size:0.6rem;">● {appCards?.[0]?.status === 'live' ? 'Live' : appCards?.[0]?.status === 'building' ? 'Building' : 'Active'}</span></div>
+            <div class="vis-bot-bar">🤖 {appsFeature?.title || 'Income Bot'} <span style="margin-left:auto;opacity:0.5;font-size:0.6rem;">● {appsFeature?.status === 'live' ? 'Live' : appsFeature?.status === 'building' ? 'Building' : appsFeature?.status === 'soon' ? 'Coming Soon' : 'Active'}</span></div>
             <div class="vis-bot-body">
               <div class="vis-msg bot">📊 {appsFeature?.title?.split(' ')[0] || 'Bot'} update</div>
               <div class="vis-msg user">Show {appsFeature?.title?.split(' ')[0]?.toLowerCase() || 'stats'}</div>
