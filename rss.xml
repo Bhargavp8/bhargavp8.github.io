@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bharcode</title>
+    <link>https://bharcode.com</link>
+    <description>Building passive income from code. Singapore CS student documenting the journey.</description>
+    <language>en</language>
+    <atom:link href="https://bharcode.com/rss.xml" rel="self" type="application/rss+xml"/>
+    
+    <item>
+      <title><![CDATA[Welcome to BharCode!]]></title>
+      <link>https://bharcode.com/blog/1776800692404</link>
+      <guid>https://bharcode.com/blog/1776800692404</guid>
+      <description><![CDATA[Welcome to Bharcode everyone!]]></description>
+      <pubDate>Tue, 21 Apr 2026 19:44:52 GMT</pubDate>
+    </item>
+  
+  </channel>
+</rss>
