@@ -38,7 +38,16 @@
       "body": "<p>Hey guys! Welcome to my first website!/p>\n<img src=\"/assets/uploads/img-1776802099523-logo.png\" style=\"max-width:100%;border-radius:8px;border:1.5px solid var(--border);box-shadow:4px 4px 0 var(--accent-light);margin:1.5rem 0;\" alt=\"logo.png\">\n"
     }
   ],
-  "appCards": [],
+  "appCards": [
+    {
+      "id": 1776824961624,
+      "title": "Knot Bot (Telegram)",
+      "desc": "The shared assistant for groups and couples. Track expenses, manage collaborative tasks, and settle balances instantly with PayNow integration. Designed to live in your group chat and keep everyone on the same page.",
+      "status": "live",
+      "tags": "Python, Telegram API, GitHub, Railway",
+      "link": "https://t.me/NawtBot"
+    }
+  ],
   "about": {
     "headline": "Built by one CS student.\nFor $10 a year.",
     "p1": "I'm a computer science student in Singapore who got tired of waiting for the right moment to build something.",
@@ -100,9 +109,9 @@
     "cta2": "https://github.com/bhargavp8"
   },
   "appsFeature": {
-    "title": "Income Tracker Bot v1.0",
-    "desc": "Aggregates Amazon Associates and Pinterest analytics into a single Telegram feed. One message a day with your total passive income.",
-    "link": "#",
+    "title": "Knot Bot (Telegram)",
+    "desc": "The shared assistant for groups and couples. Track expenses, manage collaborative tasks, and settle balances instantly with PayNow integration. Designed to live in your group chat and keep everyone on the same page.",
+    "link": "#https://t.me/NawtBot",
     "tags": "Python, Telegram API"
   }
 }
