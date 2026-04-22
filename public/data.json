@@ -41,11 +41,11 @@
   "appCards": [
     {
       "id": 1776824961624,
-      "title": "Knot Bot (Telegram)",
-      "desc": "The shared assistant for groups and couples. Track expenses, manage collaborative tasks, and settle balances instantly with PayNow integration. Designed to live in your group chat and keep everyone on the same page.",
-      "status": "live",
-      "tags": "Python, Telegram API, GitHub, Railway",
-      "link": "https://t.me/NawtBot"
+      "title": "Sliqe",
+      "desc": "A hyper-local, two-sided marketplace designed to eliminate urban food waste through dynamic pricing. To solve the notorious friction of F&B tech adoption, the platform features a streamlined 30 second vendor inventory portal. On the consumer side, a time decay algorithm systematically drops surplus food prices as closing time approaches, driving impulse conversions via location-based push notifications.",
+      "status": "building",
+      "tags": "Product Strategy, UI/UX Design, Two-Sided Marketplace, Dynamic Pricing, MVP, Figma",
+      "link": ""
     }
   ],
   "about": {
