@@ -28,22 +28,22 @@ const livePosts = (blogPosts || [])
     <canvas id="hero-canvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.6;"></canvas>
 
     <div style="position:relative;z-index:1;">
-      <div class="hero-eyebrow" data-reveal="up">
+      <div class="hero-eyebrow hero-fade-in" style="--d:0s">
         <div class="hero-dot"></div>
-        <span>{hero?.eyebrow || 'Singapore · CS Student · Building in Public'}</span>
+        <span data-scramble>{hero?.eyebrow || 'Singapore · CS Student · Building in Public'}</span>
       </div>
-      <h1 data-scramble style="position:relative;">
+      <h1 class="hero-fade-in" style="--d:.1s">
         {hero?.headline || 'Code that builds'}<br>
         <em>{hero?.headlineEm || 'passive income.'}</em>
       </h1>
-      <p class="hero-sub" data-reveal="up" data-reveal-delay="2">
+      <p class="hero-sub hero-fade-in" style="--d:.22s">
         {hero?.sub || "Zero overhead. Real results. I document how I'm building affiliate income, bots, and automation tools — for the cost of a domain name."}
       </p>
-      <div class="hero-actions" data-reveal="up" data-reveal-delay="3">
+      <div class="hero-actions hero-fade-in" style="--d:.36s">
         <a href="/blog" class="btn-primary">{hero?.ctaPrimary || 'Read the Blog'}</a>
         <a href="/apps" class="btn-outline">{hero?.ctaSecondary || 'See My Apps'}</a>
       </div>
-      <div class="hero-stats" data-reveal="up" data-reveal-delay="4">
+      <div class="hero-stats hero-fade-in" style="--d:.5s">
         <div>
           <div class="stat-num">{general?.stat1Num || '$10'}</div>
           <div class="stat-label">{general?.stat1Label || 'Annual cost'}</div>

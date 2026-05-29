@@ -803,6 +803,16 @@ const {
   [data-reveal-delay="3"] { transition-delay: .38s; }
   [data-reveal-delay="4"] { transition-delay: .54s; }
 
+  /* ── HERO ENTRANCE (CSS-only, no JS dependency) ─── */
+  @keyframes heroIn {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-fade-in {
+    animation: heroIn .75s cubic-bezier(.16,1,.3,1) both;
+    animation-delay: var(--d, 0s);
+  }
+
   /* ── FLOAT ───────────────────────────────────────── */
   @keyframes float {
     0%, 100% { transform: translateY(0); }
