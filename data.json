@@ -50,6 +50,14 @@
   "appCards": [
     {
       "id": 1,
+      "title": "Knot",
+      "desc": "Group expense splitting for trips and households. Track shared bills, chores, and raise trips with housemates — no spreadsheets.",
+      "status": "live",
+      "tags": "Next.js, Supabase, Vercel",
+      "link": "https://knot-sigma.vercel.app"
+    },
+    {
+      "id": 2,
       "title": "Pinterest Analytics Tracker",
       "desc": "Scrapes Pinterest analytics daily. Visualizes which pins drive the most affiliate clicks and impressions.",
       "status": "building",
