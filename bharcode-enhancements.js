@@ -94,24 +94,24 @@
     }, { passive: true });
   }
 
-  // ── 4. TEXT SCRAMBLE ─────────────────────────────────────────────────────────
+  // ── 4. TEXT SCRAMBLE (text-only nodes — no child elements) ──────────────────
   const scrambleEl = document.querySelector('[data-scramble]');
-  if (scrambleEl) {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01@#$%';
+  if (scrambleEl && !scrambleEl.children.length) {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01@#$%·—';
     const original = scrambleEl.textContent;
     let frame = 0;
-    const maxFrames = 30;
+    const maxFrames = 28;
     const interval = setInterval(() => {
       frame++;
       const resolved = Math.floor((frame / maxFrames) * original.length);
       let result = '';
       for (let i = 0; i < original.length; i++) {
-        if (original[i] === ' ') { result += ' '; continue; }
+        if (original[i] === ' ' || original[i] === '·') { result += original[i]; continue; }
         result += i < resolved ? original[i] : chars[Math.floor(Math.random() * chars.length)];
       }
       scrambleEl.textContent = result;
       if (frame >= maxFrames) { scrambleEl.textContent = original; clearInterval(interval); }
-    }, 40);
+    }, 45);
   }
 
   // ── 5. COUNTER ANIMATIONS ───────────────────────────────────────────────────
