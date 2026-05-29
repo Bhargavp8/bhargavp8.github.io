@@ -40,8 +40,8 @@ const livePosts = (blogPosts || [])
         {hero?.sub || "Zero overhead. Real results. I document how I'm building affiliate income, bots, and automation tools — for the cost of a domain name."}
       </p>
       <div class="hero-actions hero-fade-in" style="--d:.36s">
-        <a href="/blog" class="btn-primary">{hero?.ctaPrimary || 'Read the Blog'}</a>
-        <a href="/apps" class="btn-outline">{hero?.ctaSecondary || 'See My Apps'}</a>
+        <a href="/work" class="btn-primary">{hero?.ctaPrimary || 'See My Work'}</a>
+        <a href="/blog" class="btn-outline">{hero?.ctaSecondary || 'Read the Blog'}</a>
       </div>
       <div class="hero-stats hero-fade-in" style="--d:.5s">
         <div>
@@ -87,6 +87,49 @@ const livePosts = (blogPosts || [])
             </a>
           );
         })}
+      </div>
+    </div>
+  </div>
+
+  <!-- SELECTED WORK STRIP -->
+  <div class="work-strip-wrap">
+    <div class="work-strip">
+      <div class="work-strip-label">Selected Work</div>
+      <div class="work-strip-cards">
+
+        <a href="/work" class="work-strip-card reveal">
+          <div class="wsc-top">
+            <div class="wsc-status status-live"><div class="status-dot"></div>Live</div>
+            <span class="wsc-num">#01</span>
+          </div>
+          <div class="wsc-title">Knot</div>
+          <p class="wsc-desc">Full-stack group expense app. Next.js 15, Supabase, Google OAuth, Gemini NLP parsing, Telegram bot companion.</p>
+          <div class="wsc-stack">
+            {['Next.js', 'Supabase', 'TypeScript', 'AI'].map((t: string) => <span class="tag">{t}</span>)}
+          </div>
+          <div class="wsc-arrow">↗</div>
+        </a>
+
+        <a href="/work#sliqe" class="work-strip-card reveal reveal-delay-1">
+          <div class="wsc-top">
+            <div class="wsc-status status-building"><div class="status-dot"></div>Building</div>
+            <span class="wsc-num">#02</span>
+          </div>
+          <div class="wsc-title">Sliqe</div>
+          <p class="wsc-desc">Two-sided food-waste marketplace. Time-decay pricing drives impulse conversions. Vendor onboarding under 30 seconds.</p>
+          <div class="wsc-stack">
+            {['Product Design', 'UI/UX', 'Marketplace'].map((t: string) => <span class="tag">{t}</span>)}
+          </div>
+          <div class="wsc-arrow">↗</div>
+        </a>
+
+        <a href="/" class="work-strip-card work-strip-card--next reveal reveal-delay-2">
+          <div style="font-size:1.6rem;margin-bottom:0.8rem;">🔧</div>
+          <div class="wsc-title" style="font-size:1rem;">Next project</div>
+          <p class="wsc-desc">Taking shape. Subscribe for early access and build-along posts.</p>
+          <span class="featured-link" style="margin-top:auto;">Follow the build →</span>
+        </a>
+
       </div>
     </div>
   </div>
@@ -184,3 +227,127 @@ const livePosts = (blogPosts || [])
   </div>
 
 </BaseLayout>
+
+<style>
+  /* ── WORK STRIP ───────────────────────────────────── */
+  .work-strip-wrap {
+    border-top: 1.5px solid var(--border);
+    border-bottom: 1.5px solid var(--border);
+    background: var(--bg-alt);
+  }
+  .work-strip {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem;
+  }
+  .work-strip-label {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .work-strip-label::before {
+    content: '';
+    display: inline-block;
+    width: 20px; height: 1px;
+    background: var(--accent);
+  }
+  .work-strip-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .work-strip-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-str);
+    box-shadow: 2px 2px 0 var(--gold-light);
+    border-radius: 14px;
+    padding: 1.4rem;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    position: relative;
+    transition: transform 0.25s var(--spring), box-shadow 0.25s;
+    min-height: 200px;
+  }
+  .work-strip-card:hover {
+    transform: translate(-3px,-3px);
+    box-shadow: 7px 7px 0 var(--accent);
+  }
+  .work-strip-card--next {
+    border-style: dashed;
+    box-shadow: none;
+    background: var(--paper-alt);
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  .work-strip-card--next:hover { box-shadow: 5px 5px 0 var(--accent); }
+  .wsc-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.3rem;
+  }
+  .wsc-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid transparent;
+  }
+  .wsc-num {
+    font-family: var(--font-head);
+    font-size: 0.75rem;
+    color: var(--text3);
+    font-weight: 700;
+    font-style: italic;
+  }
+  .wsc-title {
+    font-family: var(--font-head);
+    font-size: 1.2rem;
+    color: var(--text);
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+  }
+  .wsc-desc {
+    font-size: 0.8rem;
+    color: var(--text2);
+    line-height: 1.65;
+    margin: 0;
+    flex: 1;
+  }
+  .wsc-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 0.4rem;
+  }
+  .wsc-arrow {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    font-size: 0.85rem;
+    color: var(--text3);
+    transition: transform 0.25s var(--spring), color 0.25s;
+  }
+  .work-strip-card:hover .wsc-arrow { transform: translate(3px,-3px); color: var(--accent); }
+
+  @media (max-width: 700px) {
+    .work-strip-cards { grid-template-columns: 1fr; }
+  }
+</style>

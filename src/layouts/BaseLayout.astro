@@ -3,8 +3,8 @@ import AdminPanel from '../components/AdminPanel.astro';
 import data from '../../public/data.json';
 const { general, links } = data;
 const {
-  title = "Bharcode — Building Passive Income From Code",
-  description = "Built by one CS student. Documenting how I build affiliate income, bots, and tools for the cost of a domain name.",
+  title = "BharCode — Product Engineer · CS Student · Singapore",
+  description = "CS student in Singapore building AI-powered products end-to-end. Follow the build log for real technical decisions, project deep-dives, and what it takes to ship.",
   ogImage = "https://bharcode.com/assets/logo.png",
   ogUrl = "https://bharcode.com/"
 } = Astro.props;
@@ -1100,6 +1100,7 @@ const {
     </a>
     <ul class="nav-links">
       <li><a href="/" class:list={[{ active: Astro.url.pathname === '/' }]}>Home</a></li>
+      <li><a href="/work" class:list={[{ active: Astro.url.pathname === '/work' }]}>Work</a></li>
       <li><a href="/blog" class:list={[{ active: Astro.url.pathname.startsWith('/blog') }]}>Blog</a></li>
       <li><a href="/apps" class:list={[{ active: Astro.url.pathname === '/apps' }]}>Apps</a></li>
       <li><a href="/about" class:list={[{ active: Astro.url.pathname === '/about' }]}>About</a></li>
@@ -1126,7 +1127,7 @@ const {
     </div>
     <div class="footer-right">
       <a href={links.github || '#'} target="_blank" rel="noopener noreferrer">GitHub</a>
-      <a href={links.pinterest || '#'} target="_blank" rel="noopener noreferrer">Pinterest</a>
+      <a href={(links as any).linkedin || '#'} target="_blank" rel="noopener noreferrer">LinkedIn</a>
       <a href={links.newsletter || '#'} target="_blank" rel="noopener noreferrer">Newsletter</a>
     </div>
   </div>

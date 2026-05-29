@@ -1,0 +1,644 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import data from '../../public/data.json';
+const { links } = data;
+---
+<BaseLayout
+  title="Work — BharCode"
+  description="Deep dives into products I've built: architecture decisions, what broke, what worked, and what's next."
+  ogUrl="https://bharcode.com/work"
+>
+
+  <!-- PAGE HEADER -->
+  <div style="max-width:1100px;margin:0 auto;padding:4rem 2rem 0;">
+    <div class="section-label">Case Studies</div>
+    <h1 style="font-family:var(--font-head);font-size:clamp(2.8rem,6vw,4.2rem);letter-spacing:-0.04em;line-height:1.0;margin-bottom:1rem;color:var(--text);">
+      Products I've built.
+    </h1>
+    <p style="font-size:1rem;color:var(--text2);max-width:560px;line-height:1.75;">
+      Not just what I built — how and why. Each case study covers the real decisions, the architecture, and what I'd do differently.
+    </p>
+    <div style="display:flex;align-items:center;gap:1rem;margin-top:2rem;">
+      <div style="flex:1;height:1.5px;background:var(--border);"></div>
+      <span style="font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text3);font-weight:600;white-space:nowrap;">
+        2 case studies
+      </span>
+      <div style="flex:1;height:1.5px;background:var(--border);"></div>
+    </div>
+  </div>
+
+  <div class="section" style="padding-top:3rem;">
+
+    <!-- ═══════════════════════════════════════════
+         CASE STUDY 01 — KNOT
+         ═══════════════════════════════════════════ -->
+    <div class="cs-block reveal" style="margin-bottom:4rem;">
+
+      <!-- Top band -->
+      <div class="cs-topband">
+        <span class="cs-label">Case Study #01</span>
+        <span class="cs-status">
+          <span class="cs-dot"></span>Live
+        </span>
+      </div>
+
+      <!-- Main grid -->
+      <div class="cs-grid">
+
+        <!-- Left: content -->
+        <div class="cs-content">
+          <h2 class="cs-title">Knot</h2>
+          <p class="cs-tagline">Group expense splitting for trips and households — no spreadsheets, no drama.</p>
+
+          <div class="cs-meta-row">
+            {['Next.js 15', 'TypeScript', 'Supabase', 'Vercel', 'Tailwind'].map(t => (
+              <span class="tag">{t}</span>
+            ))}
+          </div>
+
+          <div class="cs-sections">
+
+            <div class="cs-section">
+              <div class="cs-section-label">The Problem</div>
+              <p class="cs-body">
+                Every friend group manages shared expenses badly. WhatsApp threads of "you owe me", screenshots of receipts, spreadsheets nobody maintains. Existing apps (Splitwise, etc.) are either too heavy, paywalled, or don't handle recurring household chores alongside trip expenses.
+              </p>
+            </div>
+
+            <div class="cs-section">
+              <div class="cs-section-label">My Approach</div>
+              <p class="cs-body">
+                I designed Knot around two contexts: <strong>trips</strong> (one-time group expenses) and <strong>households</strong> (recurring chores + shared bills). A single account handles both, with swipeable dashboard tabs to switch. Auth uses Supabase — email/password plus Google OAuth, no magic-link rate limits.
+              </p>
+              <p class="cs-body">
+                The Telegram bot companion (<a href="https://t.me/NawtBot" target="_blank" rel="noopener" style="color:var(--accent);">@NawtBot</a>) was added to solve the "I'm already in WhatsApp" problem — users add expenses without ever opening a browser.
+              </p>
+            </div>
+
+            <div class="cs-section">
+              <div class="cs-section-label">Key Decisions</div>
+              <div class="cs-decision-list">
+                <div class="cs-decision">
+                  <div class="cs-decision-tag">Auth</div>
+                  <p>Switched from magic links to email+password after hitting Supabase's 2 emails/hour free-tier cap. Less friction, zero rate limits, same security.</p>
+                </div>
+                <div class="cs-decision">
+                  <div class="cs-decision-tag">NLP expenses</div>
+                  <p>Integrated Google Gemini API to parse natural language expense descriptions. Type "pizza £12 split 3 ways" instead of filling a form.</p>
+                </div>
+                <div class="cs-decision">
+                  <div class="cs-decision-tag">Deployment</div>
+                  <p>Vercel for zero-config deploys. Custom domain (knot.bharcode.com) via Cloudflare DNS with a single A-record. Total infra cost: free tier.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="cs-section">
+              <div class="cs-section-label">What I Learned</div>
+              <p class="cs-body">
+                OAuth redirect flows are non-trivial — a PKCE code exchange needs a dedicated callback route, not just a redirect to the home page. Also: the bot and the web app share the same Supabase database, which means I effectively built two clients on one backend. Next time I'd formalize the shared schema earlier.
+              </p>
+            </div>
+
+          </div>
+
+          <div class="cs-ctas">
+            <a href="https://knot.bharcode.com" target="_blank" rel="noopener noreferrer" class="btn-primary" style="font-size:0.85rem;">
+              Open Knot →
+            </a>
+            <a href="https://t.me/NawtBot" target="_blank" rel="noopener noreferrer" class="btn-outline" style="font-size:0.85rem;">
+              Try the Bot
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: App mock -->
+        <div class="cs-visual">
+          <div class="cs-phone">
+            <div class="cs-phone-bar">
+              <span style="font-weight:900;letter-spacing:-0.03em;font-size:0.8rem;">Knot.</span>
+              <span style="margin-left:auto;font-size:0.55rem;opacity:0.5;display:flex;align-items:center;gap:4px;">
+                <span style="width:5px;height:5px;border-radius:50%;background:#4ade80;display:inline-block;"></span>Live
+              </span>
+            </div>
+            <div class="cs-phone-body">
+              <!-- Balance card -->
+              <div class="cs-phone-card">
+                <div class="cs-phone-label">Your position</div>
+                <div class="cs-phone-amount">+$42.50</div>
+                <div class="cs-phone-sub">across 2 groups</div>
+              </div>
+              <!-- Chore rows -->
+              <div class="cs-chore-row">
+                <span>🧹 Vacuum</span>
+                <span class="cs-badge">Your turn</span>
+              </div>
+              <div class="cs-chore-row">
+                <span>🛒 Groceries</span>
+                <span class="cs-badge cs-badge-done">Done ✓</span>
+              </div>
+              <div class="cs-chore-row">
+                <span>🍕 Split dinner</span>
+                <span class="cs-badge cs-badge-pending">$24.00</span>
+              </div>
+              <!-- Mini trip card -->
+              <div class="cs-phone-trip">
+                <div style="font-size:0.6rem;opacity:0.5;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;">Upcoming trip</div>
+                <div style="font-size:0.78rem;font-weight:700;">🏖 Bali · 4 people</div>
+                <div style="font-size:0.6rem;opacity:0.55;margin-top:3px;">Budget: $800 · Raised: $320</div>
+              </div>
+            </div>
+          </div>
+          <!-- Floating bot widget -->
+          <div class="cs-bot-float">
+            <div class="cs-bot-bar">🤖 @NawtBot</div>
+            <div class="cs-bot-body">
+              <div class="cs-bot-msg bot">Add expense for last night?</div>
+              <div class="cs-bot-msg user">pizza 48 split 4</div>
+              <div class="cs-bot-msg bot">✓ Added $12 each</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Metrics strip -->
+      <div class="cs-metrics">
+        <div class="cs-metric">
+          <div class="cs-metric-num">2</div>
+          <div class="cs-metric-label">Core modules</div>
+        </div>
+        <div class="cs-metric">
+          <div class="cs-metric-num">3</div>
+          <div class="cs-metric-label">Auth methods</div>
+        </div>
+        <div class="cs-metric">
+          <div class="cs-metric-num">AI</div>
+          <div class="cs-metric-label">Expense parsing</div>
+        </div>
+        <div class="cs-metric">
+          <div class="cs-metric-num">$0</div>
+          <div class="cs-metric-label">Infra cost</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         CASE STUDY 02 — SLIQE (IN PROGRESS)
+         ═══════════════════════════════════════════ -->
+    <div class="cs-block reveal reveal-delay-1" style="margin-bottom:4rem;opacity:0.85;">
+
+      <div class="cs-topband" style="background:var(--paper-alt);border-bottom:1px solid var(--border);">
+        <span class="cs-label" style="color:var(--text3);">Case Study #02 — In Progress</span>
+        <span style="font-family:var(--font-mono);font-size:0.65rem;color:#8a6500;background:rgba(200,168,75,.12);border:1px solid rgba(200,168,75,.3);padding:2px 8px;border-radius:4px;display:flex;align-items:center;gap:5px;">
+          <span style="width:5px;height:5px;border-radius:50%;background:#c8a84b;display:inline-block;"></span>Building
+        </span>
+      </div>
+
+      <div class="cs-grid">
+        <div class="cs-content">
+          <h2 class="cs-title">Sliqe</h2>
+          <p class="cs-tagline">A two-sided marketplace to eliminate urban food waste through dynamic pricing.</p>
+
+          <div class="cs-meta-row">
+            {['Product Strategy', 'UI/UX', 'Two-Sided Marketplace', 'Dynamic Pricing', 'Figma'].map(t => (
+              <span class="tag">{t}</span>
+            ))}
+          </div>
+
+          <div class="cs-sections">
+
+            <div class="cs-section">
+              <div class="cs-section-label">The Problem</div>
+              <p class="cs-body">
+                F&B vendors in Singapore waste thousands of dollars of unsold inventory every closing time. Existing food-rescue apps have poor vendor adoption due to high friction — uploading items takes too long, and the consumer UI doesn't drive urgency.
+              </p>
+            </div>
+
+            <div class="cs-section">
+              <div class="cs-section-label">My Approach</div>
+              <p class="cs-body">
+                Sliqe solves vendor friction with a streamlined 30-second inventory portal. On the consumer side, a time-decay algorithm systematically drops prices as closing time approaches, driving impulse conversions via location-based push notifications.
+              </p>
+            </div>
+
+            <div class="cs-section">
+              <div class="cs-section-label">Current status</div>
+              <p class="cs-body">
+                Product strategy defined, UI mockups in Figma. Engineering begins after Knot stabilises. Building the vendor onboarding flow first — if vendors won't use it, the consumer side doesn't matter.
+              </p>
+            </div>
+
+          </div>
+
+          <div class="cs-ctas">
+            <span class="btn-outline" style="font-size:0.85rem;opacity:0.6;cursor:default;">Case study coming soon</span>
+          </div>
+        </div>
+
+        <div class="cs-visual" style="align-items:flex-start;padding-top:2rem;">
+          <div style="background:var(--paper-alt);border:1px solid var(--border);border-radius:14px;padding:2rem;width:100%;max-width:280px;">
+            <div style="font-family:var(--font-mono);font-size:0.62rem;color:var(--text3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1rem;">Sliqe concept</div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div class="sliqe-item">
+                <div>
+                  <div style="font-size:0.78rem;font-weight:700;color:var(--text);">Chicken Rice</div>
+                  <div style="font-size:0.62rem;color:var(--text3);">Closing in 45 min</div>
+                </div>
+                <div style="text-align:right;">
+                  <div style="font-size:0.6rem;color:var(--text3);text-decoration:line-through;">$5.50</div>
+                  <div style="font-size:1rem;font-weight:900;color:#4ade80;">$2.20</div>
+                </div>
+              </div>
+              <div class="sliqe-item">
+                <div>
+                  <div style="font-size:0.78rem;font-weight:700;color:var(--text);">Prawn Noodles</div>
+                  <div style="font-size:0.62rem;color:var(--text3);">Closing in 20 min</div>
+                </div>
+                <div style="text-align:right;">
+                  <div style="font-size:0.6rem;color:var(--text3);text-decoration:line-through;">$7.00</div>
+                  <div style="font-size:1rem;font-weight:900;color:#f59e0b;">$1.40</div>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top:1rem;font-family:var(--font-mono);font-size:0.6rem;color:var(--text3);border-top:1px solid var(--border);padding-top:0.75rem;">
+              ↓ Price drops every 10 min
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         WHAT'S NEXT PLACEHOLDER
+         ═══════════════════════════════════════════ -->
+    <div class="cs-next reveal reveal-delay-2">
+      <div style="font-size:1.8rem;margin-bottom:0.8rem;">🔧</div>
+      <h3 style="font-family:var(--font-head);font-size:1.3rem;color:var(--text);margin-bottom:0.4rem;">Next project is taking shape.</h3>
+      <p style="font-size:0.84rem;color:var(--text3);line-height:1.65;max-width:320px;">
+        Follow the newsletter for early access and build-along posts.
+      </p>
+      <a href={links.newsletter} target="_blank" rel="noopener noreferrer" class="btn-outline" style="margin-top:1.2rem;font-size:0.82rem;display:inline-flex;">
+        Subscribe to the build log →
+      </a>
+    </div>
+
+  </div>
+
+</BaseLayout>
+
+<style>
+  /* ── CASE STUDY BLOCK ─────────────────────────────────── */
+  .cs-block {
+    background: var(--card-bg);
+    border: 1px solid var(--border-str);
+    box-shadow: 4px 4px 0 var(--gold-light);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .cs-topband {
+    background: var(--accent);
+    padding: 0.7rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .cs-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.75);
+    font-weight: 600;
+  }
+  .cs-status {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: #fff;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .cs-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #4ade80;
+    display: inline-block;
+    animation: pulse 2s infinite;
+  }
+
+  .cs-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 0;
+    align-items: stretch;
+  }
+
+  .cs-content {
+    padding: 2.4rem 2.4rem 2rem;
+    border-right: 1px solid var(--border);
+  }
+
+  .cs-title {
+    font-family: var(--font-head);
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: var(--text);
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    font-weight: 800;
+  }
+
+  .cs-tagline {
+    font-size: 0.96rem;
+    color: var(--text2);
+    line-height: 1.65;
+    margin-bottom: 1.2rem;
+    font-weight: 300;
+  }
+
+  .cs-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 1.8rem;
+    padding-bottom: 1.8rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cs-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+    margin-bottom: 2rem;
+  }
+
+  .cs-section-label {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .cs-section-label::before {
+    content: '';
+    display: inline-block;
+    width: 14px; height: 1px;
+    background: var(--accent);
+  }
+
+  .cs-body {
+    font-size: 0.9rem;
+    color: var(--text2);
+    line-height: 1.8;
+    margin-bottom: 0.6rem;
+  }
+  .cs-body:last-child { margin-bottom: 0; }
+  .cs-body strong { color: var(--text); font-weight: 600; }
+
+  .cs-decision-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .cs-decision {
+    background: var(--paper-alt);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+  }
+  .cs-decision-tag {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.35rem;
+    font-weight: 600;
+  }
+  .cs-decision p {
+    font-size: 0.84rem;
+    color: var(--text2);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  .cs-ctas {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  /* ── VISUAL PANEL ────────────────────────────────────── */
+  .cs-visual {
+    background: var(--paper-alt);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 2rem;
+    gap: 1.2rem;
+    position: relative;
+  }
+
+  .cs-phone {
+    background: #0f0f0f;
+    border-radius: 18px;
+    overflow: hidden;
+    width: 190px;
+    font-family: system-ui, sans-serif;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+    animation: floatBot 4s ease-in-out infinite;
+  }
+  @keyframes floatBot {
+    0%, 100% { transform: translateY(0) rotate(-1deg); }
+    50%       { transform: translateY(-10px) rotate(-1deg); }
+  }
+  .cs-phone-bar {
+    background: #1a1a1a;
+    padding: 10px 14px;
+    font-size: 0.75rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+  }
+  .cs-phone-body {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .cs-phone-card {
+    background: #1a1a1a;
+    border-radius: 12px;
+    padding: 12px 14px;
+    color: #fff;
+  }
+  .cs-phone-label {
+    font-size: 0.52rem;
+    opacity: 0.5;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+  }
+  .cs-phone-amount {
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    color: #4ade80;
+  }
+  .cs-phone-sub {
+    font-size: 0.52rem;
+    opacity: 0.4;
+    margin-top: 3px;
+  }
+  .cs-chore-row {
+    background: #1a1a1a;
+    border-radius: 8px;
+    padding: 7px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+    font-size: 0.68rem;
+  }
+  .cs-phone-trip {
+    background: #1a1a1a;
+    border-radius: 10px;
+    padding: 9px 12px;
+    color: #fff;
+  }
+  .cs-badge {
+    font-size: 0.5rem;
+    font-weight: 700;
+    background: #f59e0b;
+    color: #000;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  .cs-badge-done   { background: #4ade80; color: #000; }
+  .cs-badge-pending { background: rgba(122,171,255,0.25); color: #7aabff; }
+
+  /* ── BOT FLOAT ────────────────────────────────────────── */
+  .cs-bot-float {
+    background: var(--card-bg);
+    border: 1px solid var(--border-str);
+    box-shadow: 4px 4px 0 var(--gold-light);
+    border-radius: 10px;
+    overflow: hidden;
+    width: 180px;
+    animation: floatBot2 5s ease-in-out infinite;
+    animation-delay: 0.5s;
+  }
+  @keyframes floatBot2 {
+    0%, 100% { transform: translateY(0) rotate(1deg); }
+    50%       { transform: translateY(-8px) rotate(1deg); }
+  }
+  .cs-bot-bar {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 8px 12px;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 600;
+  }
+  [data-theme="dark"] .cs-bot-bar { background: var(--accent); }
+  .cs-bot-body {
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background: var(--card-bg);
+  }
+  .cs-bot-msg {
+    padding: 6px 9px;
+    border-radius: 7px;
+    font-size: 0.65rem;
+    line-height: 1.45;
+    max-width: 88%;
+    border: 1px solid var(--border);
+    font-family: var(--font-body);
+  }
+  .cs-bot-msg.user  { background: var(--accent); color: #fff; border-color: transparent; align-self: flex-end; }
+  .cs-bot-msg.bot   { background: var(--paper-alt); color: var(--text); }
+
+  /* ── METRICS STRIP ───────────────────────────────────── */
+  .cs-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--border);
+  }
+  .cs-metric {
+    padding: 1.4rem;
+    text-align: center;
+    border-right: 1px solid var(--border);
+  }
+  .cs-metric:last-child { border-right: none; }
+  .cs-metric-num {
+    font-family: var(--font-head);
+    font-size: 1.8rem;
+    color: var(--text);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .cs-metric-label {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── SLIQE ITEMS ─────────────────────────────────────── */
+  .sliqe-item {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* ── NEXT CARD ───────────────────────────────────────── */
+  .cs-next {
+    border: 1.5px dashed var(--border-str);
+    border-radius: 20px;
+    padding: 3rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--paper-alt);
+  }
+
+  /* ── RESPONSIVE ─────────────────────────────────────── */
+  @media (max-width: 800px) {
+    .cs-grid { grid-template-columns: 1fr; }
+    .cs-content { border-right: none; border-bottom: 1px solid var(--border); }
+    .cs-visual { min-height: 320px; flex-direction: row; flex-wrap: wrap; padding: 2rem 1.5rem; }
+    .cs-metrics { grid-template-columns: repeat(2, 1fr); }
+    .cs-metric:nth-child(2) { border-right: none; }
+    .cs-metric:nth-child(3) { border-top: 1px solid var(--border); }
+    .cs-metric:nth-child(4) { border-top: 1px solid var(--border); border-right: none; }
+  }
+  @media (max-width: 500px) {
+    .cs-content { padding: 1.6rem; }
+    .cs-visual { padding: 1.5rem; }
+    .cs-metrics { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>

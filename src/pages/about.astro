@@ -1,137 +1,491 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import data from '../../public/data.json';
-const { about, costItems, roadmapItems, links, general } = data;
+const { about, links } = data;
+
+const skills = [
+  { category: 'Languages', items: ['TypeScript', 'Python', 'JavaScript', 'SQL'] },
+  { category: 'Frontend', items: ['Next.js', 'React', 'Astro', 'Tailwind CSS'] },
+  { category: 'Backend & DB', items: ['Supabase', 'PostgreSQL', 'REST APIs', 'Vercel Functions'] },
+  { category: 'AI & Tools', items: ['Google Gemini API', 'Telegram Bot API', 'Vercel', 'Git/GitHub'] },
+];
+
+const timeline = [
+  { year: '2026', event: 'Shipped Knot — group expense app with web + Telegram bot', type: 'ship' },
+  { year: '2026', event: 'Launched BharCode — personal site, blog, and project hub', type: 'ship' },
+  { year: '2025', event: 'Started building in public — committing to documenting every project', type: 'milestone' },
+  { year: '2025', event: 'First deployed Python bots on Railway (Telegram automation)', type: 'build' },
+  { year: '2024', event: 'Started Computer Science degree in Singapore', type: 'edu' },
+];
 ---
-<BaseLayout title="About — Bharcode">
+<BaseLayout
+  title="About — BharCode"
+  description="CS student in Singapore building production software. Skills, projects, and how to work with me."
+  ogUrl="https://bharcode.com/about"
+>
 
-  <div style="max-width:1100px;margin:0 auto;padding:4rem 2rem 5rem;">
+  <div style="max-width:1100px;margin:0 auto;padding:4rem 2rem 6rem;">
 
-    <!-- PAGE HEADER -->
+    <!-- ── PAGE HEADER ──────────────────────────────── -->
     <div style="margin-bottom:3.5rem;">
       <div class="section-label">About</div>
-      <h1 style="font-family:'DM Serif Display',serif;font-size:clamp(2.8rem,6vw,4.2rem);letter-spacing:-0.04em;line-height:1.0;color:var(--text);margin-bottom:0;">
-        The story so far.
+      <h1 style="font-family:var(--font-head);font-size:clamp(2.8rem,6vw,4.2rem);letter-spacing:-0.04em;line-height:1.0;color:var(--text);margin-bottom:0;">
+        The builder<br><em style="font-style:italic;color:var(--accent);">behind the code.</em>
       </h1>
     </div>
 
-    <!-- MAIN CONTENT GRID -->
-    <div class="about-layout">
+    <!-- ── AVAILABILITY BANNER ──────────────────────── -->
+    <div class="avail-banner reveal">
+      <div class="avail-dot"></div>
+      <span class="avail-text">Open to internships &amp; part-time opportunities · Singapore-based</span>
+      <a href={(links as any).linkedin || '#'} target="_blank" rel="noopener noreferrer" class="avail-link">Let's connect →</a>
+    </div>
+
+    <!-- ── MAIN BIO GRID ────────────────────────────── -->
+    <div class="about-layout" style="margin-top:3rem;">
 
       <!-- LEFT: TEXT -->
       <div class="about-text reveal">
-        <h2 set:html={(about?.headline || 'Built by one CS student.\nFor $10 a year.').replace(/\n/g, '<br>')} />
+        <h2 set:html={(about?.headline || 'I build products.\nNot just code.').replace(/\n/g, '<br>')} />
 
-        <p set:html={about?.p1 || "I'm a computer science student in Singapore who got tired of waiting for the right moment to build something."} />
-        <p set:html={about?.p2 || '<strong>The answer so far: yes, but it takes compounding.</strong>'} />
-        <p set:html={about?.p3 || 'I started by launching a blog on GitHub Pages. Total cost: $10.35 for the domain.'} />
-        <p set:html={about?.p4 || '<strong>Why public?</strong> Accountability is free leverage.'} />
-
-        <!-- TECH STACK -->
-        <div style="margin-top:2rem;margin-bottom:2rem;">
-          <p style="font-size:0.67rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:0.8rem;">Stack</p>
-          <div class="about-stack">
-            {(about?.stack || '⚡ GitHub Pages, 🎨 Canva Free, 🐍 Python').split(',').map((s: string) => (
-              <span class="stack-item">{s.trim()}</span>
-            ))}
-          </div>
-        </div>
+        <p set:html={about?.p1} />
+        <p set:html={about?.p2} />
+        <p set:html={about?.p3} />
+        <p set:html={about?.p4} />
 
         <!-- CTAs -->
-        <div style="display:flex;gap:0.8rem;flex-wrap:wrap;">
-          <a href={links?.cta1 || '#'} target="_blank" rel="noopener noreferrer" class="btn-primary">
-            {about?.cta1Text || 'Subscribe'}
+        <div style="display:flex;gap:0.8rem;flex-wrap:wrap;margin-top:2rem;">
+          <a href={(links as any).linkedin || '#'} target="_blank" rel="noopener noreferrer" class="btn-primary">
+            {about?.cta1Text || 'Connect on LinkedIn'}
           </a>
           <a href={links?.cta2 || '#'} target="_blank" rel="noopener noreferrer" class="btn-outline">
-            {about?.cta2Text || 'GitHub'}
+            {about?.cta2Text || 'View GitHub'}
           </a>
         </div>
       </div>
 
-      <!-- RIGHT: COST + ROADMAP -->
+      <!-- RIGHT: SKILLS + QUICK STATS -->
       <div class="reveal reveal-delay-2">
 
-        <!-- COST BREAKDOWN -->
-        <div style="margin-bottom:1.5rem;">
-          <p style="font-size:0.67rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:1rem;">
-            Annual Cost Breakdown
+        <!-- SKILLS GRID -->
+        <div style="margin-bottom:1.8rem;">
+          <p style="font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:7px;">
+            <span style="width:14px;height:1px;background:var(--accent);display:inline-block;"></span>Skills &amp; Stack
           </p>
-          <div class="cost-list">
-            {(costItems || []).map((item: any) => (
-              <div class={`cost-card${item.isTotal ? ' cost-total' : ''}`}>
-                <span class="cost-name" style={item.isTotal ? 'color:var(--accent);' : ''}>
-                  {item.name}
-                </span>
-                <span class={`cost-val${item.isFree ? ' free' : ''}`}>
-                  {item.value}
-                </span>
+          <div class="skills-grid">
+            {skills.map(group => (
+              <div class="skill-group">
+                <div class="skill-category">{group.category}</div>
+                <div class="skill-items">
+                  {group.items.map(item => (
+                    <span class="skill-item">{item}</span>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
         </div>
 
-        <!-- ROADMAP -->
-        <div style="background:var(--card-bg);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:5px 5px 0 var(--accent-light);">
-          <div style="background:var(--accent);padding:0.9rem 1.4rem;">
-            <p style="font-size:0.67rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.8);font-weight:700;">The Roadmap</p>
+        <!-- QUICK STATS -->
+        <div class="quick-stats">
+          <div class="quick-stat">
+            <div class="quick-stat-num">3+</div>
+            <div class="quick-stat-label">Products shipped</div>
           </div>
-          <div style="padding:1.4rem;display:flex;flex-direction:column;gap:0;">
-            {(roadmapItems || []).map((item: any, i: number) => (
-              <div style={`display:flex;justify-content:space-between;align-items:center;font-size:0.87rem;padding:0.85rem 0;${i < (roadmapItems || []).length - 1 ? 'border-bottom:1px solid var(--border);' : ''}`}>
-                <span style="color:var(--text3);font-weight:500;display:flex;align-items:center;gap:8px;">
-                  <span style={`width:7px;height:7px;border-radius:50%;border:1.5px solid var(--border);background:${item.accent ? 'var(--accent)' : 'var(--bg-alt)'};flex-shrink:0;`}></span>
-                  {item.label}
-                </span>
-                <span style={`font-weight:700;${item.accent ? 'color:var(--accent);' : 'color:var(--text);'}`}>
-                  {item.value}
-                </span>
-              </div>
-            ))}
+          <div class="quick-stat">
+            <div class="quick-stat-num">AI</div>
+            <div class="quick-stat-label">Integrated across builds</div>
           </div>
-        </div>
-
-        <!-- QUICK STAT CARDS -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-top:1rem;">
-          <div style="background:var(--card-bg);border:1.5px solid var(--border);border-radius:12px;padding:1rem;text-align:center;box-shadow:3px 3px 0 var(--accent-light);">
-            <div style="font-family:'DM Serif Display',serif;font-size:2rem;color:var(--text);line-height:1;">$10</div>
-            <div style="font-size:0.67rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);font-weight:600;margin-top:4px;">Annual cost</div>
+          <div class="quick-stat">
+            <div class="quick-stat-num">$0</div>
+            <div class="quick-stat-label">Infra cost (so far)</div>
           </div>
-          <div style="background:var(--card-bg);border:1.5px solid var(--border);border-radius:12px;padding:1rem;text-align:center;box-shadow:3px 3px 0 var(--accent-light);">
-            <div style="font-family:'DM Serif Display',serif;font-size:2rem;color:var(--text);line-height:1;">Day 1</div>
-            <div style="font-size:0.67rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);font-weight:600;margin-top:4px;">Building in public</div>
+          <div class="quick-stat">
+            <div class="quick-stat-num">Open</div>
+            <div class="quick-stat-label">Source &amp; logged</div>
           </div>
         </div>
 
       </div>
     </div>
 
-    <!-- BOTTOM CTA STRIP -->
-    <div style="margin-top:4rem;padding:2.5rem;background:var(--accent);border:1.5px solid var(--border);border-radius:16px;box-shadow:6px 6px 0 var(--border);display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;">
+    <!-- ── TIMELINE ─────────────────────────────────── -->
+    <div style="margin-top:4rem;" class="reveal">
+      <p style="font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:1.8rem;display:flex;align-items:center;gap:7px;">
+        <span style="width:14px;height:1px;background:var(--accent);display:inline-block;"></span>Build timeline
+      </p>
+      <div class="timeline">
+        {timeline.map((item, i) => (
+          <div class={`timeline-item timeline-${item.type}`}>
+            <div class="timeline-year">{item.year}</div>
+            <div class="timeline-line">
+              <div class="timeline-dot"></div>
+              {i < timeline.length - 1 && <div class="timeline-track"></div>}
+            </div>
+            <div class="timeline-text">{item.event}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- ── PROJECTS SNAPSHOT ───────────────────────── -->
+    <div style="margin-top:4rem;" class="reveal">
+      <p style="font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:1.4rem;display:flex;align-items:center;gap:7px;">
+        <span style="width:14px;height:1px;background:var(--accent);display:inline-block;"></span>Proof of work
+      </p>
+      <div class="proof-grid">
+
+        <a href="https://knot.bharcode.com" target="_blank" rel="noopener noreferrer" class="proof-card">
+          <div class="proof-icon">⚡</div>
+          <div>
+            <div class="proof-title">Knot</div>
+            <p class="proof-desc">Full-stack group expense app. Next.js 15, Supabase auth (email + Google OAuth), Gemini NLP parsing, Vercel. Telegram bot companion.</p>
+            <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:0.7rem;">
+              {['Next.js', 'Supabase', 'TypeScript', 'AI'].map(t => <span class="tag">{t}</span>)}
+            </div>
+          </div>
+          <div class="proof-arrow">↗</div>
+        </a>
+
+        <div class="proof-card" style="cursor:default;">
+          <div class="proof-icon">🍱</div>
+          <div>
+            <div class="proof-title">Sliqe <span style="font-size:0.6rem;font-family:var(--font-mono);color:#8a6500;background:rgba(200,168,75,.12);border:1px solid rgba(200,168,75,.3);padding:2px 7px;border-radius:4px;vertical-align:middle;margin-left:6px;">Building</span></div>
+            <p class="proof-desc">Two-sided marketplace to eliminate urban food waste through time-decay pricing. Product strategy + Figma mockups complete. Engineering next.</p>
+            <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:0.7rem;">
+              {['Product Design', 'UI/UX', 'Marketplace'].map(t => <span class="tag">{t}</span>)}
+            </div>
+          </div>
+        </div>
+
+        <a href="https://bharcode.com" class="proof-card">
+          <div class="proof-icon">🌐</div>
+          <div>
+            <div class="proof-title">BharCode</div>
+            <p class="proof-desc">This site. Astro static site on GitHub Pages. Custom domain, admin CMS panel, RSS feed, dark mode, easter eggs, and a full blog engine — all under $11/year.</p>
+            <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:0.7rem;">
+              {['Astro', 'GitHub Pages', 'Custom CMS'].map(t => <span class="tag">{t}</span>)}
+            </div>
+          </div>
+          <div class="proof-arrow">↗</div>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- ── LEAN BUILDER SECTION ────────────────────── -->
+    <div style="margin-top:4rem;" class="reveal">
+      <p style="font-family:var(--font-mono);font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:1.4rem;display:flex;align-items:center;gap:7px;">
+        <span style="width:14px;height:1px;background:var(--accent);display:inline-block;"></span>Running cost
+      </p>
+      <div class="cost-table">
+        <div class="cost-row">
+          <span class="cost-name">GitHub Pages</span>
+          <span class="cost-val" style="color:var(--accent);">Free</span>
+        </div>
+        <div class="cost-row">
+          <span class="cost-name">Domain (bharcode.com)</span>
+          <span class="cost-val">$10.35 / yr</span>
+        </div>
+        <div class="cost-row">
+          <span class="cost-name">Knot (Next.js + Supabase + Vercel)</span>
+          <span class="cost-val" style="color:var(--accent);">Free tier</span>
+        </div>
+        <div class="cost-row cost-total">
+          <span class="cost-name" style="color:var(--accent);font-weight:700;">Total annual cost</span>
+          <span class="cost-val" style="color:var(--accent);font-size:1.05rem;">~$10 / year</span>
+        </div>
+      </div>
+      <p style="font-size:0.82rem;color:var(--text3);margin-top:0.8rem;line-height:1.65;">
+        Constraints force creativity. Building on free tiers means every architecture decision has to be deliberate.
+      </p>
+    </div>
+
+    <!-- ── CTA STRIP ────────────────────────────────── -->
+    <div class="cta-strip reveal" style="margin-top:4rem;">
       <div>
-        <h3 style="font-family:'DM Serif Display',serif;font-size:1.6rem;color:#fff;line-height:1.2;margin-bottom:0.4rem;">
-          Follow the journey.
+        <h3 style="font-family:var(--font-head);font-size:1.6rem;color:#fff;line-height:1.2;margin-bottom:0.4rem;">
+          Want to build something together?
         </h3>
         <p style="font-size:0.88rem;color:rgba(255,255,255,0.75);max-width:380px;line-height:1.6;">
-          Weekly updates on what's working, what broke, and what's next. Free forever.
+          Open to internships, collaborations, and interesting problems. Reach out on LinkedIn or follow the build log.
         </p>
       </div>
-      <a
-        href={links?.cta1 || '#'}
-        target="_blank"
-        rel="noopener noreferrer"
-        style="background:#fff;color:var(--accent);font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:700;padding:0.8rem 1.8rem;border-radius:6px;text-decoration:none;border:1.5px solid rgba(255,255,255,0.3);white-space:nowrap;box-shadow:3px 3px 0 rgba(0,0,0,0.15);transition:transform 0.2s,box-shadow 0.2s;display:inline-block;"
-        class="about-cta-btn"
-      >
-        Subscribe Free →
-      </a>
+      <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+        <a
+          href={(links as any).linkedin || '#'}
+          target="_blank"
+          rel="noopener noreferrer"
+          style="background:#fff;color:var(--accent);font-family:var(--font-body);font-size:0.88rem;font-weight:700;padding:0.8rem 1.6rem;border-radius:8px;text-decoration:none;white-space:nowrap;transition:transform 0.2s,box-shadow 0.2s;display:inline-block;box-shadow:3px 3px 0 rgba(0,0,0,0.15);"
+          class="strip-btn"
+        >LinkedIn →</a>
+        <a
+          href={links.newsletter}
+          target="_blank"
+          rel="noopener noreferrer"
+          style="background:transparent;color:#fff;font-family:var(--font-body);font-size:0.88rem;font-weight:600;padding:0.8rem 1.6rem;border-radius:8px;text-decoration:none;white-space:nowrap;border:1.5px solid rgba(255,255,255,0.4);transition:transform 0.2s;display:inline-block;"
+          class="strip-btn"
+        >Subscribe →</a>
+      </div>
     </div>
 
   </div>
 </BaseLayout>
 
 <style>
-  .about-cta-btn:hover {
-    transform: translate(-2px, -2px);
+  /* ── AVAILABILITY BANNER ───────────────────────────── */
+  .avail-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(74,222,128,0.08);
+    border: 1px solid rgba(74,222,128,0.25);
+    border-radius: 10px;
+    padding: 0.75rem 1.2rem;
+    flex-wrap: wrap;
+  }
+  .avail-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #4ade80;
+    flex-shrink: 0;
+    animation: pulse 2s infinite;
+  }
+  .avail-text {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text);
+    letter-spacing: 0.02em;
+    flex: 1;
+  }
+  .avail-link {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: opacity 0.2s;
+  }
+  .avail-link:hover { opacity: 0.75; }
+
+  /* ── SKILLS GRID ───────────────────────────────────── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .skill-group {
+    background: var(--card-bg);
+    border: 1px solid var(--border-str);
+    box-shadow: 2px 2px 0 var(--gold-light);
+    border-radius: 10px;
+    padding: 1rem;
+  }
+  .skill-category {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.6rem;
+    font-weight: 600;
+  }
+  .skill-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .skill-item {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--text);
+    background: var(--paper-alt);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 8px;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── QUICK STATS ───────────────────────────────────── */
+  .quick-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 0.5rem;
+  }
+  .quick-stat {
+    background: var(--card-bg);
+    border: 1px solid var(--border-str);
+    box-shadow: 2px 2px 0 var(--gold-light);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+  }
+  .quick-stat-num {
+    font-family: var(--font-head);
+    font-size: 1.7rem;
+    color: var(--text);
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+  .quick-stat-label {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    line-height: 1.4;
+  }
+
+  /* ── TIMELINE ──────────────────────────────────────── */
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 50px 24px 1fr;
+    gap: 0.8rem;
+    align-items: start;
+  }
+  .timeline-year {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--text3);
+    padding-top: 3px;
+    text-align: right;
+  }
+  .timeline-line {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .timeline-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--paper);
+    box-shadow: 0 0 0 1.5px var(--accent);
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+  .timeline-ship .timeline-dot   { background: #4ade80; box-shadow: 0 0 0 1.5px #4ade80; }
+  .timeline-edu .timeline-dot    { background: var(--gold); box-shadow: 0 0 0 1.5px var(--gold); }
+  .timeline-milestone .timeline-dot { background: var(--accent2); box-shadow: 0 0 0 1.5px var(--accent2); }
+  .timeline-track {
+    width: 1.5px;
+    flex: 1;
+    background: var(--border-str);
+    min-height: 28px;
+    margin-top: 4px;
+  }
+  .timeline-text {
+    font-size: 0.88rem;
+    color: var(--text2);
+    line-height: 1.65;
+    padding-bottom: 1.4rem;
+  }
+
+  /* ── PROOF GRID ───────────────────────────────────── */
+  .proof-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.2rem;
+  }
+  .proof-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-str);
+    box-shadow: 2px 2px 0 var(--gold-light);
+    border-radius: 14px;
+    padding: 1.6rem;
+    display: flex;
+    gap: 1rem;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    transition: transform 0.25s var(--spring), box-shadow 0.25s;
+  }
+  .proof-card:hover { transform: translate(-3px,-3px); box-shadow: 7px 7px 0 var(--accent); }
+  .proof-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    line-height: 1;
+    padding-top: 2px;
+  }
+  .proof-title {
+    font-family: var(--font-head);
+    font-size: 1.1rem;
+    color: var(--text);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    margin-bottom: 0.4rem;
+  }
+  .proof-desc {
+    font-size: 0.82rem;
+    color: var(--text2);
+    line-height: 1.65;
+    margin: 0;
+  }
+  .proof-arrow {
+    position: absolute;
+    bottom: 1.2rem;
+    right: 1.2rem;
+    font-size: 0.9rem;
+    color: var(--text3);
+    transition: transform 0.25s var(--spring), color 0.25s;
+  }
+  .proof-card:hover .proof-arrow { transform: translate(3px,-3px); color: var(--accent); }
+
+  /* ── COST TABLE ────────────────────────────────────── */
+  .cost-table {
+    background: var(--card-bg);
+    border: 1px solid var(--border-str);
+    box-shadow: 2px 2px 0 var(--gold-light);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .cost-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.85rem 1.2rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.87rem;
+  }
+  .cost-row:last-child { border-bottom: none; }
+  .cost-total { background: var(--paper-alt); }
+  .cost-name { color: var(--text); font-weight: 500; }
+  .cost-val  { font-family: var(--font-mono); font-size: 0.84rem; font-weight: 600; color: var(--text2); }
+
+  /* ── CTA STRIP ─────────────────────────────────────── */
+  .cta-strip {
+    background: var(--accent);
+    border-radius: 16px;
+    padding: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+    box-shadow: 6px 6px 0 var(--border-str);
+  }
+  .strip-btn:hover {
+    transform: translate(-2px, -2px) !important;
     box-shadow: 5px 5px 0 rgba(0,0,0,0.2) !important;
+  }
+
+  /* ── RESPONSIVE ────────────────────────────────────── */
+  @media (max-width: 900px) {
+    .skills-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    .skills-grid { grid-template-columns: 1fr; }
+    .quick-stats { grid-template-columns: 1fr 1fr; }
+    .cta-strip { flex-direction: column; }
+    .timeline-item { grid-template-columns: 42px 20px 1fr; }
   }
 </style>
