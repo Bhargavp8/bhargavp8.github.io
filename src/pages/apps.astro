@@ -23,7 +23,7 @@ const statusLabel: Record<string, string> = {
       Apps I'm Building
     </h1>
     <p style="font-size:1rem;color:var(--text2);max-width:520px;line-height:1.75;">
-      Automation systems, Telegram bots, and productivity tools — all built to run while I sleep.
+      Web apps, Telegram bots, and productivity tools — built and shipped in public.
     </p>
     <div style="display:flex;align-items:center;gap:1rem;margin-top:2rem;">
       <div style="flex:1;height:1.5px;background:var(--border);"></div>
@@ -65,18 +65,28 @@ const statusLabel: Record<string, string> = {
                 <span class="tag">{t.trim()}</span>
               ))}
             </div>
-            <span class="btn-primary" style="font-size:0.82rem;">Open in Telegram →</span>
+            <span class="btn-primary" style="font-size:0.82rem;">Open App →</span>
           </div>
           <div class="apps-hero-widget">
-            <div class="vis-bot">
-              <div class="vis-bot-bar">
-                🤖 {appsFeature?.title?.split(' ')[0] || 'Bot'}
-                <span style="margin-left:auto;opacity:0.6;font-size:0.58rem;">● {statusLabel[appsFeature?.status] || 'Live'}</span>
+            <div class="vis-app">
+              <div class="vis-app-bar">
+                <span style="font-weight:900;letter-spacing:-0.03em;">Knot.</span>
+                <span style="margin-left:auto;opacity:0.5;font-size:0.58rem;">● {statusLabel[appsFeature?.status] || 'Live'}</span>
               </div>
-              <div class="vis-bot-body">
-                <div class="vis-msg bot">👋 How can I help?</div>
-                <div class="vis-msg user">Show balance</div>
-                <div class="vis-msg bot">💰 All clear. Up to date.</div>
+              <div class="vis-app-body">
+                <div class="vis-balance-card">
+                  <div style="font-size:0.55rem;opacity:0.5;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px;">Net position</div>
+                  <div style="font-size:1.4rem;font-weight:900;letter-spacing:-0.04em;color:#4ade80;">+$42.50</div>
+                  <div style="font-size:0.55rem;opacity:0.4;margin-top:4px;">across 2 groups</div>
+                </div>
+                <div class="vis-chore-row">
+                  <span style="font-size:0.7rem;">🧹 Vacuum</span>
+                  <span class="vis-badge">Your turn</span>
+                </div>
+                <div class="vis-chore-row">
+                  <span style="font-size:0.7rem;">🛒 Groceries</span>
+                  <span class="vis-badge vis-badge-done">Done</span>
+                </div>
               </div>
             </div>
           </div>
@@ -168,6 +178,57 @@ const statusLabel: Record<string, string> = {
   @media (max-width: 700px) {
     .apps-hero-inner { grid-template-columns: 1fr !important; }
     .apps-hero-widget { border-left: none; border-top: 1.5px solid var(--border); min-width: unset; }
+  }
+  .vis-app {
+    background: #0f0f0f;
+    border-radius: 14px;
+    overflow: hidden;
+    width: 180px;
+    font-family: system-ui, sans-serif;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+  .vis-app-bar {
+    background: #1a1a1a;
+    padding: 8px 12px;
+    font-size: 0.72rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+  }
+  .vis-app-body {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .vis-balance-card {
+    background: #1a1a1a;
+    border-radius: 10px;
+    padding: 10px 12px;
+    color: #fff;
+  }
+  .vis-chore-row {
+    background: #1a1a1a;
+    border-radius: 8px;
+    padding: 7px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+  }
+  .vis-badge {
+    font-size: 0.52rem;
+    font-weight: 700;
+    background: #f59e0b;
+    color: #000;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .vis-badge-done {
+    background: #4ade80;
+    color: #000;
   }
 </style>
 
