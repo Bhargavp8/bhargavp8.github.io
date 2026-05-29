@@ -1,30 +1,30 @@
 {
   "general": {
     "sitename": "BharCode",
-    "footerTagline": "Singapore · Est. 2026",
+    "footerTagline": "Singapore · Product Engineer",
     "footerYear": "2026",
     "featuredAppSelection": "featured",
-    "feat1Title": "Blogs!",
-    "feat1Desc": "Strategy posts on passive income, tools, and making money online!",
-    "feat1Link": "Read latest posts →",
+    "feat1Title": "Build Log",
+    "feat1Desc": "Technical posts on what I'm building, decisions I made, and what broke. Real process, not curated highlights.",
+    "feat1Link": "Read the build log →",
     "feat1Emoji": "📝",
-    "feat2Title": "Apps and Bots!",
-    "feat2Desc": "Telegram bots and automation tools that can help you do your day to day things but quicker and possibly better!",
-    "feat2Link": "See all apps →",
-    "stat1Num": "2026",
-    "stat1Label": "Est.",
+    "feat2Title": "Products",
+    "feat2Desc": "Full-stack web apps and automation tools built end-to-end — from architecture to deployment. Real users, real data.",
+    "feat2Link": "See all projects →",
+    "stat1Num": "3+",
+    "stat1Label": "Products shipped",
     "stat2Num": "AI",
-    "stat2Label": "Integrated",
-    "stat3Num": "Day 1",
-    "stat3Label": "Building in public"
+    "stat2Label": "Native builds",
+    "stat3Num": "Public",
+    "stat3Label": "Everything logged"
   },
   "hero": {
-    "eyebrow": "Student · Builder · Tools & Systems",
-    "headline": "Built for",
-    "headlineEm": "efficiency.",
-    "sub": "A library of passive income blueprints, transparent case studies, and automation tools designed to be integrated with your day to day use.",
-    "ctaPrimary": "Explore the Playbooks.",
-    "ctaSecondary": "Test the Tools."
+    "eyebrow": "CS Student · Product Engineer · Singapore",
+    "headline": "Building software",
+    "headlineEm": "that ships.",
+    "sub": "CS student in Singapore shipping AI-powered products from scratch — full-stack, end-to-end, in public. I document every decision so you can see exactly how.",
+    "ctaPrimary": "See My Work",
+    "ctaSecondary": "Read the Blog"
   },
   "blogPosts": [
     {
@@ -58,14 +58,14 @@
     }
   ],
   "about": {
-    "headline": "Built by one CS student.\nFor $10 a year.",
-    "p1": "I'm a computer science student in Singapore who got tired of waiting for the right moment to build something.",
-    "p2": "<strong>The answer so far: yes, but it takes compounding.</strong>",
-    "p3": "I started by launching a blog on GitHub Pages. Total cost: $10.35 for the domain.",
-    "p4": "<strong>Why public?</strong> Accountability is free leverage.",
-    "stack": "⚡ GitHub Pages, 🎨 Canva Free, 🐍 Python",
-    "cta1Text": "Subscribe",
-    "cta2Text": "GitHub"
+    "headline": "I build products.\nNot just code.",
+    "p1": "I'm a Computer Science student in Singapore building production-grade software as a way to learn by doing. Not demos — real apps with real users, real auth, and real architecture decisions.",
+    "p2": "<strong>My edge:</strong> I move fast because I understand the full stack. I've shipped products from database schema to deployed UI, integrated AI APIs, and handled everything in between.",
+    "p3": "Knot is my flagship project — a group expense and household management app built on Next.js, Supabase, and Vercel. It has Google OAuth, real-time data, and a Telegram bot companion.",
+    "p4": "<strong>Why build in public?</strong> Accountability forces quality. And the documentation becomes the portfolio.",
+    "stack": "TypeScript, Next.js, Python, Supabase, Vercel, Astro, Google Gemini API, Telegram Bot API",
+    "cta1Text": "Connect on LinkedIn",
+    "cta2Text": "View GitHub"
   },
   "costItems": [
     {
@@ -93,28 +93,28 @@
   "roadmapItems": [
     {
       "id": 1,
-      "label": "Month 3 target",
-      "value": "First commissions",
+      "label": "Shipped",
+      "value": "Knot (web + bot)",
       "accent": false
     },
     {
       "id": 2,
-      "label": "Month 6 target",
-      "value": "$300–500/month",
+      "label": "Building now",
+      "value": "Sliqe marketplace",
       "accent": false
     },
     {
       "id": 3,
-      "label": "Month 12 goal",
-      "value": "$1,000+/month",
+      "label": "Next milestone",
+      "value": "100 active users",
       "accent": true
     }
   ],
   "links": {
     "github": "https://github.com/bhargavp8",
-    "pinterest": "https://pinterest.com",
+    "linkedin": "https://linkedin.com/in/bhargav-prashanth",
     "newsletter": "https://bharcode08.substack.com/subscribe",
-    "cta1": "https://bharcode08.substack.com/subscribe",
+    "cta1": "https://linkedin.com/in/bhargav-prashanth",
     "cta2": "https://github.com/bhargavp8"
   },
   "appsFeature": {
