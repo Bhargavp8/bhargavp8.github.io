@@ -41,6 +41,14 @@
   ],
   "appCards": [
     {
+      "id": 1776824961625,
+      "title": "Knot",
+      "desc": "Group expense splitting for trips and households. Track shared bills, chores, and raise trips with housemates — no spreadsheets, no drama.",
+      "status": "live",
+      "tags": "Next.js, Supabase, Vercel",
+      "link": "https://knot.bharcode.com"
+    },
+    {
       "id": 1776824961624,
       "title": "Sliqe",
       "desc": "A hyper-local, two-sided marketplace designed to eliminate urban food waste through dynamic pricing. To solve the notorious friction of F&B tech adoption, the platform features a streamlined 30-second vendor inventory portal. On the consumer side, a time-decay algorithm systematically drops surplus food prices as closing time approaches, driving impulse conversions via location-based push notifications.",
