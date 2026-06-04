@@ -185,8 +185,19 @@ const livePosts = (blogPosts || [])
             </div>
             <span class="featured-link">{general?.feat1Link || 'Read latest posts →'}</span>
           </div>
-          <div class="featured-visual" style="font-size:3.5rem;">
-            {general?.feat1Emoji || '📝'}
+          <div class="featured-visual">
+            <div class="vis-log" aria-hidden="true">
+              <div class="vis-log-bar">
+                <span class="vlb-dot r"></span><span class="vlb-dot y"></span><span class="vlb-dot g"></span>
+                <span class="vlb-name">{general?.feat1Emoji} build.log</span>
+              </div>
+              <div class="vis-log-body">
+                <div class="vis-log-line"><span class="vll-t">now</span><span class="vll-ok">✓</span> shipping in public</div>
+                <div class="vis-log-line"><span class="vll-t">dec</span><span class="vll-add">+</span> architecture notes</div>
+                <div class="vis-log-line"><span class="vll-t">fix</span><span class="vll-warn">~</span> what broke &amp; why</div>
+                <div class="vis-log-line vll-cmd"><span class="vll-prompt">$</span> tail&nbsp;-f<span class="vll-caret"></span></div>
+              </div>
+            </div>
           </div>
         </div>
       </a>

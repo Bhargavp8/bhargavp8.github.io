@@ -629,6 +629,48 @@ const mobileNavLinks = [
   }
   .featured-link:hover { color: var(--gold); }
 
+  /* darker "visual" panel reads clearly distinct from the card body */
+  [data-theme="dark"] .featured-visual { background: var(--bg-alt); }
+
+  /* ── BUILD-LOG WIDGET (card 1 graphic — always renders, no emoji dep) ── */
+  .vis-log {
+    width: 210px; max-width: 88%;
+    border-radius: 12px; overflow: hidden;
+    border: 1px solid var(--border-str);
+    background: #080c15;
+    box-shadow: 0 16px 36px -14px rgba(0,0,0,.7);
+    font-family: var(--font-mono);
+    animation: floatBot 4s ease-in-out infinite;
+  }
+  [data-theme="light"] .vis-log { background: #11151f; }
+  .vis-log-bar {
+    display: flex; align-items: center; gap: 6px;
+    padding: 8px 11px; background: rgba(255,255,255,.04);
+    border-bottom: 1px solid var(--border);
+    font-size: .6rem; color: var(--text2); letter-spacing: .04em;
+  }
+  .vlb-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .vlb-dot.r { background: #ff5f57; } .vlb-dot.y { background: #ffbd2e; } .vlb-dot.g { background: #28ca41; }
+  .vlb-name { margin-left: 5px; color: var(--text3); }
+  .vis-log-body { padding: 11px; display: flex; flex-direction: column; gap: 8px; }
+  .vis-log-line {
+    font-size: .6rem; color: var(--text2); line-height: 1.3;
+    display: flex; align-items: center; gap: 7px; white-space: nowrap;
+  }
+  .vll-t { color: var(--text3); width: 22px; flex-shrink: 0; }
+  .vll-ok   { color: #4ade80; font-weight: 600; }
+  .vll-add  { color: var(--accent-cool); font-weight: 600; }
+  .vll-warn { color: var(--accent); font-weight: 600; }
+  .vll-cmd { color: var(--text); margin-top: 1px; }
+  .vll-prompt { color: var(--accent); }
+  .vll-caret {
+    display: inline-block; width: 6px; height: 11px; margin-left: 2px;
+    background: var(--accent-cool); vertical-align: middle;
+    animation: vllBlink 1.1s steps(1) infinite;
+  }
+  @keyframes vllBlink { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .vis-log { animation: none; } .vll-caret { animation: none; } }
+
   /* ── CARDS STATUS ────────────────────────────────── */
   .card-status {
     display: inline-flex;
