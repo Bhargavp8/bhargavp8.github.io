@@ -19,7 +19,7 @@ const statusLabel: Record<string, string> = {
   <!-- PAGE HEADER -->
   <div style="max-width:1100px;margin:0 auto;padding:4rem 2rem 0;">
     <div class="section-label">Tools &amp; Bots</div>
-    <h1 style="font-family:'DM Serif Display',serif;font-size:clamp(2.8rem,6vw,4.2rem);letter-spacing:-0.04em;line-height:1.0;margin-bottom:1rem;color:var(--text);">
+    <h1 style="font-family:var(--font-head);font-size:clamp(2.8rem,6vw,4.2rem);letter-spacing:-0.04em;line-height:1.0;margin-bottom:1rem;color:var(--text);">
       Apps I'm Building
     </h1>
     <p style="font-size:1rem;color:var(--text2);max-width:520px;line-height:1.75;">
@@ -54,7 +54,7 @@ const statusLabel: Record<string, string> = {
         </div>
         <div class="apps-hero-inner">
           <div class="apps-hero-content">
-            <h2 style="font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,3vw,2.4rem);color:var(--text);letter-spacing:-0.025em;line-height:1.1;margin-bottom:0.8rem;">
+            <h2 style="font-family:var(--font-head);font-size:clamp(1.6rem,3vw,2.4rem);color:var(--text);letter-spacing:-0.025em;line-height:1.1;margin-bottom:0.8rem;">
               {appsFeature?.title || 'Income Tracker Bot'}
             </h2>
             <p style="font-size:0.92rem;color:var(--text2);line-height:1.75;max-width:580px;margin-bottom:1.5rem;">
@@ -112,7 +112,7 @@ const statusLabel: Record<string, string> = {
                   <div class="status-dot"></div>
                   {statusLabel[card.status] || 'Coming Soon'}
                 </div>
-                <span style="font-size:0.75rem;color:var(--text3);font-weight:700;font-family:'DM Serif Display',serif;">
+                <span style="font-size:0.75rem;color:var(--text3);font-weight:700;font-family:var(--font-head);">
                   #{String(i + 1).padStart(2, '0')}
                 </span>
               </div>

@@ -23,11 +23,13 @@ const livePosts = (blogPosts || [])
 <BaseLayout title="Bharcode — Building Passive Income From Code">
 
   <!-- HERO -->
-  <div class="hero" style="position:relative;overflow:hidden;">
-    <!-- Particle canvas background -->
-    <canvas id="hero-canvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.6;"></canvas>
+  <div class="hero hero-cinematic" style="position:relative;overflow:hidden;">
+    <!-- Hand-built 3D lattice: spins on its own, follows the mouse, drag to throw, tilt to gyro -->
+    <div class="hero-orbit" aria-hidden="true"></div>
+    <canvas id="hero-lattice" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;opacity:0.95;"></canvas>
+    <div class="scroll-cue" aria-hidden="true">Scroll<div class="bar"></div></div>
 
-    <div style="position:relative;z-index:1;">
+    <div style="position:relative;z-index:1;" data-tour="hero" data-depth="14">
       <div class="hero-eyebrow hero-fade-in" style="--d:0s">
         <div class="hero-dot"></div>
         <span data-scramble>{hero?.eyebrow || 'Singapore · CS Student · Building in Public'}</span>
@@ -42,8 +44,12 @@ const livePosts = (blogPosts || [])
       <div class="hero-actions hero-fade-in" style="--d:.36s">
         <a href="/work" class="btn-primary">{hero?.ctaPrimary || 'See My Work'}</a>
         <a href="/blog" class="btn-outline">{hero?.ctaSecondary || 'Read the Blog'}</a>
+        <button id="gyro-btn" class="gyro-btn" type="button" aria-label="Enable tilt interaction">
+          <span class="gyro-ico" aria-hidden="true"></span>
+          <span class="gyro-label">Tilt to explore</span>
+        </button>
       </div>
-      <div class="hero-stats hero-fade-in" style="--d:.5s">
+      <div class="hero-stats hero-fade-in" style="--d:.5s" data-tour="stats">
         <div>
           <div class="stat-num">{general?.stat1Num || '$10'}</div>
           <div class="stat-label">{general?.stat1Label || 'Annual cost'}</div>
@@ -60,7 +66,7 @@ const livePosts = (blogPosts || [])
     </div>
 
     <!-- PIN STACK — 3 most recent live posts -->
-    <div>
+    <div data-depth="30">
       <div class="pin-preview-stack">
         {livePosts.length === 0 ? (
           <div style="font-size:0.8rem;color:var(--text3);border:1.5px dashed var(--border);padding:2rem;border-radius:8px;text-align:center;grid-column:span 2;">
@@ -93,7 +99,7 @@ const livePosts = (blogPosts || [])
 
   <!-- SELECTED WORK STRIP -->
   <div class="work-strip-wrap">
-    <div class="work-strip">
+    <div class="work-strip" data-tour="work">
       <div class="work-strip-label">Selected Work</div>
       <div class="work-strip-cards">
 
@@ -135,11 +141,11 @@ const livePosts = (blogPosts || [])
   </div>
 
   <!-- EMAIL CAPTURE -->
-  <div style="border-top:1.5px solid var(--border);border-bottom:1.5px solid var(--border);background:var(--bg-alt);">
+  <div style="border-top:1.5px solid var(--border);border-bottom:1.5px solid var(--border);background:var(--bg-alt);" data-tour="newsletter">
     <div class="newsletter-inner">
       <div>
         <div class="section-label">Free Newsletter</div>
-        <h2 style="font-family:'DM Serif Display',serif;font-size:clamp(1.4rem,3vw,2rem);letter-spacing:-0.02em;color:var(--text);margin-bottom:0.4rem;">
+        <h2 style="font-family:var(--font-head);font-size:clamp(1.4rem,3vw,2rem);letter-spacing:-0.02em;color:var(--text);margin-bottom:0.4rem;">
           Building in public, weekly.
         </h2>
         <p style="font-size:0.88rem;color:var(--text2);max-width:380px;line-height:1.7;">
@@ -170,7 +176,7 @@ const livePosts = (blogPosts || [])
           <div class="featured-content">
             <div>
               <div class="card-status status-live"><div class="status-dot"></div>Live</div>
-              <div class="card-title" style="font-family:'DM Serif Display',serif;font-size:1.55rem;line-height:1.1;margin-bottom:0.6rem;">
+              <div class="card-title" style="font-family:var(--font-head);font-size:1.55rem;line-height:1.1;margin-bottom:0.6rem;">
                 {general?.feat1Title || 'Affiliate Blog'}
               </div>
               <p class="card-desc" style="font-size:0.87rem;">
@@ -195,7 +201,7 @@ const livePosts = (blogPosts || [])
                 <div class="status-dot"></div>
                 {featuredApp?.status === 'live' ? 'Live' : featuredApp?.status === 'building' ? 'Building' : 'Coming Soon'}
               </div>
-              <div class="card-title" style="font-family:'DM Serif Display',serif;font-size:1.55rem;line-height:1.1;margin-bottom:0.6rem;">
+              <div class="card-title" style="font-family:var(--font-head);font-size:1.55rem;line-height:1.1;margin-bottom:0.6rem;">
                 {general?.feat2Title || 'Income Bots'}
               </div>
               <p class="card-desc" style="font-size:0.87rem;">

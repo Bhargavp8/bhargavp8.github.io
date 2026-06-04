@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════════════════
 // BHARCODE ENHANCEMENT ENGINE v3.0
-// Visual: particles · parallax · scramble · counters · magnetic · cursor trail
+// Visual: particles · parallax · scramble · counters · magnetic
 // Secrets: konami→space invaders · logo×5→matrix rain · type"bharcode"→terminal
 // ═══════════════════════════════════════════════════════════════════════════
 
@@ -156,32 +156,10 @@
     });
   }
 
-  // ── 7. CURSOR TRAIL ─────────────────────────────────────────────────────────
-  if (window.matchMedia('(pointer: fine)').matches) {
-    const TRAIL = 10;
-    const dots = Array.from({ length: TRAIL }, (_, i) => {
-      const d = document.createElement('div');
-      const size = 4 - i * 0.25;
-      d.style.cssText = `position:fixed;pointer-events:none;z-index:9996;
-        width:${size}px;height:${size}px;border-radius:50%;
-        background:var(--accent);opacity:${0.55 - i * 0.05};
-        transform:translate(-50%,-50%);transition:opacity .1s;`;
-      document.body.appendChild(d);
-      return { el: d, x: -200, y: -200 };
-    });
-    let mx = -200, my = -200;
-    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-    (function animTrail() {
-      let x = mx, y = my;
-      dots.forEach((t, i) => {
-        const f = 0.18 - i * 0.012;
-        t.x += (x - t.x) * f; t.y += (y - t.y) * f;
-        t.el.style.left = t.x + 'px'; t.el.style.top = t.y + 'px';
-        x = t.x; y = t.y;
-      });
-      requestAnimationFrame(animTrail);
-    })();
-  }
+  // ── 7. CURSOR ───────────────────────────────────────────────────────────────
+  // The 10-dot trail was retired in favour of the precision dot + reticle ring
+  // implemented in BaseLayout (see #cursor-dot / #cursor-ring). Kept here as a
+  // marker so the section numbering stays meaningful.
 
   // ── 8. 3D TILT CARDS ────────────────────────────────────────────────────────
   document.querySelectorAll('.project-card, .blog-card').forEach(card => {
@@ -441,8 +419,8 @@
   <span style="color:#4ade80">secret</span>    — list all secrets<br>
   <span style="color:#4ade80">clear</span>     — clear terminal<br>
   <span style="color:#4ade80">exit</span>      — close`,
-      whoami: () => `<span style="color:#f1f5f9">Bhargav Prashanth</span><br>
-CS Student · Singapore · Building in public since 2026<br>
+      whoami: () => `<span style="color:#f1f5f9">The builder behind BharCode</span><br>
+Product engineer · Singapore · Building in public since 2026<br>
 Currently: staying up too late coding this easter egg`,
       stack: () => `<span style="color:#f1f5f9">Bharcode:</span>  Astro · GitHub Pages · Cloudflare<br>
 <span style="color:#f1f5f9">Knot:</span>      Next.js · Supabase · Vercel<br>

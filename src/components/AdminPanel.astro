@@ -1,20 +1,23 @@
 ---
-// AdminPanel.astro — CMS with GitHub API integration
+// AdminPanel.astro — BharCode Studio · friendly CMS over the GitHub API
 ---
-<button id="admin-trigger" title="Admin Panel">⚙️</button>
+<button id="admin-trigger" title="Open BharCode Studio" aria-label="Open admin studio">⚙️</button>
+
+<!-- Toast host (top-centre) -->
+<div id="admin-toasts" aria-live="polite"></div>
 
 <!-- LOGIN MODAL -->
 <div id="admin-login">
   <div class="login-box">
-    <h3>Admin Access</h3>
-    <p>Enter your GitHub Personal Access Token to verify repository permissions.</p>
-    <input type="password" class="admin-input" id="admin-pw" placeholder="ghp_...">
+    <h3>BharCode Studio</h3>
+    <p>Paste your GitHub Personal Access Token to unlock editing. It never leaves your browser.</p>
+    <input type="password" class="admin-input" id="admin-pw" placeholder="ghp_… or github_pat_…">
     <div style="margin-top:10px;">
       <button class="admin-btn" style="width:100%;justify-content:center;" id="verify-login-btn">Verify &amp; Unlock →</button>
     </div>
     <div class="login-error" id="login-error">Invalid Token.</div>
-    <div style="margin-top:0.6rem;font-size:0.73rem;color:var(--text3);line-height:1.5;text-align:left;background:var(--bg-alt);border:1px solid var(--border);border-radius:6px;padding:0.6rem 0.8rem;">
-      ⚠️ <strong>Security reminder:</strong> Scope your PAT to this repo only with <code>contents: read/write</code>.
+    <div style="margin-top:0.6rem;font-size:0.73rem;color:var(--text3);line-height:1.5;text-align:left;background:var(--paper-alt);border:1px solid var(--border);border-radius:6px;padding:0.6rem 0.8rem;">
+      🔒 <strong>Tip:</strong> scope the token to this repo only with <code>contents: read/write</code>.
     </div>
     <div style="margin-top:1rem;">
       <button class="admin-btn secondary" style="width:100%;justify-content:center;" id="cancel-login-btn">Cancel</button>
@@ -22,336 +25,352 @@
   </div>
 </div>
 
-<!-- ADMIN PANEL OVERLAY -->
+<!-- ADMIN STUDIO OVERLAY -->
 <div id="admin-overlay">
   <div id="admin-panel">
-    <div class="admin-topbar">
-      <h2>⚙️ Site Admin</h2>
-      <div class="admin-topbar-right">
-        <button class="admin-close" id="close-admin-btn">✕</button>
-      </div>
-    </div>
 
-    <div class="admin-tabs">
-      <button class="admin-tab active" data-tab="general">General</button>
-      <button class="admin-tab" data-tab="hero">Hero</button>
-      <button class="admin-tab" data-tab="blog">Blog Posts</button>
-      <button class="admin-tab" data-tab="apps">Apps</button>
-      <button class="admin-tab" data-tab="about">About</button>
-      <button class="admin-tab" data-tab="links">Links</button>
-    </div>
-
-    <div class="admin-body">
-
-      <!-- GENERAL TAB -->
-      <div class="admin-section active" id="admin-general">
-        <div class="admin-notice">Changes save directly to your GitHub repository via the API.</div>
-
-        <div class="admin-label">Site Name</div>
-        <input class="admin-input" id="g-sitename">
-
-        <div class="admin-label">Footer Tagline</div>
-        <input class="admin-input" id="g-footer-tagline">
-
-        <div class="admin-label">Footer Copyright Year</div>
-        <input class="admin-input" id="g-footer-year">
-
-        <hr class="admin-divider">
-
-        <div class="admin-label">Home — Featured Card 1 Title</div>
-        <input class="admin-input" id="g-feat1-title">
-        <div class="admin-label">Home — Featured Card 1 Description</div>
-        <input class="admin-input" id="g-feat1-desc">
-        <div class="admin-label">Home — Featured Card 1 Link Text</div>
-        <input class="admin-input" id="g-feat1-link">
-        <div class="admin-label">Home — Featured Card 1 Emoji</div>
-        <input class="admin-input" id="g-feat1-emoji" style="width:80px;">
-
-        <hr class="admin-divider">
-
-        <div class="admin-label">Home — Featured Card 2 Title</div>
-        <input class="admin-input" id="g-feat2-title">
-        <div class="admin-label">Home — Featured Card 2 Description</div>
-        <input class="admin-input" id="g-feat2-desc">
-        <div class="admin-label">Home — Featured Card 2 Link Text</div>
-        <input class="admin-input" id="g-feat2-link">
-
-        <hr class="admin-divider">
-
-        <div class="admin-label">Stats — Stat 1</div>
-        <div class="admin-row">
-          <div><input class="admin-input" id="g-stat1-num" placeholder="Value"></div>
-          <div><input class="admin-input" id="g-stat1-label" placeholder="Label"></div>
-        </div>
-
-        <div class="admin-label">Stats — Stat 2</div>
-        <div class="admin-row">
-          <div><input class="admin-input" id="g-stat2-num" placeholder="Value"></div>
-          <div><input class="admin-input" id="g-stat2-label" placeholder="Label"></div>
-        </div>
-
-        <div class="admin-label">Stats — Stat 3</div>
-        <div class="admin-row">
-          <div><input class="admin-input" id="g-stat3-num" placeholder="Value"></div>
-          <div><input class="admin-input" id="g-stat3-label" placeholder="Label"></div>
-        </div>
-
-        <div class="admin-label">Featured App for Homepage</div>
-        <select class="admin-select" id="g-featured-app">
-          <!-- Populated dynamically by renderFeaturedAppDropdown() -->
-        </select>
+    <!-- ░ SIDEBAR ░ -->
+    <aside class="admin-side">
+      <div class="admin-brand">
+        <div class="admin-brand-mark">✦</div>
+        <div class="admin-brand-txt"><b>Studio</b><span>BharCode CMS</span></div>
       </div>
 
-      <!-- HERO TAB -->
-      <div class="admin-section" id="admin-hero">
-        <div class="admin-label">Eyebrow text</div>
-        <input class="admin-input" id="h-eyebrow">
-        <div class="admin-label">Headline</div>
-        <input class="admin-input" id="h-headline">
-        <div class="admin-label">Headline — Italic part</div>
-        <input class="admin-input" id="h-headline-em">
-        <div class="admin-label">Sub-headline</div>
-        <textarea class="admin-textarea" id="h-sub" style="min-height:70px;"></textarea>
-        <div class="admin-label">Primary CTA Button</div>
-        <input class="admin-input" id="h-cta-primary">
-        <div class="admin-label">Secondary CTA Button</div>
-        <input class="admin-input" id="h-cta-secondary">
+      <div class="admin-nav" id="admin-nav" role="tablist" aria-label="Studio sections">
+        <button class="admin-navitem active" data-tab="general" data-title="General" data-desc="Site name, footer, homepage cards and the headline stats.">
+          <span class="admin-navicon">🏠</span>
+          <span class="admin-navtext"><b>General</b><span>Site &amp; homepage</span></span>
+        </button>
+        <button class="admin-navitem" data-tab="hero" data-title="Hero" data-desc="The first thing visitors read — your headline and call to action.">
+          <span class="admin-navicon">✦</span>
+          <span class="admin-navtext"><b>Hero</b><span>Headline</span></span>
+        </button>
+        <button class="admin-navitem" data-tab="blog" data-title="Blog Posts" data-desc="Write, edit and publish build logs. Empty posts stay hidden.">
+          <span class="admin-navicon">✍️</span>
+          <span class="admin-navtext"><b>Blog</b><span>Build logs</span></span>
+          <span class="admin-count" id="count-blog">0</span>
+        </button>
+        <button class="admin-navitem" data-tab="apps" data-title="Apps &amp; Projects" data-desc="Your featured project plus the full grid of apps and bots.">
+          <span class="admin-navicon">🚀</span>
+          <span class="admin-navtext"><b>Apps</b><span>Tools &amp; bots</span></span>
+          <span class="admin-count" id="count-apps">0</span>
+        </button>
+        <button class="admin-navitem" data-tab="about" data-title="About" data-desc="Your story, running costs and the roadmap milestones.">
+          <span class="admin-navicon">👤</span>
+          <span class="admin-navtext"><b>About</b><span>Story &amp; costs</span></span>
+        </button>
+        <button class="admin-navitem" data-tab="links" data-title="Links" data-desc="Where every button and social icon points.">
+          <span class="admin-navicon">🔗</span>
+          <span class="admin-navtext"><b>Links</b><span>Social &amp; CTAs</span></span>
+        </button>
       </div>
 
-      <!-- BLOG TAB -->
-      <div class="admin-section" id="admin-blog">
-        <div class="admin-notice">Blog posts with no body content are hidden from public view.</div>
-        <div class="admin-card-list" id="blog-post-list"></div>
-        <button class="admin-btn" id="add-blog-post-btn">+ New Blog Post</button>
+      <div class="admin-side-foot">
+        <a class="admin-side-link" href="/" target="_blank" rel="noopener">↗ View live site</a>
+        <button class="admin-side-link" id="admin-logout">⎋ Lock studio</button>
+      </div>
+    </aside>
 
-        <div id="blog-editor" style="display:none;margin-top:1.5rem;background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:1.2rem;box-shadow:4px 4px 0 var(--accent-light);">
-          <div class="admin-label">Title</div>
-          <input class="admin-input" id="be-title">
-          <div class="admin-row" style="margin-top:0.8rem;">
-            <div>
-              <div class="admin-label">Category</div>
-              <input class="admin-input" id="be-category">
-            </div>
-            <div>
-              <div class="admin-label">Date</div>
-              <input class="admin-input" id="be-date" placeholder="e.g. Apr 2026">
-            </div>
+    <!-- ░ MAIN ░ -->
+    <div class="admin-main">
+      <div class="admin-head">
+        <div>
+          <h2 id="admin-head-title">General</h2>
+          <p id="admin-head-desc">Site name, footer, homepage cards and the headline stats.</p>
+        </div>
+        <button class="admin-close" id="close-admin-btn" aria-label="Close">✕</button>
+      </div>
+
+      <div class="admin-body" id="admin-body">
+
+        <!-- GENERAL -->
+        <div class="admin-section active" id="admin-general">
+          <div class="admin-hint"><span class="hi">💡</span><span>Everything you type here is saved as a local draft automatically. Hit <strong>Publish</strong> when you're ready to push it live.</span></div>
+
+          <div class="admin-label">Site Name</div>
+          <input class="admin-input" id="g-sitename">
+
+          <div class="admin-row" style="margin-top:1.1rem;">
+            <div><div class="admin-label" style="margin-top:0;">Footer Tagline</div><input class="admin-input" id="g-footer-tagline"></div>
+            <div><div class="admin-label" style="margin-top:0;">Footer Year</div><input class="admin-input" id="g-footer-year"></div>
           </div>
-          <div class="admin-row" style="margin-top:0.8rem;">
-            <div>
-              <div class="admin-label">Read Time</div>
-              <input class="admin-input" id="be-readtime" placeholder="e.g. 5 min read">
-            </div>
-            <div>
-              <div class="admin-label">Emoji</div>
-              <input class="admin-input" id="be-emoji" placeholder="📝">
-            </div>
+
+          <hr class="admin-divider">
+
+          <div class="admin-label">Home — Featured Card 1 (Blog)</div>
+          <input class="admin-input" id="g-feat1-title" placeholder="Title">
+          <input class="admin-input" id="g-feat1-desc" placeholder="Description" style="margin-top:8px;">
+          <div class="admin-row" style="margin-top:8px;">
+            <div><input class="admin-input" id="g-feat1-link" placeholder="Link text"></div>
+            <div><input class="admin-input" id="g-feat1-emoji" placeholder="Emoji"></div>
           </div>
-          <div style="margin-top:0.8rem;">
-            <div class="admin-label">Colour Theme</div>
+
+          <div class="admin-label">Home — Featured Card 2 (Apps)</div>
+          <input class="admin-input" id="g-feat2-title" placeholder="Title">
+          <input class="admin-input" id="g-feat2-desc" placeholder="Description" style="margin-top:8px;">
+          <input class="admin-input" id="g-feat2-link" placeholder="Link text" style="margin-top:8px;">
+
+          <hr class="admin-divider">
+
+          <div class="admin-label">Headline Stats</div>
+          <div class="admin-row"><div><input class="admin-input" id="g-stat1-num" placeholder="Value"></div><div><input class="admin-input" id="g-stat1-label" placeholder="Label"></div></div>
+          <div class="admin-row" style="margin-top:8px;"><div><input class="admin-input" id="g-stat2-num" placeholder="Value"></div><div><input class="admin-input" id="g-stat2-label" placeholder="Label"></div></div>
+          <div class="admin-row" style="margin-top:8px;"><div><input class="admin-input" id="g-stat3-num" placeholder="Value"></div><div><input class="admin-input" id="g-stat3-label" placeholder="Label"></div></div>
+
+          <div class="admin-label">Featured App on Homepage</div>
+          <select class="admin-select" id="g-featured-app"></select>
+        </div>
+
+        <!-- HERO -->
+        <div class="admin-section" id="admin-hero">
+          <div class="admin-hint"><span class="hi">✦</span><span>This is your storefront. The italic part of the headline gets the accent colour.</span></div>
+          <div class="admin-label">Eyebrow text</div>
+          <input class="admin-input" id="h-eyebrow">
+          <div class="admin-row" style="margin-top:1.1rem;">
+            <div><div class="admin-label" style="margin-top:0;">Headline</div><input class="admin-input" id="h-headline"></div>
+            <div><div class="admin-label" style="margin-top:0;">Headline — italic part</div><input class="admin-input" id="h-headline-em"></div>
+          </div>
+          <div class="admin-label">Sub-headline</div>
+          <textarea class="admin-textarea" id="h-sub" style="min-height:70px;"></textarea>
+          <div class="admin-row" style="margin-top:1.1rem;">
+            <div><div class="admin-label" style="margin-top:0;">Primary button</div><input class="admin-input" id="h-cta-primary"></div>
+            <div><div class="admin-label" style="margin-top:0;">Secondary button</div><input class="admin-input" id="h-cta-secondary"></div>
+          </div>
+        </div>
+
+        <!-- BLOG -->
+        <div class="admin-section" id="admin-blog">
+          <div class="admin-hint"><span class="hi">✍️</span><span>Posts with no body content stay hidden from the public site — perfect for drafts.</span></div>
+          <div class="admin-card-list" id="blog-post-list"></div>
+          <button class="admin-btn" id="add-blog-post-btn">+ New Blog Post</button>
+
+          <div id="blog-editor" style="display:none;margin-top:1.5rem;background:var(--paper-alt);border:1px solid var(--border-str);border-radius:12px;padding:1.2rem;">
+            <div class="admin-label" style="margin-top:0;">Title</div>
+            <input class="admin-input" id="be-title">
+            <div class="admin-row" style="margin-top:0.8rem;">
+              <div><div class="admin-label" style="margin-top:0;">Category</div><input class="admin-input" id="be-category"></div>
+              <div><div class="admin-label" style="margin-top:0;">Date</div><input class="admin-input" id="be-date" placeholder="e.g. Apr 2026"></div>
+            </div>
+            <div class="admin-row" style="margin-top:0.8rem;">
+              <div><div class="admin-label" style="margin-top:0;">Read time</div><input class="admin-input" id="be-readtime" placeholder="e.g. 5 min read"></div>
+              <div><div class="admin-label" style="margin-top:0;">Emoji</div><input class="admin-input" id="be-emoji" placeholder="📝"></div>
+            </div>
+            <div class="admin-label">Colour theme</div>
             <div class="admin-color-row" id="be-color-row">
               <div class="color-opt selected" data-color="th-green"  style="background:#1A3056"></div>
               <div class="color-opt"          data-color="th-teal"   style="background:#203A64"></div>
-              <div class="color-opt"          data-color="th-navy"   style="background:#1C1C1C"></div>
+              <div class="color-opt"          data-color="th-navy"   style="background:#111827"></div>
               <div class="color-opt"          data-color="th-olive"  style="background:#2a4b82"></div>
-              <div class="color-opt"          data-color="th-purple" style="background:#3a3a3a"></div>
+              <div class="color-opt"          data-color="th-purple" style="background:#3a2d6b"></div>
+            </div>
+            <div class="admin-label">Excerpt</div>
+            <textarea class="admin-textarea" id="be-excerpt" style="min-height:60px;"></textarea>
+
+            <div class="admin-label">Add an image</div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:0.5rem;">
+              <input type="file" id="be-image-upload" accept="image/*" style="font-size:0.75rem;flex:1;padding:0.4rem;background:var(--card-bg);border:1px solid var(--border-str);border-radius:6px;color:var(--text);">
+              <button class="admin-btn secondary" style="padding:0.45rem 1rem;font-size:0.75rem;white-space:nowrap;" id="upload-image-btn">↑ Upload</button>
+            </div>
+            <div id="upload-status" style="font-size:0.75rem;margin-bottom:8px;display:none;"></div>
+
+            <div class="admin-label">Full post body (HTML supported)</div>
+            <textarea class="admin-textarea" id="be-body" style="min-height:200px;"></textarea>
+
+            <div style="display:flex;gap:8px;margin-top:1rem;">
+              <button class="admin-btn" id="save-blog-post-btn">Save draft</button>
+              <button class="admin-btn secondary" id="cancel-blog-edit-btn">Cancel</button>
             </div>
           </div>
-          <div class="admin-label" style="margin-top:0.8rem;">Excerpt</div>
-          <textarea class="admin-textarea" id="be-excerpt" style="min-height:60px;"></textarea>
-
-          <div class="admin-label" style="margin-top:1.2rem;">Upload Image</div>
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:0.5rem;">
-            <input type="file" id="be-image-upload" accept="image/*"
-              style="font-size:0.75rem;flex:1;padding:0.4rem;background:var(--card-bg);border:1.5px solid var(--border);border-radius:4px;color:var(--text);">
-            <button class="admin-btn" style="padding:0.4rem 1rem;font-size:0.75rem;white-space:nowrap;" id="upload-image-btn">↑ Upload &amp; Insert</button>
-          </div>
-          <div id="upload-status" style="font-size:0.75rem;margin-bottom:8px;display:none;"></div>
-
-          <div class="admin-label" style="margin-top:0.5rem;">Full Post Body (HTML supported)</div>
-          <textarea class="admin-textarea" id="be-body" style="min-height:200px;"></textarea>
-
-          <div style="display:flex;gap:8px;margin-top:1rem;">
-            <button class="admin-btn" id="save-blog-post-btn">Save Draft</button>
-            <button class="admin-btn secondary" id="cancel-blog-edit-btn">Cancel</button>
-          </div>
         </div>
-      </div>
 
-      <!-- APPS TAB -->
-      <div class="admin-section" id="admin-apps">
-        <div class="admin-label">Featured Bot — Title</div>
-        <input class="admin-input" id="af-title">
-        <div class="admin-label">Featured Bot — Description</div>
-        <textarea class="admin-textarea" id="af-desc" style="min-height:65px;"></textarea>
-        <div class="admin-label">Featured Bot — Link</div>
-        <input class="admin-input" id="af-link">
-        <div class="admin-label">Featured Bot — Tags (comma-separated)</div>
-        <input class="admin-input" id="af-tags">
-        <div class="admin-label">Featured Bot — Status</div>
-        <select class="admin-select" id="af-status">
-          <option value="live">Live</option>
-          <option value="building">Building</option>
-          <option value="soon">Coming Soon</option>
-        </select>
-
-        <hr class="admin-divider">
-
-        <div class="admin-label">Project Cards</div>
-        <div class="admin-card-list" id="apps-card-list"></div>
-        <button class="admin-btn" id="add-app-card-btn">+ Add Project</button>
-
-        <div id="app-editor" style="display:none;margin-top:1.5rem;background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:1.2rem;">
-          <div class="admin-label">Title</div>
-          <input class="admin-input" id="ae-title">
-          <div class="admin-label">Description</div>
-          <textarea class="admin-textarea" id="ae-desc" style="min-height:70px;"></textarea>
-          <div class="admin-row" style="margin-top:0.8rem;">
+        <!-- APPS -->
+        <div class="admin-section" id="admin-apps">
+          <div class="admin-label" style="margin-top:0;">Featured Project (top of Apps page)</div>
+          <input class="admin-input" id="af-title" placeholder="Title">
+          <textarea class="admin-textarea" id="af-desc" style="min-height:65px;margin-top:8px;" placeholder="Description"></textarea>
+          <div class="admin-row" style="margin-top:8px;">
+            <div><input class="admin-input" id="af-link" placeholder="Link"></div>
             <div>
-              <div class="admin-label">Status</div>
-              <select class="admin-select" id="ae-status">
-                <option value="live">Live</option>
-                <option value="building">Building</option>
-                <option value="soon">Coming Soon</option>
+              <select class="admin-select" id="af-status">
+                <option value="live">● Live</option>
+                <option value="building">● Building</option>
+                <option value="soon">● Coming Soon</option>
               </select>
             </div>
-            <div>
-              <div class="admin-label">Link</div>
-              <input class="admin-input" id="ae-link">
+          </div>
+          <input class="admin-input" id="af-tags" placeholder="Tags (comma-separated)" style="margin-top:8px;">
+
+          <hr class="admin-divider">
+
+          <div class="admin-label" style="margin-top:0;">Project Cards</div>
+          <div class="admin-card-list" id="apps-card-list"></div>
+          <button class="admin-btn" id="add-app-card-btn">+ Add Project</button>
+
+          <div id="app-editor" style="display:none;margin-top:1.5rem;background:var(--paper-alt);border:1px solid var(--border-str);border-radius:12px;padding:1.2rem;">
+            <div class="admin-label" style="margin-top:0;">Title</div>
+            <input class="admin-input" id="ae-title">
+            <div class="admin-label">Description</div>
+            <textarea class="admin-textarea" id="ae-desc" style="min-height:70px;"></textarea>
+            <div class="admin-row" style="margin-top:0.8rem;">
+              <div><div class="admin-label" style="margin-top:0;">Status</div>
+                <select class="admin-select" id="ae-status">
+                  <option value="live">● Live</option>
+                  <option value="building">● Building</option>
+                  <option value="soon">● Coming Soon</option>
+                </select>
+              </div>
+              <div><div class="admin-label" style="margin-top:0;">Link</div><input class="admin-input" id="ae-link"></div>
+            </div>
+            <div class="admin-label">Tags (comma-separated)</div>
+            <input class="admin-input" id="ae-tags">
+            <div style="display:flex;gap:8px;margin-top:1rem;">
+              <button class="admin-btn" id="save-app-card-btn">Save</button>
+              <button class="admin-btn secondary" id="cancel-app-edit-btn">Cancel</button>
             </div>
           </div>
-          <div class="admin-label" style="margin-top:0.8rem;">Tags (comma-separated)</div>
-          <input class="admin-input" id="ae-tags">
-          <div style="display:flex;gap:8px;margin-top:1rem;">
-            <button class="admin-btn" id="save-app-card-btn">Save</button>
-            <button class="admin-btn secondary" id="cancel-app-edit-btn">Cancel</button>
+        </div>
+
+        <!-- ABOUT -->
+        <div class="admin-section" id="admin-about">
+          <div class="admin-label" style="margin-top:0;">Headline (use \n for a line break)</div>
+          <textarea class="admin-textarea" id="ab-headline" style="min-height:55px;"></textarea>
+          <div class="admin-label">Paragraph 1</div><textarea class="admin-textarea" id="ab-p1"></textarea>
+          <div class="admin-label">Paragraph 2</div><textarea class="admin-textarea" id="ab-p2"></textarea>
+          <div class="admin-label">Paragraph 3</div><textarea class="admin-textarea" id="ab-p3"></textarea>
+          <div class="admin-label">Paragraph 4</div><textarea class="admin-textarea" id="ab-p4"></textarea>
+          <div class="admin-label">Stack tags (comma-separated)</div>
+          <input class="admin-input" id="ab-stack">
+          <div class="admin-row" style="margin-top:1.1rem;">
+            <div><div class="admin-label" style="margin-top:0;">CTA 1 text</div><input class="admin-input" id="ab-cta1-text"></div>
+            <div><div class="admin-label" style="margin-top:0;">CTA 2 text</div><input class="admin-input" id="ab-cta2-text"></div>
           </div>
+
+          <hr class="admin-divider">
+          <div class="admin-label" style="margin-top:0;">Running Cost Items</div>
+          <div class="admin-card-list" id="cost-items-list"></div>
+          <div id="cost-editor"></div>
+          <button class="admin-btn" id="add-cost-item-btn">+ Add Cost Item</button>
+
+          <hr class="admin-divider">
+          <div class="admin-label" style="margin-top:0;">Roadmap Milestones</div>
+          <div class="admin-card-list" id="roadmap-items-list"></div>
+          <div id="roadmap-editor"></div>
+          <button class="admin-btn" id="add-roadmap-item-btn">+ Add Milestone</button>
+        </div>
+
+        <!-- LINKS -->
+        <div class="admin-section" id="admin-links">
+          <div class="admin-hint"><span class="hi">🔗</span><span>These power the nav, footer and every call-to-action across the site.</span></div>
+          <div class="admin-label" style="margin-top:0;">GitHub URL</div><input class="admin-input" id="l-github">
+          <div class="admin-label">LinkedIn URL</div><input class="admin-input" id="l-linkedin">
+          <div class="admin-label">Newsletter URL</div><input class="admin-input" id="l-newsletter">
+          <div class="admin-label">Pinterest URL</div><input class="admin-input" id="l-pinterest">
+          <div class="admin-row" style="margin-top:1.1rem;">
+            <div><div class="admin-label" style="margin-top:0;">About CTA 1 URL</div><input class="admin-input" id="l-cta1"></div>
+            <div><div class="admin-label" style="margin-top:0;">About CTA 2 URL</div><input class="admin-input" id="l-cta2"></div>
+          </div>
+          <div class="admin-notice" style="margin-top:1.3rem;">⚙️ <strong>Publishing to:</strong> <code id="repo-display"></code></div>
+        </div>
+
+      </div><!-- /.admin-body -->
+
+      <div class="admin-save-bar">
+        <div class="admin-dirty" id="admin-dirty"><span class="dot"></span><span id="admin-dirty-text">All changes saved</span></div>
+        <div class="admin-save-actions">
+          <button class="admin-btn secondary" id="cancel-admin-btn">Close</button>
+          <button class="admin-btn" id="btn-save-github">🚀 Publish</button>
         </div>
       </div>
-
-      <!-- ABOUT TAB -->
-      <div class="admin-section" id="admin-about">
-        <div class="admin-label">Headline (use \n for line break)</div>
-        <textarea class="admin-textarea" id="ab-headline" style="min-height:55px;"></textarea>
-        <div class="admin-label">Paragraph 1</div>
-        <textarea class="admin-textarea" id="ab-p1"></textarea>
-        <div class="admin-label">Paragraph 2</div>
-        <textarea class="admin-textarea" id="ab-p2"></textarea>
-        <div class="admin-label">Paragraph 3</div>
-        <textarea class="admin-textarea" id="ab-p3"></textarea>
-        <div class="admin-label">Paragraph 4</div>
-        <textarea class="admin-textarea" id="ab-p4"></textarea>
-        <div class="admin-label">Stack Tags (comma-separated)</div>
-        <input class="admin-input" id="ab-stack">
-        <div class="admin-label">CTA 1 Text</div>
-        <input class="admin-input" id="ab-cta1-text">
-        <div class="admin-label">CTA 2 Text</div>
-        <input class="admin-input" id="ab-cta2-text">
-
-        <hr class="admin-divider">
-
-        <div class="admin-label">Cost Items</div>
-        <div class="admin-card-list" id="cost-items-list"></div>
-        <button class="admin-btn" id="add-cost-item-btn">+ Add Cost Item</button>
-
-        <hr class="admin-divider">
-
-        <div class="admin-label">Roadmap</div>
-        <div class="admin-card-list" id="roadmap-items-list"></div>
-        <button class="admin-btn" id="add-roadmap-item-btn">+ Add Milestone</button>
-      </div>
-
-      <!-- LINKS TAB -->
-      <div class="admin-section" id="admin-links">
-        <div class="admin-label">GitHub URL</div>
-        <input class="admin-input" id="l-github">
-        <div class="admin-label">Pinterest URL</div>
-        <input class="admin-input" id="l-pinterest">
-        <div class="admin-label">Newsletter URL</div>
-        <input class="admin-input" id="l-newsletter">
-        <div class="admin-label">About CTA 1 URL</div>
-        <input class="admin-input" id="l-cta1">
-        <div class="admin-label">About CTA 2 URL</div>
-        <input class="admin-input" id="l-cta2">
-        <hr class="admin-divider">
-        <div class="admin-notice">
-          ⚙️ <strong>Repo target:</strong> <code id="repo-display"></code>
-        </div>
-      </div>
-
-    </div><!-- /.admin-body -->
-
-    <div class="admin-save-bar">
-      <button class="admin-btn secondary" id="cancel-admin-btn">Cancel</button>
-      <button class="admin-btn" id="btn-save-github">🚀 Publish to GitHub</button>
-    </div>
+    </div><!-- /.admin-main -->
   </div><!-- /#admin-panel -->
 </div><!-- /#admin-overlay -->
 
 <script>
   const REPO = 'bhargavp8/bhargavp8.github.io';
+  const DRAFT_KEY = 'bharcode-admin-draft';
 
   let GITHUB_TOKEN: string = sessionStorage.getItem('bharcode_pat') || '';
-  // FIX: initialise all expected keys so we never get undefined-access errors
-  let DATA: any = {
-    general: {},
-    hero: {},
-    blogPosts: [],
-    appCards: [],
-    about: {},
-    costItems: [],
-    roadmapItems: [],
-    links: {},
-    appsFeature: {}
-  };
+  let DATA: any = { general:{}, hero:{}, blogPosts:[], appCards:[], about:{}, costItems:[], roadmapItems:[], links:{}, appsFeature:{} };
   let editingPostId: number | null = null;
   let editingBlogColor: string = 'th-green';
   let editingAppId: number | null = null;
+  let dirty = false;
+  let autosaveTimer: any = null;
 
   // ── HELPERS ───────────────────────────────────────────────────
-  function setVal(id: string, val: any): void {
-    const el = document.getElementById(id) as HTMLInputElement | HTMLTextAreaElement | null;
-    if (el) el.value = val ?? '';
+  const $ = (id: string) => document.getElementById(id);
+  function setVal(id: string, val: any): void { const el = $(id) as HTMLInputElement | null; if (el) el.value = val ?? ''; }
+  function getVal(id: string): string { const el = $(id) as HTMLInputElement | null; return el ? el.value.trim() : ''; }
+  function escHtml(s: any): string { return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  // ── TOASTS (replaces every alert) ─────────────────────────────
+  function toast(msg: string, type: 'ok'|'warn'|'err' = 'ok', opts: { action?: string, onAction?: () => void, ttl?: number } = {}): void {
+    const host = $('admin-toasts'); if (!host) return;
+    const icon = type === 'ok' ? '✅' : type === 'warn' ? '⚠️' : '❌';
+    const el = document.createElement('div');
+    el.className = 'admin-toast ' + type + (opts.action ? ' act' : '');
+    el.innerHTML = `<span class="ti">${icon}</span><span>${escHtml(msg)}</span>` +
+      (opts.action ? `<button class="admin-toast-btn">${escHtml(opts.action)}</button>` : '');
+    host.appendChild(el);
+    let done = false;
+    const dismiss = () => { if (done) return; done = true; el.classList.add('out'); setTimeout(() => el.remove(), 360); };
+    if (opts.action && opts.onAction) {
+      el.querySelector('.admin-toast-btn')!.addEventListener('click', (e) => { e.stopPropagation(); opts.onAction!(); dismiss(); });
+    }
+    setTimeout(dismiss, opts.ttl ?? (opts.action ? 6000 : 2600));
   }
-  function getVal(id: string): string {
-    const el = document.getElementById(id) as HTMLInputElement | HTMLTextAreaElement | null;
-    return el ? el.value.trim() : '';
+
+  // ── DIRTY STATE + AUTOSAVE ────────────────────────────────────
+  function setDirty(v: boolean): void {
+    dirty = v;
+    const el = $('admin-dirty'); const txt = $('admin-dirty-text');
+    if (!el || !txt) return;
+    el.classList.toggle('unsaved', v);
+    el.classList.remove('saved');
+    txt.textContent = v ? 'Unsaved draft' : 'All changes saved';
   }
-  // FIX: escHtml now correctly handles null / undefined
-  function escHtml(str: any): string {
-    return String(str ?? '')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
+  function markDirty(): void { setDirty(true); scheduleAutosave(); }
+  function scheduleAutosave(): void {
+    clearTimeout(autosaveTimer);
+    autosaveTimer = setTimeout(() => {
+      collectForms();
+      try { localStorage.setItem(DRAFT_KEY, JSON.stringify({ at: Date.now(), data: DATA })); } catch {}
+    }, 700);
   }
 
   // ── OPEN / CLOSE ──────────────────────────────────────────────
   function openAdminLogin(): void {
     if (GITHUB_TOKEN) { openAdmin(); return; }
-    document.getElementById('admin-login')!.classList.add('open');
-    (document.getElementById('admin-pw') as HTMLInputElement).value = '';
-    document.getElementById('login-error')!.style.display = 'none';
+    $('admin-login')!.classList.add('open');
+    (($('admin-pw')) as HTMLInputElement).value = '';
+    $('login-error')!.style.display = 'none';
+    setTimeout(() => ($('admin-pw') as HTMLInputElement)?.focus(), 60);
   }
-  function closeAdminLogin(): void {
-    document.getElementById('admin-login')!.classList.remove('open');
-  }
+  function closeAdminLogin(): void { $('admin-login')!.classList.remove('open'); }
   function openAdmin(): void {
     populateAdminForms();
-    const repoEl = document.getElementById('repo-display');
-    if (repoEl) repoEl.textContent = REPO;
-    document.getElementById('admin-overlay')!.classList.add('open');
+    const repoEl = $('repo-display'); if (repoEl) repoEl.textContent = REPO;
+    $('admin-overlay')!.classList.add('open');
+    offerDraftRestore();
   }
   function closeAdmin(): void {
-    document.getElementById('admin-overlay')!.classList.remove('open');
+    if (dirty) {
+      toast('Draft kept safe — publish when ready.', 'warn');
+    }
+    $('admin-overlay')!.classList.remove('open');
   }
   function switchAdminTab(name: string): void {
-    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.admin-navitem').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
-    const tab     = document.querySelector(`.admin-tab[data-tab="${name}"]`);
-    const section = document.getElementById('admin-' + name);
-    if (tab)     tab.classList.add('active');
+    const tab = document.querySelector(`.admin-navitem[data-tab="${name}"]`) as HTMLElement | null;
+    const section = $('admin-' + name);
+    if (tab) {
+      tab.classList.add('active');
+      ($('admin-head-title') as HTMLElement).textContent = tab.dataset.title || '';
+      ($('admin-head-desc') as HTMLElement).innerHTML = tab.dataset.desc || '';
+    }
     if (section) section.classList.add('active');
+    $('admin-body')!.scrollTop = 0;
   }
 
   // ── DATA LOADING ──────────────────────────────────────────────
@@ -359,658 +378,374 @@
     try {
       const res = await fetch('/data.json?t=' + Date.now());
       if (res.ok) {
-        const loaded = await res.json();
-        // Merge so all keys always exist
+        const l = await res.json();
         DATA = {
-          general:       loaded.general       || {},
-          hero:          loaded.hero          || {},
-          blogPosts:     loaded.blogPosts     || [],
-          appCards:      loaded.appCards      || [],
-          about:         loaded.about         || {},
-          costItems:     loaded.costItems     || [],
-          roadmapItems:  loaded.roadmapItems  || [],
-          links:         loaded.links         || {},
-          appsFeature:   loaded.appsFeature   || {}
+          general: l.general||{}, hero: l.hero||{}, blogPosts: l.blogPosts||[],
+          appCards: l.appCards||[], about: l.about||{}, costItems: l.costItems||[],
+          roadmapItems: l.roadmapItems||[], links: l.links||{}, appsFeature: l.appsFeature||{}
         };
       }
-    } catch (e) {
-      console.error('Could not load data.json', e);
-    }
+    } catch (e) { console.error('Could not load data.json', e); }
     populateAdminForms();
-    const repoEl = document.getElementById('repo-display');
-    if (repoEl) repoEl.textContent = REPO;
+    const repoEl = $('repo-display'); if (repoEl) repoEl.textContent = REPO;
+  }
+
+  function offerDraftRestore(): void {
+    let raw: string | null = null;
+    try { raw = localStorage.getItem(DRAFT_KEY); } catch {}
+    if (!raw) return;
+    try {
+      const draft = JSON.parse(raw);
+      if (!draft?.data) return;
+      const mins = Math.round((Date.now() - draft.at) / 60000);
+      const when = mins < 1 ? 'just now' : mins < 60 ? `${mins} min ago` : `${Math.round(mins/60)}h ago`;
+      toast(`Unsaved draft from ${when} found.`, 'warn', {
+        action: 'Restore', ttl: 8000,
+        onAction: () => { DATA = draft.data; populateAdminForms(); setDirty(true); toast('Draft restored.', 'ok'); }
+      });
+    } catch {}
   }
 
   // ── POPULATE FORMS ────────────────────────────────────────────
   function populateAdminForms(): void {
-    const g  = DATA.general      || {};
-    const h  = DATA.hero         || {};
-    const ab = DATA.about        || {};
-    const af = DATA.appsFeature  || {};
-    const lk = DATA.links        || {};
+    const g=DATA.general||{}, h=DATA.hero||{}, ab=DATA.about||{}, af=DATA.appsFeature||{}, lk=DATA.links||{};
+    setVal('g-sitename',g.sitename); setVal('g-footer-tagline',g.footerTagline); setVal('g-footer-year',g.footerYear);
+    setVal('g-feat1-title',g.feat1Title); setVal('g-feat1-desc',g.feat1Desc); setVal('g-feat1-link',g.feat1Link); setVal('g-feat1-emoji',g.feat1Emoji);
+    setVal('g-feat2-title',g.feat2Title); setVal('g-feat2-desc',g.feat2Desc); setVal('g-feat2-link',g.feat2Link);
+    setVal('g-stat1-num',g.stat1Num); setVal('g-stat1-label',g.stat1Label);
+    setVal('g-stat2-num',g.stat2Num); setVal('g-stat2-label',g.stat2Label);
+    setVal('g-stat3-num',g.stat3Num); setVal('g-stat3-label',g.stat3Label);
+    setVal('h-eyebrow',h.eyebrow); setVal('h-headline',h.headline); setVal('h-headline-em',h.headlineEm);
+    setVal('h-sub',h.sub); setVal('h-cta-primary',h.ctaPrimary); setVal('h-cta-secondary',h.ctaSecondary);
+    setVal('ab-headline',ab.headline); setVal('ab-p1',ab.p1); setVal('ab-p2',ab.p2); setVal('ab-p3',ab.p3); setVal('ab-p4',ab.p4);
+    setVal('ab-stack',ab.stack); setVal('ab-cta1-text',ab.cta1Text); setVal('ab-cta2-text',ab.cta2Text);
+    setVal('af-title',af.title); setVal('af-desc',af.desc); setVal('af-link',af.link); setVal('af-tags',af.tags);
+    const afs = $('af-status') as HTMLSelectElement | null; if (afs) afs.value = af.status || 'live';
+    setVal('l-github',lk.github); setVal('l-linkedin',lk.linkedin); setVal('l-newsletter',lk.newsletter);
+    setVal('l-pinterest',lk.pinterest); setVal('l-cta1',lk.cta1); setVal('l-cta2',lk.cta2);
+    renderAdminBlogList(); renderAdminAppCards(); renderAdminCostItems(); renderAdminRoadmapItems(); renderFeaturedAppDropdown();
+    updateCounts();
+  }
 
-    // General
-    setVal('g-sitename',      g.sitename);
-    setVal('g-footer-tagline', g.footerTagline);
-    setVal('g-footer-year',   g.footerYear);
-    setVal('g-feat1-title',   g.feat1Title);
-    setVal('g-feat1-desc',    g.feat1Desc);
-    setVal('g-feat1-link',    g.feat1Link);
-    setVal('g-feat1-emoji',   g.feat1Emoji);
-    setVal('g-feat2-title',   g.feat2Title);
-    setVal('g-feat2-desc',    g.feat2Desc);
-    setVal('g-feat2-link',    g.feat2Link);
-    setVal('g-stat1-num',     g.stat1Num);
-    setVal('g-stat1-label',   g.stat1Label);
-    setVal('g-stat2-num',     g.stat2Num);
-    setVal('g-stat2-label',   g.stat2Label);
-    setVal('g-stat3-num',     g.stat3Num);
-    setVal('g-stat3-label',   g.stat3Label);
+  function updateCounts(): void {
+    const live = (DATA.blogPosts||[]).filter((p:any)=>p.body&&p.body.trim().length>10).length;
+    const cb = $('count-blog'); if (cb) cb.textContent = String(live);
+    const ca = $('count-apps'); if (ca) ca.textContent = String((DATA.appCards||[]).length);
+  }
 
-    // Hero
-    setVal('h-eyebrow',      h.eyebrow);
-    setVal('h-headline',     h.headline);
-    setVal('h-headline-em',  h.headlineEm);
-    setVal('h-sub',          h.sub);
-    setVal('h-cta-primary',  h.ctaPrimary);
-    setVal('h-cta-secondary', h.ctaSecondary);
-
-    // About
-    setVal('ab-headline',   ab.headline);
-    setVal('ab-p1',         ab.p1);
-    setVal('ab-p2',         ab.p2);
-    setVal('ab-p3',         ab.p3);
-    setVal('ab-p4',         ab.p4);
-    setVal('ab-stack',      ab.stack);
-    setVal('ab-cta1-text',  ab.cta1Text);
-    setVal('ab-cta2-text',  ab.cta2Text);
-
-    // Apps feature
-    setVal('af-title', af.title);
-    setVal('af-desc',  af.desc);
-    setVal('af-link',  af.link);
-    setVal('af-tags',  af.tags);
-    const afStatusEl = document.getElementById('af-status') as HTMLSelectElement | null;
-    if (afStatusEl) afStatusEl.value = af.status || 'live';
-
-    // Links
-    setVal('l-github',     lk.github);
-    setVal('l-pinterest',  lk.pinterest);
-    setVal('l-newsletter', lk.newsletter);
-    setVal('l-cta1',       lk.cta1);
-    setVal('l-cta2',       lk.cta2);
-
-    renderAdminBlogList();
-    renderAdminAppCards();
-    renderAdminCostItems();
-    renderAdminRoadmapItems();
-    renderFeaturedAppDropdown();
+  // collect scalar form sections into DATA (arrays mutate in place elsewhere)
+  function collectForms(): void {
+    Object.assign(DATA.general, {
+      sitename:getVal('g-sitename'), footerTagline:getVal('g-footer-tagline'), footerYear:getVal('g-footer-year'),
+      feat1Title:getVal('g-feat1-title'), feat1Desc:getVal('g-feat1-desc'), feat1Link:getVal('g-feat1-link'), feat1Emoji:getVal('g-feat1-emoji'),
+      feat2Title:getVal('g-feat2-title'), feat2Desc:getVal('g-feat2-desc'), feat2Link:getVal('g-feat2-link'),
+      stat1Num:getVal('g-stat1-num'), stat1Label:getVal('g-stat1-label'),
+      stat2Num:getVal('g-stat2-num'), stat2Label:getVal('g-stat2-label'),
+      stat3Num:getVal('g-stat3-num'), stat3Label:getVal('g-stat3-label'),
+      featuredAppSelection:getVal('g-featured-app')||'featured'
+    });
+    Object.assign(DATA.hero, {
+      eyebrow:getVal('h-eyebrow'), headline:getVal('h-headline'), headlineEm:getVal('h-headline-em'),
+      sub:getVal('h-sub'), ctaPrimary:getVal('h-cta-primary'), ctaSecondary:getVal('h-cta-secondary')
+    });
+    Object.assign(DATA.about, {
+      headline:getVal('ab-headline'), p1:getVal('ab-p1'), p2:getVal('ab-p2'), p3:getVal('ab-p3'), p4:getVal('ab-p4'),
+      stack:getVal('ab-stack'), cta1Text:getVal('ab-cta1-text'), cta2Text:getVal('ab-cta2-text')
+    });
+    Object.assign(DATA.appsFeature, {
+      title:getVal('af-title'), desc:getVal('af-desc'), link:getVal('af-link'), tags:getVal('af-tags'),
+      status:($('af-status') as HTMLSelectElement)?.value || 'live'
+    });
+    Object.assign(DATA.links, {
+      github:getVal('l-github'), linkedin:getVal('l-linkedin'), newsletter:getVal('l-newsletter'),
+      pinterest:getVal('l-pinterest'), cta1:getVal('l-cta1'), cta2:getVal('l-cta2')
+    });
   }
 
   // ── GITHUB AUTH ───────────────────────────────────────────────
   async function checkAdminPw(): Promise<void> {
-    const entered  = (document.getElementById('admin-pw') as HTMLInputElement).value.trim();
-    const errorEl  = document.getElementById('login-error')!;
-
+    const entered = (($('admin-pw')) as HTMLInputElement).value.trim();
+    const errorEl = $('login-error')!;
     if (!entered.startsWith('ghp_') && !entered.startsWith('github_pat_')) {
-      errorEl.textContent = 'Invalid Token Format.';
-      errorEl.style.color = '#c0392b';
-      errorEl.style.display = 'block';
-      return;
+      errorEl.textContent = 'That doesn’t look like a GitHub token.'; errorEl.style.color = '#c0392b'; errorEl.style.display = 'block'; return;
     }
-    errorEl.textContent = '⏳ Verifying...';
-    errorEl.style.color = 'var(--text3)';
-    errorEl.style.display = 'block';
-
+    errorEl.textContent = '⏳ Verifying…'; errorEl.style.color = 'var(--text3)'; errorEl.style.display = 'block';
     try {
-      const res = await fetch(`https://api.github.com/repos/${REPO}`, {
-        headers: { 'Authorization': `token ${entered}` }
-      });
-      if (!res.ok) throw new Error('Unauthorized');
+      const res = await fetch(`https://api.github.com/repos/${REPO}`, { headers: { 'Authorization': `token ${entered}` } });
+      if (!res.ok) throw new Error('Token rejected by GitHub');
       const repoData = await res.json();
-      if (!(repoData.permissions && repoData.permissions.push)) throw new Error('No push access');
-      GITHUB_TOKEN = entered;
-      sessionStorage.setItem('bharcode_pat', entered);
-      closeAdminLogin();
-      openAdmin();
-    } catch (e: any) {
-      errorEl.textContent = '❌ ' + e.message;
-      errorEl.style.color = '#c0392b';
-    }
+      if (!(repoData.permissions && repoData.permissions.push)) throw new Error('Token lacks write access');
+      GITHUB_TOKEN = entered; sessionStorage.setItem('bharcode_pat', entered);
+      closeAdminLogin(); openAdmin(); toast('Studio unlocked. Welcome back.', 'ok');
+    } catch (e: any) { errorEl.textContent = '❌ ' + e.message; errorEl.style.color = '#c0392b'; }
+  }
+
+  function logout(): void {
+    sessionStorage.removeItem('bharcode_pat'); GITHUB_TOKEN = '';
+    closeAdmin(); toast('Studio locked.', 'ok');
   }
 
   // ── IMAGE UPLOAD ──────────────────────────────────────────────
   async function handleImageUpload(): Promise<void> {
-    const fileInput = document.getElementById('be-image-upload') as HTMLInputElement;
-    const statusEl  = document.getElementById('upload-status')!;
-
-    if (!fileInput.files || !fileInput.files.length) {
-      statusEl.textContent = 'Please select an image first.';
-      statusEl.style.color = '#c0392b';
-      statusEl.style.display = 'block';
-      return;
-    }
-    if (!GITHUB_TOKEN) {
-      statusEl.textContent = 'Please log in first.';
-      statusEl.style.color = '#c0392b';
-      statusEl.style.display = 'block';
-      return;
-    }
-
+    const fileInput = $('be-image-upload') as HTMLInputElement; const statusEl = $('upload-status')!;
+    const show = (m:string,c:string)=>{ statusEl.textContent=m; statusEl.style.color=c; statusEl.style.display='block'; };
+    if (!fileInput.files || !fileInput.files.length) { show('Pick an image first.', '#c0392b'); return; }
+    if (!GITHUB_TOKEN) { show('Please unlock the studio first.', '#c0392b'); return; }
     const file = fileInput.files[0];
-    statusEl.textContent = '⏳ Uploading to GitHub...';
-    statusEl.style.color = 'var(--text3)';
-    statusEl.style.display = 'block';
-
+    show('⏳ Uploading to GitHub…', 'var(--text3)');
     const reader = new FileReader();
     reader.onload = async e => {
       const base64Data = (e.target!.result as string).split(',')[1];
-      const cleanName  = file.name.replace(/[^a-zA-Z0-9.]/g, '-');
-      const filename   = `img-${Date.now()}-${cleanName}`;
-      // FIX: Astro builds public/ at site root — write to public/assets/uploads/
+      const cleanName = file.name.replace(/[^a-zA-Z0-9.]/g, '-');
+      const filename = `img-${Date.now()}-${cleanName}`;
       const path = `public/assets/uploads/${filename}`;
-      const url  = `https://api.github.com/repos/${REPO}/contents/${path}`;
-      const body = { message: `Upload image ${filename}`, content: base64Data, branch: 'main' };
-
+      const url = `https://api.github.com/repos/${REPO}/contents/${path}`;
       try {
-        const res = await fetch(url, {
-          method: 'PUT',
-          headers: {
-            'Authorization': `token ${GITHUB_TOKEN}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(body)
-        });
+        const res = await fetch(url, { method: 'PUT', headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: `Upload image ${filename}`, content: base64Data, branch: 'main' }) });
         if (!res.ok) { const err = await res.json(); throw new Error(err.message); }
-
-        // Astro serves public/ at /, so the runtime path is /assets/uploads/
-        const imgTag = `\n<img src="/assets/uploads/${filename}" style="max-width:100%;border-radius:8px;border:1.5px solid var(--border);box-shadow:4px 4px 0 var(--accent-light);margin:1.5rem 0;" alt="${escHtml(cleanName)}">\n`;
-        const bodyEl = document.getElementById('be-body') as HTMLTextAreaElement;
-        bodyEl.value += imgTag;
-
-        statusEl.textContent = '✅ Image uploaded and inserted!';
-        statusEl.style.color = 'var(--accent)';
-        fileInput.value = '';
-      } catch (error: any) {
-        statusEl.textContent = '❌ Upload failed: ' + error.message;
-        statusEl.style.color = '#c0392b';
-      }
+        const imgTag = `\n<img src="/assets/uploads/${filename}" style="max-width:100%;border-radius:8px;border:1px solid var(--border);margin:1.5rem 0;" alt="${escHtml(cleanName)}">\n`;
+        ($('be-body') as HTMLTextAreaElement).value += imgTag; markDirty();
+        show('✅ Uploaded and inserted into the body.', 'var(--accent)'); fileInput.value = '';
+      } catch (error: any) { show('❌ Upload failed: ' + error.message, '#c0392b'); }
     };
     reader.readAsDataURL(file);
   }
 
   // ── GITHUB PUBLISH ────────────────────────────────────────────
   async function saveAdminToGitHub(): Promise<void> {
-    const btn = document.getElementById('btn-save-github') as HTMLButtonElement;
-    btn.textContent = '⏳ Pushing...';
-    btn.disabled = true;
-
-    // Collect all form values into DATA before serialising
-    DATA.general.sitename           = getVal('g-sitename');
-    DATA.general.footerTagline      = getVal('g-footer-tagline');
-    DATA.general.footerYear         = getVal('g-footer-year');
-    DATA.general.feat1Title         = getVal('g-feat1-title');
-    DATA.general.feat1Desc          = getVal('g-feat1-desc');
-    DATA.general.feat1Link          = getVal('g-feat1-link');
-    DATA.general.feat1Emoji         = getVal('g-feat1-emoji');
-    DATA.general.feat2Title         = getVal('g-feat2-title');
-    DATA.general.feat2Desc          = getVal('g-feat2-desc');
-    DATA.general.feat2Link          = getVal('g-feat2-link');
-    DATA.general.stat1Num           = getVal('g-stat1-num');
-    DATA.general.stat1Label         = getVal('g-stat1-label');
-    DATA.general.stat2Num           = getVal('g-stat2-num');
-    DATA.general.stat2Label         = getVal('g-stat2-label');
-    DATA.general.stat3Num           = getVal('g-stat3-num');
-    DATA.general.stat3Label         = getVal('g-stat3-label');
-    DATA.general.featuredAppSelection = getVal('g-featured-app') || 'featured';
-
-    DATA.hero.eyebrow      = getVal('h-eyebrow');
-    DATA.hero.headline     = getVal('h-headline');
-    DATA.hero.headlineEm   = getVal('h-headline-em');
-    DATA.hero.sub          = getVal('h-sub');
-    DATA.hero.ctaPrimary   = getVal('h-cta-primary');
-    DATA.hero.ctaSecondary = getVal('h-cta-secondary');
-
-    DATA.about.headline  = getVal('ab-headline');
-    DATA.about.p1        = getVal('ab-p1');
-    DATA.about.p2        = getVal('ab-p2');
-    DATA.about.p3        = getVal('ab-p3');
-    DATA.about.p4        = getVal('ab-p4');
-    DATA.about.stack     = getVal('ab-stack');
-    DATA.about.cta1Text  = getVal('ab-cta1-text');
-    DATA.about.cta2Text  = getVal('ab-cta2-text');
-
-    DATA.appsFeature.title  = getVal('af-title');
-    DATA.appsFeature.desc   = getVal('af-desc');
-    DATA.appsFeature.link   = getVal('af-link');
-    DATA.appsFeature.tags   = getVal('af-tags');
-    DATA.appsFeature.status = (document.getElementById('af-status') as HTMLSelectElement)?.value || 'live';
-
-    DATA.links.github     = getVal('l-github');
-    DATA.links.pinterest  = getVal('l-pinterest');
-    DATA.links.newsletter = getVal('l-newsletter');
-    DATA.links.cta1       = getVal('l-cta1');
-    DATA.links.cta2       = getVal('l-cta2');
-
+    const btn = $('btn-save-github') as HTMLButtonElement;
+    btn.textContent = '⏳ Publishing…'; btn.disabled = true;
+    collectForms();
     try {
       const jsonData = JSON.stringify(DATA, null, 2);
-      // Encode as UTF-8 then base64 (handles non-ASCII characters safely)
       const bytes = new TextEncoder().encode(jsonData);
-      let binary = '';
-      bytes.forEach(b => binary += String.fromCharCode(b));
+      let binary = ''; bytes.forEach(b => binary += String.fromCharCode(b));
       const encodedContent = btoa(binary);
-
-      // FIX: Astro requires the file to live at public/data.json in the repo
       const url = `https://api.github.com/repos/${REPO}/contents/public/data.json`;
-
-      // Get current SHA so GitHub allows the PUT (update, not create)
       let sha: string | null = null;
-      const getRes = await fetch(url, {
-        headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
-      });
-      if (getRes.ok) {
-        const file = await getRes.json();
-        sha = file.sha;
-      }
-
-      const body: any = {
-        message: 'Content update via Admin Panel',
-        content: encodedContent,
-        branch: 'main'
-      };
+      const getRes = await fetch(url, { headers: { 'Authorization': `token ${GITHUB_TOKEN}` } });
+      if (getRes.ok) sha = (await getRes.json()).sha;
+      const body: any = { message: 'Content update via BharCode Studio', content: encodedContent, branch: 'main' };
       if (sha) body.sha = sha;
-
-      const putRes = await fetch(url, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `token ${GITHUB_TOKEN}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-      });
-      if (!putRes.ok) {
-        const errData = await putRes.json();
-        throw new Error(errData.message || 'Upload failed');
-      }
-
-      alert('✅ Published! Site rebuilds in ~60s.');
-      closeAdmin();
-    } catch (error: any) {
-      alert('❌ Error: ' + error.message);
-    } finally {
-      btn.textContent = '🚀 Publish to GitHub';
-      btn.disabled = false;
-    }
+      const putRes = await fetch(url, { method: 'PUT', headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      if (!putRes.ok) { const errData = await putRes.json(); throw new Error(errData.message || 'Upload failed'); }
+      try { localStorage.removeItem(DRAFT_KEY); } catch {}
+      setDirty(false);
+      const d = $('admin-dirty'); const t = $('admin-dirty-text');
+      if (d && t) { d.classList.add('saved'); t.textContent = 'Published — live in ~60s'; }
+      toast('Published! Your site rebuilds in about a minute.', 'ok', { ttl: 4000 });
+    } catch (error: any) { toast('Publish failed: ' + error.message, 'err', { ttl: 5000 }); }
+    finally { btn.textContent = '🚀 Publish'; btn.disabled = false; }
   }
 
-  // ── BLOG POSTS CRUD ───────────────────────────────────────────
+  // ── BLOG CRUD ─────────────────────────────────────────────────
   function renderAdminBlogList(): void {
-    const list = document.getElementById('blog-post-list');
-    if (!list) return;
+    const list = $('blog-post-list'); if (!list) return;
+    if (!(DATA.blogPosts||[]).length) { list.innerHTML = `<div class="admin-empty"><span class="em">✍️</span>No posts yet. Write your first build log below.</div>`; return; }
     list.innerHTML = '';
-    (DATA.blogPosts || []).forEach((post: any, i: number) => {
+    (DATA.blogPosts||[]).forEach((post:any,i:number)=>{
       const hasBody = post.body && post.body.trim().length > 10;
-      list.innerHTML += `
-        <div class="admin-item">
-          <div class="admin-item-info">
-            <div class="admin-item-title">${post.emoji || '📝'} ${escHtml(post.title)}</div>
-            <div class="admin-item-sub">${escHtml(post.category || '')} · ${hasBody ? '✅ Published' : '⚠️ hidden — no content'}</div>
-          </div>
-          <div class="admin-item-actions">
-            <button class="admin-icon-btn" data-edit-post="${i}">Edit</button>
-            <button class="admin-icon-btn del" data-delete-post="${i}">Del</button>
-          </div>
-        </div>`;
+      list.innerHTML += `<div class="admin-item">
+        <div class="admin-item-info"><div class="admin-item-title">${post.emoji||'📝'} ${escHtml(post.title)}</div>
+        <div class="admin-item-sub">${escHtml(post.category||'Uncategorised')} · ${hasBody?'✅ Published':'⚠️ Hidden draft'}</div></div>
+        <div class="admin-item-actions"><button class="admin-icon-btn" data-edit-post="${i}">Edit</button>
+        <button class="admin-icon-btn del" data-delete-post="${i}">Del</button></div></div>`;
     });
   }
-
   function renderFeaturedAppDropdown(): void {
-    const select = document.getElementById('g-featured-app') as HTMLSelectElement | null;
-    if (!select) return;
+    const select = $('g-featured-app') as HTMLSelectElement | null; if (!select) return;
     select.innerHTML = '';
-
-    // Option for the dedicated appsFeature object
-    if (DATA.appsFeature?.title) {
-      const opt = document.createElement('option');
-      opt.value = 'featured';
-      opt.textContent = `⭐ ${DATA.appsFeature.title} (Featured Bot)`;
-      select.appendChild(opt);
-    }
-
-    // Options for each project card
-    (DATA.appCards || []).forEach((card: any, i: number) => {
-      const opt = document.createElement('option');
-      opt.value = `app-${i}`;
-      opt.textContent = card.title || `App ${i + 1}`;
-      select.appendChild(opt);
-    });
-
-    // Restore saved selection
+    if (DATA.appsFeature?.title) { const o=document.createElement('option'); o.value='featured'; o.textContent=`⭐ ${DATA.appsFeature.title} (Featured)`; select.appendChild(o); }
+    (DATA.appCards||[]).forEach((c:any,i:number)=>{ const o=document.createElement('option'); o.value=`app-${i}`; o.textContent=c.title||`App ${i+1}`; select.appendChild(o); });
     const saved = DATA.general?.featuredAppSelection || 'featured';
-    if (select.querySelector(`option[value="${saved}"]`)) {
-      select.value = saved;
-    }
+    if (select.querySelector(`option[value="${saved}"]`)) select.value = saved;
   }
-
   function addBlogPost(): void {
     if (!DATA.blogPosts) DATA.blogPosts = [];
-    DATA.blogPosts.push({
-      id: Date.now(),
-      title: 'New Draft',
-      category: '',
-      date: '',
-      readtime: '',
-      emoji: '📝',
-      color: 'th-green',
-      excerpt: '',
-      body: ''
-    });
-    renderAdminBlogList();
-    editBlogPost(DATA.blogPosts.length - 1);
+    DATA.blogPosts.push({ id:Date.now(), title:'New Draft', category:'', date:'', readtime:'', emoji:'📝', color:'th-green', excerpt:'', body:'' });
+    renderAdminBlogList(); updateCounts(); markDirty(); editBlogPost(DATA.blogPosts.length-1);
   }
-
-  function editBlogPost(i: number): void {
-    const post = DATA.blogPosts[i];
-    if (!post) return;
-    editingPostId    = i;
-    editingBlogColor = post.color || 'th-green';
-
-    setVal('be-title',    post.title);
-    setVal('be-category', post.category);
-    setVal('be-date',     post.date);
-    setVal('be-readtime', post.readtime);
-    setVal('be-emoji',    post.emoji);
-    setVal('be-excerpt',  post.excerpt);
-    (document.getElementById('be-body') as HTMLTextAreaElement).value = post.body || '';
-
-    document.querySelectorAll('#be-color-row .color-opt').forEach(el => {
-      el.classList.toggle('selected', (el as HTMLElement).dataset.color === editingBlogColor);
-    });
-    document.getElementById('blog-editor')!.style.display = 'block';
+  function editBlogPost(i:number): void {
+    const post = DATA.blogPosts[i]; if (!post) return;
+    editingPostId = i; editingBlogColor = post.color || 'th-green';
+    setVal('be-title',post.title); setVal('be-category',post.category); setVal('be-date',post.date);
+    setVal('be-readtime',post.readtime); setVal('be-emoji',post.emoji); setVal('be-excerpt',post.excerpt);
+    ($('be-body') as HTMLTextAreaElement).value = post.body || '';
+    document.querySelectorAll('#be-color-row .color-opt').forEach(el=>el.classList.toggle('selected',(el as HTMLElement).dataset.color===editingBlogColor));
+    $('blog-editor')!.style.display = 'block';
+    $('blog-editor')!.scrollIntoView({ behavior:'smooth', block:'nearest' });
   }
-
   function saveBlogPost(): void {
     if (editingPostId === null) return;
     const post = DATA.blogPosts[editingPostId];
-    post.title    = getVal('be-title');
-    post.category = getVal('be-category');
-    post.date     = getVal('be-date');
-    post.readtime = getVal('be-readtime');
-    post.emoji    = getVal('be-emoji') || '📝';
-    post.color    = editingBlogColor;
-    post.excerpt  = getVal('be-excerpt');
-    post.body     = (document.getElementById('be-body') as HTMLTextAreaElement).value;
-
-    editingPostId = null;
-    document.getElementById('blog-editor')!.style.display = 'none';
-    renderAdminBlogList();
-    alert('Draft saved! Click "Publish to GitHub" to make it live.');
+    post.title=getVal('be-title'); post.category=getVal('be-category'); post.date=getVal('be-date');
+    post.readtime=getVal('be-readtime'); post.emoji=getVal('be-emoji')||'📝'; post.color=editingBlogColor;
+    post.excerpt=getVal('be-excerpt'); post.body=($('be-body') as HTMLTextAreaElement).value;
+    editingPostId=null; $('blog-editor')!.style.display='none';
+    renderAdminBlogList(); updateCounts(); markDirty(); toast('Post saved to draft.', 'ok');
   }
+  function cancelBlogEdit(): void { editingPostId=null; $('blog-editor')!.style.display='none'; }
+  function deleteBlogPost(i:number): void { removeWithUndo('blogPosts', i, DATA.blogPosts[i]?.title || 'Post', () => { renderAdminBlogList(); updateCounts(); }); }
 
-  function cancelBlogEdit(): void {
-    editingPostId = null;
-    document.getElementById('blog-editor')!.style.display = 'none';
-  }
-
-  function deleteBlogPost(i: number): void {
-    if (confirm('Delete this post? This cannot be undone.')) {
-      DATA.blogPosts.splice(i, 1);
-      renderAdminBlogList();
-    }
-  }
-
-  // ── APP CARDS CRUD ────────────────────────────────────────────
+  // ── APP CRUD ──────────────────────────────────────────────────
   function renderAdminAppCards(): void {
-    const list = document.getElementById('apps-card-list');
-    if (!list) return;
+    const list = $('apps-card-list'); if (!list) return;
+    if (!(DATA.appCards||[]).length) { list.innerHTML = `<div class="admin-empty"><span class="em">🚀</span>No projects yet. Add your first one below.</div>`; return; }
     list.innerHTML = '';
-    (DATA.appCards || []).forEach((card: any, i: number) => {
-      list.innerHTML += `
-        <div class="admin-item">
-          <div class="admin-item-info">
-            <div class="admin-item-title">${escHtml(card.title)}</div>
-            <div class="admin-item-sub">${escHtml(card.status)} · ${escHtml(card.tags)}</div>
-          </div>
-          <div class="admin-item-actions">
-            <button class="admin-icon-btn" data-edit-app="${i}">Edit</button>
-            <button class="admin-icon-btn del" data-delete-app="${i}">Del</button>
-          </div>
-        </div>`;
+    (DATA.appCards||[]).forEach((card:any,i:number)=>{
+      list.innerHTML += `<div class="admin-item"><div class="admin-item-info">
+        <div class="admin-item-title">${escHtml(card.title)}</div>
+        <div class="admin-item-sub">${escHtml(card.status)} · ${escHtml(card.tags||'no tags')}</div></div>
+        <div class="admin-item-actions"><button class="admin-icon-btn" data-edit-app="${i}">Edit</button>
+        <button class="admin-icon-btn del" data-delete-app="${i}">Del</button></div></div>`;
     });
   }
-
   function addAppCard(): void {
     if (!DATA.appCards) DATA.appCards = [];
-    DATA.appCards.push({
-      id: Date.now(),
-      title: 'New Project',
-      desc: '',
-      status: 'soon',
-      tags: '',
-      link: ''
-    });
-    renderAdminAppCards();
-    editAppCard(DATA.appCards.length - 1);
+    DATA.appCards.push({ id:Date.now(), title:'New Project', desc:'', status:'soon', tags:'', link:'' });
+    renderAdminAppCards(); updateCounts(); markDirty(); editAppCard(DATA.appCards.length-1);
   }
-
-  function editAppCard(i: number): void {
-    const card = DATA.appCards[i];
-    if (!card) return;
-    editingAppId = i;
-
-    setVal('ae-title', card.title);
-    setVal('ae-desc',  card.desc);
-    setVal('ae-tags',  card.tags);
-    setVal('ae-link',  card.link);
-    (document.getElementById('ae-status') as HTMLSelectElement).value = card.status || 'soon';
-    document.getElementById('app-editor')!.style.display = 'block';
+  function editAppCard(i:number): void {
+    const card = DATA.appCards[i]; if (!card) return; editingAppId = i;
+    setVal('ae-title',card.title); setVal('ae-desc',card.desc); setVal('ae-tags',card.tags); setVal('ae-link',card.link);
+    ($('ae-status') as HTMLSelectElement).value = card.status || 'soon';
+    $('app-editor')!.style.display='block'; $('app-editor')!.scrollIntoView({ behavior:'smooth', block:'nearest' });
   }
-
   function saveAppCard(): void {
     if (editingAppId === null) return;
-    const card  = DATA.appCards[editingAppId];
-    card.title  = getVal('ae-title');
-    card.desc   = getVal('ae-desc');
-    card.tags   = getVal('ae-tags');
-    card.link   = getVal('ae-link');
-    card.status = (document.getElementById('ae-status') as HTMLSelectElement).value;
-
-    editingAppId = null;
-    document.getElementById('app-editor')!.style.display = 'none';
-    renderAdminAppCards();
-    renderFeaturedAppDropdown();   // FIX: keep dropdown in sync after card save
-    alert('Project saved!');
+    const card = DATA.appCards[editingAppId];
+    card.title=getVal('ae-title'); card.desc=getVal('ae-desc'); card.tags=getVal('ae-tags'); card.link=getVal('ae-link');
+    card.status=($('ae-status') as HTMLSelectElement).value;
+    editingAppId=null; $('app-editor')!.style.display='none';
+    renderAdminAppCards(); renderFeaturedAppDropdown(); markDirty(); toast('Project saved to draft.', 'ok');
   }
+  function cancelAppEdit(): void { editingAppId=null; $('app-editor')!.style.display='none'; }
+  function deleteAppCard(i:number): void { removeWithUndo('appCards', i, DATA.appCards[i]?.title || 'Project', () => { renderAdminAppCards(); renderFeaturedAppDropdown(); updateCounts(); }); }
 
-  function cancelAppEdit(): void {
-    editingAppId = null;
-    document.getElementById('app-editor')!.style.display = 'none';
-  }
-
-  function deleteAppCard(i: number): void {
-    if (confirm('Delete this project?')) {
-      DATA.appCards.splice(i, 1);
-      renderAdminAppCards();
-      renderFeaturedAppDropdown(); // FIX: keep dropdown in sync after delete
-    }
-  }
-
-  // ── COST ITEMS ────────────────────────────────────────────────
+  // ── COST ITEMS (inline editor, no prompts) ────────────────────
   function renderAdminCostItems(): void {
-    const list = document.getElementById('cost-items-list');
-    if (!list) return;
+    const list = $('cost-items-list'); if (!list) return;
+    if (!(DATA.costItems||[]).length) { list.innerHTML = `<div class="admin-empty">No cost items yet.</div>`; return; }
     list.innerHTML = '';
-    (DATA.costItems || []).forEach((item: any, i: number) => {
-      list.innerHTML += `
-        <div class="admin-item">
-          <div class="admin-item-info">
-            <div class="admin-item-title">${escHtml(item.name)}</div>
-            <div class="admin-item-sub">${escHtml(item.value)}</div>
-          </div>
-          <div class="admin-item-actions">
-            <button class="admin-icon-btn" data-edit-cost="${i}">Edit</button>
-            <button class="admin-icon-btn del" data-delete-cost="${i}">Del</button>
-          </div>
-        </div>`;
+    (DATA.costItems||[]).forEach((item:any,i:number)=>{
+      list.innerHTML += `<div class="admin-item"><div class="admin-item-info">
+        <div class="admin-item-title">${escHtml(item.name)}${item.isTotal?' <span style="font-family:var(--font-mono);font-size:.6rem;color:var(--accent)">· TOTAL</span>':''}</div>
+        <div class="admin-item-sub">${escHtml(item.value)}</div></div>
+        <div class="admin-item-actions"><button class="admin-icon-btn" data-edit-cost="${i}">Edit</button>
+        <button class="admin-icon-btn del" data-delete-cost="${i}">Del</button></div></div>`;
     });
   }
-
-  function addCostItem(): void {
-    const name = prompt('Item name:');
-    if (!name) return;
-    const value = prompt('Value (e.g. Free, $10/yr):');
-    if (!DATA.costItems) DATA.costItems = [];
-    DATA.costItems.push({
-      id: Date.now(),
-      name,
-      value:   value || 'Free',
-      isFree:  (value || '').toLowerCase() === 'free',
-      isTotal: false
+  function costEditor(i:number|null): void {
+    const box = $('cost-editor')!; const item = i===null ? { name:'', value:'Free', isTotal:false } : DATA.costItems[i];
+    box.innerHTML = `<div class="admin-inline">
+      <div><div class="admin-label">Item name</div><input class="admin-input" id="ci-name" value="${escHtml(item.name)}"></div>
+      <div><div class="admin-label">Value</div><input class="admin-input" id="ci-value" value="${escHtml(item.value)}" placeholder="Free, $10/yr"></div>
+      <div class="admin-inline-actions"><button class="admin-btn" id="ci-save">Save</button><button class="admin-btn secondary" id="ci-cancel">✕</button></div>
+      <label class="full" style="display:flex;align-items:center;gap:8px;font-size:.78rem;color:var(--text2);cursor:pointer;">
+        <input type="checkbox" id="ci-total" ${item.isTotal?'checked':''}> Mark as the bold total row</label></div>`;
+    ($('ci-name') as HTMLInputElement).focus();
+    $('ci-save')!.addEventListener('click', () => {
+      const name=getVal('ci-name'); if (!name) { toast('Give the item a name.', 'warn'); return; }
+      const value=getVal('ci-value')||'Free'; const isTotal=($('ci-total') as HTMLInputElement).checked;
+      const rec={ id:item.id||Date.now(), name, value, isFree:value.toLowerCase()==='free', isTotal };
+      if (i===null) { (DATA.costItems=DATA.costItems||[]).push(rec); } else { DATA.costItems[i]=rec; }
+      box.innerHTML=''; renderAdminCostItems(); markDirty(); toast('Cost item saved.', 'ok');
     });
-    renderAdminCostItems();
+    $('ci-cancel')!.addEventListener('click', () => box.innerHTML='');
   }
+  function deleteCostItem(i:number): void { removeWithUndo('costItems', i, DATA.costItems[i]?.name || 'Item', renderAdminCostItems); }
 
-  function editCostItem(i: number): void {
-    const item  = DATA.costItems[i];
-    const name  = prompt('Name:', item.name);
-    if (name  !== null) item.name = name;
-    const value = prompt('Value:', item.value);
-    if (value !== null) { item.value = value; item.isFree = value.toLowerCase() === 'free'; }
-    renderAdminCostItems();
-  }
-
-  function deleteCostItem(i: number): void {
-    if (confirm('Delete this cost item?')) {
-      DATA.costItems.splice(i, 1);
-      renderAdminCostItems();
-    }
-  }
-
-  // ── ROADMAP ───────────────────────────────────────────────────
+  // ── ROADMAP (inline editor) ───────────────────────────────────
   function renderAdminRoadmapItems(): void {
-    const list = document.getElementById('roadmap-items-list');
-    if (!list) return;
+    const list = $('roadmap-items-list'); if (!list) return;
+    if (!(DATA.roadmapItems||[]).length) { list.innerHTML = `<div class="admin-empty">No milestones yet.</div>`; return; }
     list.innerHTML = '';
-    (DATA.roadmapItems || []).forEach((item: any, i: number) => {
-      list.innerHTML += `
-        <div class="admin-item">
-          <div class="admin-item-info">
-            <div class="admin-item-title">${escHtml(item.label)}</div>
-            <div class="admin-item-sub">${escHtml(item.value)}</div>
-          </div>
-          <div class="admin-item-actions">
-            <button class="admin-icon-btn" data-edit-roadmap="${i}">Edit</button>
-            <button class="admin-icon-btn del" data-delete-roadmap="${i}">Del</button>
-          </div>
-        </div>`;
+    (DATA.roadmapItems||[]).forEach((item:any,i:number)=>{
+      list.innerHTML += `<div class="admin-item"><div class="admin-item-info">
+        <div class="admin-item-title">${escHtml(item.label)}</div><div class="admin-item-sub">${escHtml(item.value)}</div></div>
+        <div class="admin-item-actions"><button class="admin-icon-btn" data-edit-roadmap="${i}">Edit</button>
+        <button class="admin-icon-btn del" data-delete-roadmap="${i}">Del</button></div></div>`;
     });
   }
-
-  function addRoadmapItem(): void {
-    const label = prompt('Label (e.g. Month 3 target):');
-    if (!label) return;
-    const value = prompt('Value (e.g. $300/month):');
-    if (!DATA.roadmapItems) DATA.roadmapItems = [];
-    DATA.roadmapItems.push({
-      id: Date.now(),
-      label,
-      value:  value || '',
-      accent: false
+  function roadmapEditor(i:number|null): void {
+    const box = $('roadmap-editor')!; const item = i===null ? { label:'', value:'' } : DATA.roadmapItems[i];
+    box.innerHTML = `<div class="admin-inline">
+      <div><div class="admin-label">Label</div><input class="admin-input" id="ri-label" value="${escHtml(item.label)}" placeholder="Month 3 target"></div>
+      <div><div class="admin-label">Value</div><input class="admin-input" id="ri-value" value="${escHtml(item.value)}" placeholder="First commissions"></div>
+      <div class="admin-inline-actions"><button class="admin-btn" id="ri-save">Save</button><button class="admin-btn secondary" id="ri-cancel">✕</button></div></div>`;
+    ($('ri-label') as HTMLInputElement).focus();
+    $('ri-save')!.addEventListener('click', () => {
+      const label=getVal('ri-label'); if (!label) { toast('Give the milestone a label.', 'warn'); return; }
+      const rec={ id:item.id||Date.now(), label, value:getVal('ri-value'), accent:item.accent||false };
+      if (i===null) { (DATA.roadmapItems=DATA.roadmapItems||[]).push(rec); } else { DATA.roadmapItems[i]=rec; }
+      box.innerHTML=''; renderAdminRoadmapItems(); markDirty(); toast('Milestone saved.', 'ok');
     });
-    renderAdminRoadmapItems();
+    $('ri-cancel')!.addEventListener('click', () => box.innerHTML='');
+  }
+  function deleteRoadmapItem(i:number): void { removeWithUndo('roadmapItems', i, DATA.roadmapItems[i]?.label || 'Milestone', renderAdminRoadmapItems); }
+
+  // ── DELETE WITH UNDO (friendly, no scary confirm) ─────────────
+  function removeWithUndo(arrName: string, i: number, label: string, rerender: () => void): void {
+    const arr = (DATA as any)[arrName]; if (!arr) return;
+    const [removed] = arr.splice(i, 1);
+    rerender(); updateCounts(); markDirty();
+    toast(`Deleted “${label}”.`, 'warn', { action: 'Undo', ttl: 6000,
+      onAction: () => { arr.splice(Math.min(i, arr.length), 0, removed); rerender(); updateCounts(); markDirty(); toast('Restored.', 'ok'); } });
   }
 
-  function editRoadmapItem(i: number): void {
-    const item  = DATA.roadmapItems[i];
-    const label = prompt('Label:', item.label);
-    if (label !== null) item.label = label;
-    const value = prompt('Value:', item.value);
-    if (value !== null) item.value = value;
-    renderAdminRoadmapItems();
-  }
-
-  function deleteRoadmapItem(i: number): void {
-    if (confirm('Delete this milestone?')) {
-      DATA.roadmapItems.splice(i, 1);
-      renderAdminRoadmapItems();
-    }
-  }
-
-  // ── EVENT LISTENERS ───────────────────────────────────────────
+  // ── EVENTS ────────────────────────────────────────────────────
   document.addEventListener('DOMContentLoaded', () => {
     loadData();
 
-    // Trigger / login
-    document.getElementById('admin-trigger')?.addEventListener('click', openAdminLogin);
-    document.getElementById('verify-login-btn')?.addEventListener('click', checkAdminPw);
-    document.getElementById('cancel-login-btn')?.addEventListener('click', closeAdminLogin);
-    document.getElementById('admin-login')?.addEventListener('click', e => {
-      if (e.target === e.currentTarget) closeAdminLogin();
-    });
-    // FIX: allow Enter key to submit the login form
-    document.getElementById('admin-pw')?.addEventListener('keydown', (e: KeyboardEvent) => {
-      if (e.key === 'Enter') checkAdminPw();
-    });
+    $('admin-trigger')?.addEventListener('click', openAdminLogin);
+    $('verify-login-btn')?.addEventListener('click', checkAdminPw);
+    $('cancel-login-btn')?.addEventListener('click', closeAdminLogin);
+    $('admin-login')?.addEventListener('click', e => { if (e.target === e.currentTarget) closeAdminLogin(); });
+    $('admin-pw')?.addEventListener('keydown', (e: any) => { if (e.key === 'Enter') checkAdminPw(); });
 
-    // Panel
-    document.getElementById('close-admin-btn')?.addEventListener('click', closeAdmin);
-    document.getElementById('cancel-admin-btn')?.addEventListener('click', closeAdmin);
-    document.getElementById('admin-overlay')?.addEventListener('click', e => {
-      if (e.target === e.currentTarget) closeAdmin();
-    });
+    $('close-admin-btn')?.addEventListener('click', closeAdmin);
+    $('cancel-admin-btn')?.addEventListener('click', closeAdmin);
+    $('admin-logout')?.addEventListener('click', logout);
+    $('admin-overlay')?.addEventListener('click', e => { if (e.target === e.currentTarget) closeAdmin(); });
+    $('btn-save-github')?.addEventListener('click', saveAdminToGitHub);
+    $('upload-image-btn')?.addEventListener('click', handleImageUpload);
 
-    // Save / upload
-    document.getElementById('btn-save-github')?.addEventListener('click', saveAdminToGitHub);
-    document.getElementById('upload-image-btn')?.addEventListener('click', handleImageUpload);
+    document.querySelectorAll('.admin-navitem').forEach(tab => tab.addEventListener('click', () => switchAdminTab((tab as HTMLElement).dataset.tab || '')));
 
-    // Tab switching (event delegation via data-tab)
-    document.querySelectorAll('.admin-tab').forEach(tab => {
-      tab.addEventListener('click', () => switchAdminTab((tab as HTMLElement).dataset.tab || ''));
-    });
+    // dirty tracking on every field in the body
+    $('admin-body')?.addEventListener('input', markDirty);
+    $('admin-body')?.addEventListener('change', markDirty);
 
-    // Blog actions (delegation)
-    document.getElementById('add-blog-post-btn')?.addEventListener('click', addBlogPost);
-    document.getElementById('save-blog-post-btn')?.addEventListener('click', saveBlogPost);
-    document.getElementById('cancel-blog-edit-btn')?.addEventListener('click', cancelBlogEdit);
-    document.getElementById('blog-post-list')?.addEventListener('click', e => {
-      const t = e.target as HTMLElement;
-      if (t.dataset.editPost   !== undefined) editBlogPost(parseInt(t.dataset.editPost));
-      if (t.dataset.deletePost !== undefined) deleteBlogPost(parseInt(t.dataset.deletePost));
-    });
+    // blog
+    $('add-blog-post-btn')?.addEventListener('click', addBlogPost);
+    $('save-blog-post-btn')?.addEventListener('click', saveBlogPost);
+    $('cancel-blog-edit-btn')?.addEventListener('click', cancelBlogEdit);
+    $('blog-post-list')?.addEventListener('click', e => { const t=e.target as HTMLElement;
+      if (t.dataset.editPost!==undefined) editBlogPost(+t.dataset.editPost!);
+      if (t.dataset.deletePost!==undefined) deleteBlogPost(+t.dataset.deletePost!); });
+    document.querySelectorAll('#be-color-row .color-opt').forEach(el => el.addEventListener('click', () => {
+      editingBlogColor=(el as HTMLElement).dataset.color||'th-green';
+      document.querySelectorAll('#be-color-row .color-opt').forEach(e=>e.classList.remove('selected')); el.classList.add('selected'); markDirty(); }));
 
-    // Color picker
-    document.querySelectorAll('#be-color-row .color-opt').forEach(el => {
-      el.addEventListener('click', () => {
-        editingBlogColor = (el as HTMLElement).dataset.color || 'th-green';
-        document.querySelectorAll('#be-color-row .color-opt').forEach(e => e.classList.remove('selected'));
-        el.classList.add('selected');
-      });
-    });
+    // apps
+    $('add-app-card-btn')?.addEventListener('click', addAppCard);
+    $('save-app-card-btn')?.addEventListener('click', saveAppCard);
+    $('cancel-app-edit-btn')?.addEventListener('click', cancelAppEdit);
+    $('apps-card-list')?.addEventListener('click', e => { const t=e.target as HTMLElement;
+      if (t.dataset.editApp!==undefined) editAppCard(+t.dataset.editApp!);
+      if (t.dataset.deleteApp!==undefined) deleteAppCard(+t.dataset.deleteApp!); });
 
-    // App card actions (delegation)
-    document.getElementById('add-app-card-btn')?.addEventListener('click', addAppCard);
-    document.getElementById('save-app-card-btn')?.addEventListener('click', saveAppCard);
-    document.getElementById('cancel-app-edit-btn')?.addEventListener('click', cancelAppEdit);
-    document.getElementById('apps-card-list')?.addEventListener('click', e => {
-      const t = e.target as HTMLElement;
-      if (t.dataset.editApp   !== undefined) editAppCard(parseInt(t.dataset.editApp));
-      if (t.dataset.deleteApp !== undefined) deleteAppCard(parseInt(t.dataset.deleteApp));
-    });
+    // cost
+    $('add-cost-item-btn')?.addEventListener('click', () => costEditor(null));
+    $('cost-items-list')?.addEventListener('click', e => { const t=e.target as HTMLElement;
+      if (t.dataset.editCost!==undefined) costEditor(+t.dataset.editCost!);
+      if (t.dataset.deleteCost!==undefined) deleteCostItem(+t.dataset.deleteCost!); });
 
-    // Cost items (delegation)
-    document.getElementById('add-cost-item-btn')?.addEventListener('click', addCostItem);
-    document.getElementById('cost-items-list')?.addEventListener('click', e => {
-      const t = e.target as HTMLElement;
-      if (t.dataset.editCost   !== undefined) editCostItem(parseInt(t.dataset.editCost));
-      if (t.dataset.deleteCost !== undefined) deleteCostItem(parseInt(t.dataset.deleteCost));
-    });
-
-    // Roadmap (delegation)
-    document.getElementById('add-roadmap-item-btn')?.addEventListener('click', addRoadmapItem);
-    document.getElementById('roadmap-items-list')?.addEventListener('click', e => {
-      const t = e.target as HTMLElement;
-      if (t.dataset.editRoadmap   !== undefined) editRoadmapItem(parseInt(t.dataset.editRoadmap));
-      if (t.dataset.deleteRoadmap !== undefined) deleteRoadmapItem(parseInt(t.dataset.deleteRoadmap));
-    });
+    // roadmap
+    $('add-roadmap-item-btn')?.addEventListener('click', () => roadmapEditor(null));
+    $('roadmap-items-list')?.addEventListener('click', e => { const t=e.target as HTMLElement;
+      if (t.dataset.editRoadmap!==undefined) roadmapEditor(+t.dataset.editRoadmap!);
+      if (t.dataset.deleteRoadmap!==undefined) deleteRoadmapItem(+t.dataset.deleteRoadmap!); });
   });
 </script>
