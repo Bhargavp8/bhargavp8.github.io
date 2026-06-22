@@ -1,0 +1,42 @@
+---
+// A hidden, unlisted doorway to the gift. Not linked anywhere, kept out of the
+// sitemap, and marked noindex so it doesn't show up in search. Works on any
+// device (unlike the keystroke easter egg) — she just opens this URL.
+const dest = "https://red-thread-umber.vercel.app";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>for you</title>
+    <meta http-equiv="refresh" content={`0; url=${dest}`} />
+    <link rel="canonical" href={dest} />
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+      body {
+        display: grid;
+        place-items: center;
+        background: #f5efe2;
+        color: #6b5b4d;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 1.1rem;
+      }
+      a {
+        color: #2c4bd4;
+      }
+    </style>
+    <script is:inline>
+      window.location.replace("https://red-thread-umber.vercel.app");
+    </script>
+  </head>
+  <body>
+    <p>taking you there… <a href={dest}>tap here if it doesn't</a></p>
+  </body>
+</html>
