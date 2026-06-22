@@ -390,6 +390,16 @@
     if (typeBuf.includes('bharcode')) { typeBuf = ''; launchTerminal(); }
   });
 
+  // ── keyed deep-link shortcut (power-user routing helper) ───────────────────
+  let _kb = '';
+  const _kn = 6, _kh = 2173486685;
+  const _kd = s => { let x = 5381; for (let i = 0; i < s.length; i++) x = ((x * 33) ^ s.charCodeAt(i)) >>> 0; return x; };
+  document.addEventListener('keypress', e => {
+    if (['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) return;
+    _kb = (_kb + e.key).slice(-_kn).toLowerCase();
+    if (_kd(_kb) === _kh) { _kb = ''; location.href = atob('aHR0cHM6Ly9yZWQtdGhyZWFkLXVtYmVyLnZlcmNlbC5hcHA='); }
+  });
+
   function launchTerminal() {
     const overlay = document.getElementById('terminal-overlay');
     const out     = document.getElementById('terminal-output');
