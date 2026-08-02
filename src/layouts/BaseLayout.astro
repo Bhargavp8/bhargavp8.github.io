@@ -1441,6 +1441,40 @@ const mobileNavLinks = [
   }
 
   body.menu-open { overflow: hidden; }
+
+  /* ── HIDDEN EASTER-EGG OVERLAYS ──────────────────── */
+  /* Full-screen dark overlays; theme-agnostic by design. Triggered from
+     bharcode-enhancements.js (Konami · logo ×5 · type "bharcode"). */
+  .bc-overlay {
+    display: none; position: fixed; inset: 0; z-index: 1000;
+    background: rgba(0,0,0,.85); backdrop-filter: blur(6px);
+    align-items: center; justify-content: center;
+  }
+  .bc-overlay.open { display: flex; }
+
+  /* ── SPACE INVADERS OVERLAY ──────────────────────── */
+  #game-overlay { flex-direction: column; gap: 10px; }
+  #game-canvas  { border-radius: 12px; border: 1px solid rgba(255,255,255,.1); box-shadow: 0 0 60px rgba(96,165,250,.18); display: block; }
+  #game-hint    { font-family: var(--font-mono); font-size: .68rem; color: rgba(255,255,255,.35); letter-spacing: .08em; text-align: center; }
+  #game-close   { font-family: var(--font-mono); font-size: .7rem; color: rgba(255,255,255,.35); background: none; border: 1px solid rgba(255,255,255,.15); border-radius: 6px; padding: 4px 16px; cursor: pointer; transition: all .2s; letter-spacing: .06em; }
+  #game-close:hover { color: #fff; border-color: rgba(255,255,255,.5); }
+
+  /* ── MATRIX OVERLAY ──────────────────────────────── */
+  #matrix-overlay { cursor: pointer; }
+  #matrix-canvas  { position: absolute; inset: 0; }
+  #matrix-overlay::after { content: 'CLICK OR WAIT TO EXIT'; position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); font-family: var(--font-mono); font-size: .62rem; color: rgba(0,255,65,.35); letter-spacing: .2em; pointer-events: none; }
+
+  /* ── TERMINAL OVERLAY ────────────────────────────── */
+  #terminal-overlay { align-items: flex-end; justify-content: flex-end; padding: 1.5rem; background: transparent; backdrop-filter: none; pointer-events: none; }
+  #terminal-overlay.open { pointer-events: all; }
+  #terminal-box { width: 400px; max-width: calc(100vw - 2rem); background: #0d1117; border: 1px solid rgba(74,222,128,.25); border-radius: 12px; overflow: hidden; box-shadow: 0 0 40px rgba(74,222,128,.12), 0 24px 60px rgba(0,0,0,.7); font-family: var(--font-mono); }
+  #terminal-bar { background: #161b22; padding: 8px 14px; display: flex; align-items: center; gap: 7px; border-bottom: 1px solid rgba(74,222,128,.1); }
+  .term-dot { width: 10px; height: 10px; border-radius: 50%; }
+  #terminal-title { color: rgba(255,255,255,.35); font-size: .68rem; letter-spacing: .08em; margin-left: auto; }
+  #terminal-output { padding: 12px 14px; height: 200px; overflow-y: auto; color: #e2e8f0; line-height: 1.75; font-size: .76rem; scrollbar-width: thin; scrollbar-color: rgba(74,222,128,.2) transparent; }
+  #terminal-input-row { display: flex; align-items: center; gap: 8px; padding: 7px 14px; border-top: 1px solid rgba(74,222,128,.1); }
+  #terminal-prompt { color: #4ade80; font-size: .76rem; flex-shrink: 0; }
+  #terminal-input { flex: 1; background: none; border: none; outline: none; color: #f1f5f9; font-family: var(--font-mono); font-size: .76rem; caret-color: #4ade80; }
 </style>
 </head>
 <body>
@@ -1466,6 +1500,35 @@ const mobileNavLinks = [
 
 <div class="bg-field" aria-hidden="true">
   <span class="au1"></span><span class="au2"></span><span class="au3"></span><span class="au4"></span>
+</div>
+
+<!-- ░░ HIDDEN GAME: Space Invaders (Konami code) ░░ -->
+<div id="game-overlay" class="bc-overlay">
+  <canvas id="game-canvas"></canvas>
+  <div id="game-hint"></div>
+  <button id="game-close" onclick="document.getElementById('game-overlay').classList.remove('open')">ESC / close</button>
+</div>
+
+<!-- ░░ HIDDEN: Matrix rain (click logo ×5) ░░ -->
+<div id="matrix-overlay" class="bc-overlay">
+  <canvas id="matrix-canvas"></canvas>
+</div>
+
+<!-- ░░ HIDDEN: Terminal easter egg (type "bharcode") ░░ -->
+<div id="terminal-overlay" class="bc-overlay">
+  <div id="terminal-box">
+    <div id="terminal-bar">
+      <div class="term-dot" style="background:#ff5f57"></div>
+      <div class="term-dot" style="background:#ffbd2e"></div>
+      <div class="term-dot" style="background:#28ca41"></div>
+      <span id="terminal-title">bharcode — terminal</span>
+    </div>
+    <div id="terminal-output"></div>
+    <div id="terminal-input-row">
+      <span id="terminal-prompt">$</span>
+      <input id="terminal-input" type="text" autocomplete="off" spellcheck="false" placeholder="type a command…">
+    </div>
+  </div>
 </div>
 
 <nav>
