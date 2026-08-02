@@ -24,12 +24,7 @@ const livePosts = (blogPosts || [])
 
   <!-- HERO -->
   <div class="hero hero-cinematic" style="position:relative;overflow:hidden;">
-    <!-- Hand-built 3D lattice: spins on its own, follows the mouse, drag to throw, tilt to gyro -->
-    <div class="hero-orbit" aria-hidden="true"></div>
-    <canvas id="hero-lattice" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;opacity:0.95;"></canvas>
-    <div class="scroll-cue" aria-hidden="true">Scroll<div class="bar"></div></div>
-
-    <div style="position:relative;z-index:1;" data-tour="hero" data-depth="14">
+    <div style="position:relative;z-index:1;">
       <div class="hero-eyebrow hero-fade-in" style="--d:0s">
         <div class="hero-dot"></div>
         <span data-scramble>{hero?.eyebrow || 'Singapore · CS Student · Building in Public'}</span>
@@ -44,12 +39,8 @@ const livePosts = (blogPosts || [])
       <div class="hero-actions hero-fade-in" style="--d:.36s">
         <a href="/work" class="btn-primary">{hero?.ctaPrimary || 'See My Work'}</a>
         <a href="/blog" class="btn-outline">{hero?.ctaSecondary || 'Read the Blog'}</a>
-        <button id="gyro-btn" class="gyro-btn" type="button" aria-label="Enable tilt interaction">
-          <span class="gyro-ico" aria-hidden="true"></span>
-          <span class="gyro-label">Tilt to explore</span>
-        </button>
       </div>
-      <div class="hero-stats hero-fade-in" style="--d:.5s" data-tour="stats">
+      <div class="hero-stats hero-fade-in" style="--d:.5s">
         <div>
           <div class="stat-num">{general?.stat1Num || '$10'}</div>
           <div class="stat-label">{general?.stat1Label || 'Annual cost'}</div>
@@ -66,7 +57,7 @@ const livePosts = (blogPosts || [])
     </div>
 
     <!-- PIN STACK — 3 most recent live posts -->
-    <div data-depth="30">
+    <div>
       <div class="pin-preview-stack">
         {livePosts.length === 0 ? (
           <div style="font-size:0.8rem;color:var(--text3);border:1.5px dashed var(--border);padding:2rem;border-radius:8px;text-align:center;grid-column:span 2;">
@@ -99,7 +90,7 @@ const livePosts = (blogPosts || [])
 
   <!-- SELECTED WORK STRIP -->
   <div class="work-strip-wrap">
-    <div class="work-strip" data-tour="work">
+    <div class="work-strip">
       <div class="work-strip-label">Selected Work</div>
       <div class="work-strip-cards">
 
@@ -141,7 +132,7 @@ const livePosts = (blogPosts || [])
   </div>
 
   <!-- EMAIL CAPTURE -->
-  <div style="border-top:1.5px solid var(--border);border-bottom:1.5px solid var(--border);background:var(--bg-alt);" data-tour="newsletter">
+  <div style="border-top:1.5px solid var(--border);border-bottom:1.5px solid var(--border);background:var(--bg-alt);">
     <div class="newsletter-inner">
       <div>
         <div class="section-label">Free Newsletter</div>
