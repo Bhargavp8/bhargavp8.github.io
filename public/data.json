@@ -51,10 +51,10 @@
     {
       "id": 1776824961624,
       "title": "Sliqe",
-      "desc": "A hyper-local, two-sided marketplace designed to eliminate urban food waste through dynamic pricing. To solve the notorious friction of F&B tech adoption, the platform features a streamlined 30-second vendor inventory portal. On the consumer side, a time-decay algorithm systematically drops surplus food prices as closing time approaches, driving impulse conversions via location-based push notifications.",
-      "status": "building",
-      "tags": "Product Strategy, UI/UX Design, Two-Sided Marketplace, Dynamic Pricing, MVP, Figma",
-      "link": ""
+      "desc": "A hyper-local, two-sided marketplace for rescuing surplus food in Singapore. Vendors publish a blind box in about 30 seconds; diners find one near them on a live map, reserve it at a locked price, pay into escrow, and collect with a QR pass that releases the payment to the vendor only on scan. The differentiator: every box is matched to the diner's dietary requirements, and those requirements surface on the vendor's packing ticket — so a mystery box is still safe if you're halal, vegetarian or allergic. Currently a fully walkable prototype on seeded data; accounts, real payments and an allergen guarantee are in build.",
+      "status": "live",
+      "tags": "Next.js 16, React 19, TypeScript, Tailwind, Leaflet, Two-Sided Marketplace, Escrow, Dietary Matching, Playwright",
+      "link": "https://sliqe.vercel.app"
     }
   ],
   "about": {
@@ -99,8 +99,8 @@
     },
     {
       "id": 2,
-      "label": "Building now",
-      "value": "Sliqe marketplace",
+      "label": "Shipped",
+      "value": "Sliqe (live prototype)",
       "accent": false
     },
     {
