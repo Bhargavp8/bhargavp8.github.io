@@ -54,7 +54,7 @@
       "desc": "A hyper-local, two-sided marketplace for rescuing surplus food in Singapore. Vendors publish a blind box in about 30 seconds; diners find one near them on a live map, reserve it at a locked price, pay into escrow, and collect with a QR pass that releases the payment to the vendor only on scan. The differentiator: every box is matched to the diner's dietary requirements, and those requirements surface on the vendor's packing ticket — so a mystery box is still safe if you're halal, vegetarian or allergic. Currently a fully walkable prototype on seeded data; accounts, real payments and an allergen guarantee are in build.",
       "status": "live",
       "tags": "Next.js 16, React 19, TypeScript, Tailwind, Leaflet, Two-Sided Marketplace, Escrow, Dietary Matching, Playwright",
-      "link": "https://sliqe.bharcode.com"
+      "link": "https://sliqe.vercel.app"
     }
   ],
   "about": {
