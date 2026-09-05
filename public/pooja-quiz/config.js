@@ -24,7 +24,7 @@ const CONFIG = {
   PUBLIC_URL: "",
 
   /* ---- 3. GAMEPLAY ---- */
-  DEFAULT_TIME:  20,    // seconds per question (override per question)
+  DEFAULT_TIME:  15,    // seconds per question (override per question)
   LEAD_IN:     3000,    // ms of "Get ready" before the clock starts
   REVEAL_HOLD: 6000,    // ms the answer breakdown stays up
   MAX_POINTS:  1000,    // points for an instant correct answer
