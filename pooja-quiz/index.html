@@ -93,14 +93,6 @@
   </div>
 </section>
 
-<section id="s-ready" class="view">
-  <div class="ready">
-    <div class="eyebrow" id="rd-q">Question 1</div>
-    <div class="lbl">Eyes on the screen</div>
-    <div class="big" id="rd-n">3</div>
-    <div class="lbl" id="rd-hint">Get your thumbs ready</div>
-  </div>
-</section>
 
 <section id="s-q" class="view">
   <div class="qtop">
@@ -111,7 +103,7 @@
               stroke-dasharray="282.74" stroke-dashoffset="0"/></svg>
       <b id="q-secs">20</b>
     </div>
-    <div class="answered">Answered <b id="q-count">0</b> / <b id="q-total">0</b></div>
+    <div class="answered" id="q-meta">Answered <b id="q-count">0</b> / <b id="q-total">0</b></div>
   </div>
   <div class="qtext" id="q-text">&nbsp;</div>
   <div class="opts" id="q-opts"></div>
@@ -167,8 +159,9 @@
 <section id="p-ready" class="view">
   <div class="card center">
     <div class="eyebrow" id="pr-q">Question 1</div>
-    <div class="display" style="font-size:82px;color:var(--gold);line-height:1" id="pr-n">3</div>
-    <p class="muted">Read the question on the big screen</p>
+    <div class="pr-text" id="pr-text"></div>
+    <div class="display" style="font-size:60px;color:var(--gold);line-height:1.05" id="pr-n">3</div>
+    <p class="muted">Answers appear when the countdown ends</p>
   </div>
 </section>
 

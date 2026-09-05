@@ -317,3 +317,14 @@ label.lbl{display:block;font-weight:700;color:var(--gold);font-size:12px;letter-
 /* lobby overflow when the room is full */
 .more{align-self:center;color:var(--ink-dim);font-weight:700;font-size:clamp(12px,1.5vmin,18px)}
 .plist{max-height:30vh}
+
+/* ========== lead-in: question is up, options and clock not yet ========== */
+.ring.lead .bar{stroke:var(--teal)}
+.ring.lead b{color:var(--teal)}
+.ring.lead{animation:leadPulse 1s var(--ease) infinite}
+@keyframes leadPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+#q-opts:empty{min-height:clamp(110px,27vmin,300px)}  /* hold the space so nothing jumps */
+
+/* phone: the question text while waiting for the buttons */
+.pr-text{font-family:var(--font-d);font-size:19px;line-height:1.34;color:var(--ink);
+  margin:10px 0 14px;text-wrap:balance}
