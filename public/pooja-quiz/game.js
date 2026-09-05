@@ -17,8 +17,10 @@ const ROLE = (params.get("r") === "play") ? "play" : "screen";
 document.body.classList.add(ROLE);
 
 function show(id){
+  const el = $(id);
+  if (el && el.classList.contains("on")) return;   // already up — don't replay the entrance
   $$(".view").forEach(v => v.classList.remove("on"));
-  const el = $(id); if (el) el.classList.add("on");
+  if (el) el.classList.add("on");
 }
 function ls(k, v){
   try { if (v === undefined) return JSON.parse(localStorage.getItem("pq_"+k));
@@ -165,21 +167,30 @@ function Host(){
       time:S.timeMs, double:!!q.double, showText:!!CONFIG.SHOW_OPTION_TEXT_ON_PHONE
     });
 
-    show("#s-ready");
-    $("#rd-q").textContent = `Question ${S.qi + 1} of ${QUESTIONS.length}`;
-    $("#rd-hint").textContent = q.double ? "DOUBLE POINTS" : "Fastest correct answer wins the most";
+    // The question goes up NOW and stays put — reading it costs nobody any clock.
+    // Options and the timer arrive together when go() fires.
+    $("#q-num").textContent = `Question ${S.qi + 1} of ${QUESTIONS.length}` + (q.double ? "  ·  DOUBLE" : "");
+    $("#q-text").textContent = q.q;
+    $("#q-opts").innerHTML = "";
+    $("#q-note").style.display = "none";
+    $("#q-fastest").style.display = "none";
+    $("#q-arc").style.strokeDashoffset = "0";
+    $("#q-ring").classList.remove("warn");
+    $("#q-ring").classList.add("lead");
+    $("#q-meta").innerHTML = q.double ? "<b>Double points</b>" : "Read it \u2014 answers are coming";
+    show("#s-q");
+
     Sound.music("question"); Sound.tension(0);
 
     let n = Math.max(1, Math.round(CONFIG.LEAD_IN / 1000));
-    $("#rd-n").textContent = n;
+    $("#q-secs").textContent = n;
     Sound.sfx("tap");
     clearInterval(S.leadIv);
     S.leadIv = setInterval(() => {
       if (S.phase !== "ready"){ clearInterval(S.leadIv); return; }   // reset/replay cancelled us
       n--;
       if (n <= 0){ clearInterval(S.leadIv); go(); return; }
-      $("#rd-n").textContent = n;
-      $("#rd-n").style.animation = "none"; void $("#rd-n").offsetWidth; $("#rd-n").style.animation = "";
+      $("#q-secs").textContent = n;
       Sound.sfx("tap");
     }, 1000);
   }
@@ -195,17 +206,12 @@ function Host(){
     Net.send("go", { qi:S.qi });
     Sound.sfx("whoosh");
 
-    $("#q-num").textContent = `Question ${S.qi + 1} of ${QUESTIONS.length}` + (q.double ? "  ·  DOUBLE" : "");
-    $("#q-text").textContent = q.q;
-    $("#q-note").style.display = "none";
-    $("#q-fastest").style.display = "none";
-    $("#q-count").textContent = "0";
-    $("#q-total").textContent = present().length;
+    $("#q-ring").classList.remove("lead", "warn");
+    $("#q-meta").innerHTML = `Answered <b id="q-count">0</b> / <b id="q-total">${present().length}</b>`;
     $("#q-opts").innerHTML = q.options.map((o,i) =>
       `<div class="opt" data-c="${i}"><div class="gl">${GLYPH(i)}</div>
         <div class="tx">${esc(o)}</div><span class="tick">✓</span>
         <span class="cnt"></span><span class="bar"></span></div>`).join("");
-    $("#q-ring").classList.remove("warn");
     show("#s-q");
 
     clearInterval(S.tick);
@@ -613,7 +619,8 @@ function Player(){
   Net.on("arm", d => {
     P.qi = d.qi; P.timeMs = d.time; P.answered = false;
     pad(d);                                                  // built now, revealed on "go"
-    $("#pr-q").textContent = `Question ${d.qi + 1} of ${d.total}`;
+    $("#pr-q").textContent = `Question ${d.qi + 1} of ${d.total}` + (d.double ? "  ·  DOUBLE" : "");
+    $("#pr-text").textContent = d.q || "";
     show("#p-ready");
     let n = Math.max(1, Math.round(CONFIG.LEAD_IN / 1000));
     $("#pr-n").textContent = n;
