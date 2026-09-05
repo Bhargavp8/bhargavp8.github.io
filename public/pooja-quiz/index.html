@@ -6,7 +6,15 @@
 <meta name="theme-color" content="#0D0620">
 <title>Krishnashtami Quiz</title>
 <link rel="stylesheet" href="fonts.css">
-<link rel="stylesheet" href="style.css">
+<script>
+/* Every app file gets a per-load version tag. GitHub Pages sits behind an edge
+   cache with a 4h max-age, and files expire independently — a stale game.js
+   paired with a fresh index.html would break the game. A changing query string
+   makes each deploy a new cache key, so that can't happen. Vendor libs and
+   fonts stay statically cached; they never change. */
+window.__V = "?v=" + Date.now();
+document.write('<link rel="stylesheet" href="style.css' + window.__V + '">');
+</script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='52' font-size='52'%3E%F0%9F%AA%94%3C/text%3E%3C/svg%3E">
 </head>
 <body>
@@ -221,10 +229,11 @@
 
 <script src="vendor/supabase.js"></script>
 <script src="vendor/qrcode.js"></script>
-<script src="config.js"></script>
 <!-- questions.js is loaded by game.js for the SCREEN only, so phones never receive the answers -->
-<script src="audio.js"></script>
-<script src="net.js"></script>
-<script src="game.js"></script>
+<script>
+["config.js", "audio.js", "net.js", "game.js"].forEach(function(f){
+  document.write('<scr' + 'ipt src="' + f + window.__V + '"><\/scr' + 'ipt>');
+});
+</script>
 </body>
 </html>

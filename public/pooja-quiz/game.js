@@ -709,7 +709,7 @@ if (ROLE === "screen"){
   // The answer key stays on the screen. Phones never download questions.js,
   // so there is nothing to read out of devtools mid-question.
   const tag = document.createElement("script");
-  tag.src = "questions.js";
+  tag.src = "questions.js" + (window.__V || "");
   tag.onload = () => Host();
   tag.onerror = () => {
     document.querySelector("#boot-note").innerHTML =
