@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0D0620">
+<title>Krishnashtami Quiz</title>
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='52' font-size='52'%3E%F0%9F%AA%94%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+<div class="sky"></div>
+<svg id="rangoli" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
+<div class="grain"></div>
+
+<!-- ============ glyph sprite ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="g0" viewBox="0 0 64 64"><!-- peacock feather -->
+    <path d="M32 60V44" stroke="currentColor" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <path d="M32 3C47 18 51 32 45 42c-5 8-21 8-26 0C13 32 17 18 32 3Z" fill="currentColor" opacity=".34"/>
+    <path d="M32 14c8 9 11 17 8 23-3 5-13 5-16 0-3-6 0-14 8-23Z" fill="currentColor" opacity=".62"/>
+    <ellipse cx="32" cy="30" rx="5" ry="6.6" fill="currentColor"/>
+  </symbol>
+  <symbol id="g1" viewBox="0 0 64 64"><!-- bansuri -->
+    <rect x="4" y="26" width="56" height="12" rx="6" fill="currentColor"/>
+    <circle cx="13" cy="32" r="3.1" fill="#000" opacity=".42"/>
+    <circle cx="26" cy="32" r="2.5" fill="#000" opacity=".42"/>
+    <circle cx="34" cy="32" r="2.5" fill="#000" opacity=".42"/>
+    <circle cx="42" cy="32" r="2.5" fill="#000" opacity=".42"/>
+    <circle cx="50" cy="32" r="2.5" fill="#000" opacity=".42"/>
+    <path d="M14 19c3-4 7-4 10 0M20 14c3-4 7-4 10 0" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round" opacity=".78"/>
+  </symbol>
+  <symbol id="g2" viewBox="0 0 64 64"><!-- makhan matki -->
+    <rect x="19" y="11" width="26" height="6.4" rx="3.2" fill="currentColor"/>
+    <path d="M26 18h12c9 3 16 11 16 21 0 10-9 16-22 16s-22-6-22-16c0-10 7-18 16-21z" fill="currentColor"/>
+    <path d="M23 36c4-3 7 3 11 0s7 3 10 0" stroke="#000" stroke-width="2.6" fill="none" stroke-linecap="round" opacity=".32"/>
+  </symbol>
+  <symbol id="g3" viewBox="0 0 64 64"><!-- lotus -->
+    <path d="M32 12c6 7 8 14 8 20s-3 11-8 15c-5-4-8-9-8-15s2-13 8-20z" fill="currentColor"/>
+    <path d="M20 22c6 3 9 8 11 14 1 5 0 9-2 12-6-2-10-6-12-12s-1-11 3-14z" fill="currentColor" opacity=".72"/>
+    <path d="M44 22c-6 3-9 8-11 14-1 5 0 9 2 12 6-2 10-6 12-12s1-11-3-14z" fill="currentColor" opacity=".72"/>
+    <path d="M8 34c7 0 12 3 16 8 2 3 3 6 3 9-7 1-13-1-17-6s-4-8-2-11z" fill="currentColor" opacity=".5"/>
+    <path d="M56 34c-7 0-12 3-16 8-2 3-3 6-3 9 7 1 13-1 17-6s4-8 2-11z" fill="currentColor" opacity=".5"/>
+  </symbol>
+</defs></svg>
+
+<div class="shell">
+
+<!-- ==================== SCREEN ==================== -->
+<section id="s-boot" class="view">
+  <div class="center">
+    <div class="eyebrow">Pooja Quiz</div>
+    <div class="brand"><div class="om" id="boot-title">Krishnashtami</div>
+    <div class="sub" id="boot-sub">Quiz Night</div></div>
+    <hr class="gold-rule" style="max-width:420px;margin-inline:auto">
+    <p class="muted" style="max-width:46ch;margin-inline:auto">The questions appear on this screen.
+       Everyone else plays from their phone.</p>
+    <div class="mt2"><button class="btn big" id="btn-boot">Light the lamp &nbsp;·&nbsp; Begin</button></div>
+    <p class="muted mt" id="boot-note"></p>
+  </div>
+</section>
+
+<section id="s-lobby" class="view">
+  <div class="lobby">
+    <div class="brand">
+      <div class="eyebrow">Pooja Quiz</div>
+      <div class="om" id="lob-title">Krishnashtami</div>
+      <div class="sub" id="lob-sub">Quiz Night</div>
+      <p>Open the link on your phone, enter the PIN, and pick a name.
+         Answer fast &mdash; the quicker you are, the more you score.</p>
+      <div class="players">
+        <div class="eyebrow">In the room &nbsp;<span class="count" id="lob-count">0</span></div>
+        <div class="plist" id="lob-players"></div>
+      </div>
+    </div>
+    <div class="joinbox">
+      <div class="eyebrow">Go to</div>
+      <div class="url" id="lob-url">&nbsp;</div>
+      <hr class="gold-rule">
+      <div class="qrow">
+        <div>
+          <div class="eyebrow">Game PIN</div>
+          <div class="pin" id="lob-pin">·····</div>
+        </div>
+        <div id="qr"></div>
+      </div>
+      <div class="mt center">
+        <button class="btn big" id="btn-start" disabled>Start the quiz</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="s-ready" class="view">
+  <div class="ready">
+    <div class="eyebrow" id="rd-q">Question 1</div>
+    <div class="lbl">Eyes on the screen</div>
+    <div class="big" id="rd-n">3</div>
+    <div class="lbl" id="rd-hint">Get your thumbs ready</div>
+  </div>
+</section>
+
+<section id="s-q" class="view">
+  <div class="qtop">
+    <div class="qnum" id="q-num">Question 1 of 10</div>
+    <div class="ring" id="q-ring">
+      <svg viewBox="0 0 100 100"><circle class="trk" cx="50" cy="50" r="45" fill="none" stroke-width="9"/>
+      <circle class="bar" id="q-arc" cx="50" cy="50" r="45" fill="none" stroke-width="9"
+              stroke-dasharray="282.74" stroke-dashoffset="0"/></svg>
+      <b id="q-secs">20</b>
+    </div>
+    <div class="answered">Answered <b id="q-count">0</b> / <b id="q-total">0</b></div>
+  </div>
+  <div class="qtext" id="q-text">&nbsp;</div>
+  <div class="opts" id="q-opts"></div>
+  <p class="note" id="q-note" style="display:none"></p>
+  <p class="fastest" id="q-fastest" style="display:none"></p>
+</section>
+
+<section id="s-board" class="view">
+  <div class="center"><div class="eyebrow">Standings</div>
+    <div class="om display" style="font-size:clamp(30px,6vmin,76px);color:var(--gold)" id="bd-title">Leaderboard</div></div>
+  <div class="board" id="bd-rows"></div>
+  <div class="center mt2"><button class="btn big" id="btn-next">Next question</button></div>
+</section>
+
+<section id="s-podium" class="view">
+  <div class="center"><div class="eyebrow">And the winner is</div>
+    <div class="om display" style="font-size:clamp(34px,7.5vmin,96px);color:var(--gold)">Vijayi Bhava</div></div>
+  <div class="podium" id="pd-top"></div>
+  <div class="board" id="pd-rest"></div>
+  <div class="center mt2">
+    <button class="btn ghost" id="btn-again">Play again</button>
+  </div>
+</section>
+
+<!-- ==================== PHONE ==================== -->
+<section id="p-boot" class="view">
+  <div class="center" style="margin-bottom:14px">
+    <div class="eyebrow">Pooja Quiz</div>
+    <div class="big-name" id="ph-title">Krishnashtami</div>
+  </div>
+  <div class="card">
+    <label class="lbl" for="in-pin">Game PIN</label>
+    <input class="field pin-in" id="in-pin" inputmode="numeric" pattern="[0-9]*" maxlength="5"
+           placeholder="00000" autocomplete="off">
+    <label class="lbl" for="in-name">Your name</label>
+    <input class="field" id="in-name" maxlength="14" placeholder="e.g. Radhika" autocomplete="off"
+           autocapitalize="words">
+    <div class="err" id="join-err"></div>
+    <div class="mt"><button class="btn big" id="btn-join" style="width:100%">Join the quiz</button></div>
+  </div>
+  <p class="muted center mt">Keep this tab open. Your score is saved if the screen locks.</p>
+</section>
+
+<section id="p-wait" class="view">
+  <div class="card center">
+    <div style="font-size:52px">🪔</div>
+    <h2 class="display" style="font-size:26px;margin:8px 0;color:var(--gold)" id="pw-name">You're in</h2>
+    <p class="muted" id="pw-msg">Look up at the screen. The quiz starts soon<span class="wait-dots"></span></p>
+    <div class="mt"><span class="chip" id="pw-rank"></span></div>
+  </div>
+</section>
+
+<section id="p-ready" class="view">
+  <div class="card center">
+    <div class="eyebrow" id="pr-q">Question 1</div>
+    <div class="display" style="font-size:82px;color:var(--gold);line-height:1" id="pr-n">3</div>
+    <p class="muted">Read the question on the big screen</p>
+  </div>
+</section>
+
+<section id="p-ans" class="view">
+  <div class="center"><div class="eyebrow" id="pa-num">Question 1</div></div>
+  <div class="pad" id="pa-pad"></div>
+</section>
+
+<section id="p-locked" class="view">
+  <div class="card center">
+    <div style="font-size:50px">🙏</div>
+    <h2 class="display" style="font-size:24px;margin:8px 0;color:var(--teal)">Answer locked in</h2>
+    <p class="muted" id="pl-msg">Watch the screen<span class="wait-dots"></span></p>
+  </div>
+</section>
+
+<section id="p-res" class="view">
+  <div class="verdict" id="pv">
+    <div class="mk" id="pv-mk">✓</div>
+    <h2 id="pv-h">Correct</h2>
+    <div class="pts" id="pv-pts">+0</div>
+    <div class="meta" id="pv-meta"></div>
+    <div id="pv-streak"></div>
+  </div>
+  <div class="card center mt">
+    <div class="eyebrow">Your position</div>
+    <div class="display" style="font-size:38px;color:var(--gold)" id="pv-rank">—</div>
+    <div class="muted" id="pv-tot"></div>
+    <div class="pillrow" id="pv-pills"></div>
+    <div class="eyebrow mt2">Top 10</div>
+    <div class="mini" id="pv-mini"></div>
+  </div>
+</section>
+
+<section id="p-final" class="view">
+  <div class="card center">
+    <div class="mk" style="font-size:64px" id="pf-mk">🏆</div>
+    <div class="eyebrow">Final position</div>
+    <div class="display" style="font-size:52px;color:var(--gold)" id="pf-rank">—</div>
+    <div class="pts" style="font-family:var(--font-d);font-size:32px;color:var(--teal)" id="pf-score"></div>
+    <p class="muted mt" id="pf-msg"></p>
+    <div class="eyebrow mt2">Final top 10</div>
+    <div class="mini" id="pf-mini"></div>
+  </div>
+</section>
+
+</div><!-- /shell -->
+
+<div class="hostbar" id="hostbar" style="display:none">
+  <button class="btn" id="hb-next">Next</button>
+  <button class="btn ghost" id="hb-skip">Skip</button>
+  <button class="btn ghost" id="hb-mute">Mute</button>
+  <button class="btn ghost" id="hb-reset">Reset</button>
+  <kbd>space</kbd>
+</div>
+<div class="status" id="status" style="display:none">…</div>
+
+<script src="vendor/supabase.js"></script>
+<script src="vendor/qrcode.js"></script>
+<script src="config.js"></script>
+<!-- questions.js is loaded by game.js for the SCREEN only, so phones never receive the answers -->
+<script src="audio.js"></script>
+<script src="net.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
